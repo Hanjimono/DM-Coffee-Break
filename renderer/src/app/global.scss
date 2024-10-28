@@ -1,0 +1,39 @@
+@import "@/ui/constants/styles/globalColors.module.scss";
+@import "@/ui/constants/styles/globalSizes.module.scss";
+@import "@/ui/constants/styles/globalVariables.module.scss";
+@import "@/ui/constants/styles/variables.scss";
+
+html {
+  color: var(--colorTextMain);
+  font-size: var(--fontSize);
+  line-height: var(--fontSize);
+}
+
+body {
+  overflow: hidden;
+}
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--colorScrollbar);
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--colorScrollbarHover);
+}
+
+@media (max-width: $mediumDevices) {
+  .main-content {
+    padding-top: 50px;
+  }
+}

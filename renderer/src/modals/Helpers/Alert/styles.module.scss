@@ -1,0 +1,7 @@
+@import "./variables.module.scss";
+
+.alert-modal {
+  box-sizing: border-box;
+  min-width: $alertMinWidth;
+  max-width: $alertMaxWidth;
+}
