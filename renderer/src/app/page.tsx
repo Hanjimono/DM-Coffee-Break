@@ -77,6 +77,9 @@ export default function MainPage() {
           Toggle2
         </Button>
       </Beam>
+      <Form>
+        <Select label="Select" name="select1" options={testOptions} />
+      </Form>
       <Beam bottomGap>
         <Pillar sm={2} smOffset={1}>
           <Brick durability={1} />

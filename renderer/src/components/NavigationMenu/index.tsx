@@ -2,7 +2,6 @@
 // system
 import { useState } from "react"
 import clsx from "clsx"
-import dynamic from 'next/dynamic'
 // ui
 import Beam from "@/ui/Layout/Beam"
 // styles and types
@@ -10,6 +9,7 @@ import styles from "./styles.module.scss"
 import Button from "@/ui/Actions/Button"
 import Title from "@/ui/Presentation/Title"
 import Logo from "../Logo"
+import Menu from "@/ui/Navigation/Menu"
 
 const MENU = [
   {
@@ -31,10 +31,6 @@ const MENU = [
     ]
   }
 ]
-
-const DynamicMenu = dynamic(() => import('@/ui/Navigation/Menu'), {
-  ssr: false,
-})
 
 // component with main navigation menu on the left side of every page
 function NavigationMenu() {
@@ -62,7 +58,7 @@ function NavigationMenu() {
         />
         <Logo className={styles["menu-logo"]} />
         <Beam withoutWrap whole>
-          <DynamicMenu items={MENU} />
+          <Menu items={MENU} />
         </Beam>
       </div>
     </>
