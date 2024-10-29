@@ -1,12 +1,12 @@
 {
   "private": true,
-  "name": "my-nextron-app",
-  "description": "My application description",
-  "version": "1.0.0",
-  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "name": "DM-Coffee-Break",
+  "description": "A tool for helping DM in DnD with notes and music operating",
+  "version": "0.1.0",
+  "author": "Anton Myasnikov <hanjimonor@gmail.com>",
   "main": "app/background.js",
   "scripts": {
-    "dev": "nextron --renderer-port 1234",
+    "dev": "nextron --renderer-port 25000",
     "build": "nextron build",
     "postinstall": "electron-builder install-app-deps",
     "lint": "next lint",
