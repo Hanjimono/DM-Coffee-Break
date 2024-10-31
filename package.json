@@ -29,6 +29,8 @@
     "react-dom": "^18",
     "react-hook-form": "^7.53.1",
     "react-tooltip": "^5.28.0",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7",
     "tsc": "^2.0.4",
     "yup": "^1.4.0",
     "zustand": "^4.4.6"

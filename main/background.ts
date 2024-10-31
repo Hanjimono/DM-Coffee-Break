@@ -2,6 +2,8 @@ import path from "path"
 import { app, ipcMain } from "electron"
 import serve from "electron-serve"
 import { createWindow } from "./helpers"
+import { sequelize } from "./database/connect"
+import "./database/mainHandler"
 
 const isProd = process.env.NODE_ENV === "production"
 
@@ -33,6 +35,9 @@ if (isProd) {
 
 app.on("window-all-closed", () => {
   app.quit()
+  if (sequelize) {
+    sequelize.close()
+  }
 })
 
 ipcMain.on("message", async (event, arg) => {

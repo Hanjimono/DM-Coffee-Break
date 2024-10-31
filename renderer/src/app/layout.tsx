@@ -9,6 +9,7 @@ import Beam from "@/ui/Layout/Beam"
 import Frame from "@/ui/Layout/Frame"
 // types and styles
 import "./global.scss"
+import Test from "./test"
 
 export const metadata = {
   title: "ui-boilerplate",
@@ -34,6 +35,7 @@ export default function RootLayout({
         />
       </head>
       <body className={openSans.className}>
+        <Test/>
         <Foundation>
           <Beam withoutWrap whole withoutGap>
             <NavigationMenu />
