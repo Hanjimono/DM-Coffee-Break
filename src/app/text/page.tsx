@@ -1,12 +1,12 @@
 // system
-import React from "react";
+import React from "react"
 // ui
-import Title from "@/ui/Presentation/Title";
-import Text from "@/ui/Presentation/Text";
-import Demo from "@/ui/Presentation/Demo";
-import Beam from "@/ui/Layout/Beam";
-import Pillar from "@/ui/Layout/Pillar";
-import WallDecorated from "@/ui/Layout/Decorators/WallDecorated";
+import Title from "@/ui/Presentation/Title"
+import Text from "@/ui/Presentation/Text"
+import Demo from "@/ui/Presentation/Demo"
+import Beam from "@/ui/Layout/Beam"
+import Pillar from "@/ui/Layout/Pillar"
+import WallDecorated from "@/ui/Layout/Decorators/WallDecorated"
 
 export default function TextPage() {
   return (
@@ -217,5 +217,5 @@ export default function TextPage() {
         </Demo>
       </Beam>
     </WallDecorated>
-  );
+  )
 }

@@ -1,24 +1,24 @@
 // components
-import NavigationMenu from "@/components/NavigationMenu";
-import Initializer from "@/components/Helpers/Initializer";
+import NavigationMenu from "@/components/NavigationMenu"
+import Initializer from "@/components/Helpers/Initializer"
 // constants
-import { openSans } from "@/constants/fonts";
+import { openSans } from "@/constants/fonts"
 // ui
-import Foundation from "@/ui/Layout/Foundation";
-import Beam from "@/ui/Layout/Beam";
-import Frame from "@/ui/Layout/Frame";
+import Foundation from "@/ui/Layout/Foundation"
+import Beam from "@/ui/Layout/Beam"
+import Frame from "@/ui/Layout/Frame"
 // types and styles
-import "./global.scss";
+import "./global.scss"
 
 export const metadata = {
   title: "ui-boilerplate",
-  description: "Boilerplate for Next.js development with ui-kit",
-};
+  description: "Boilerplate for Next.js development with ui-kit"
+}
 
 export default function RootLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
@@ -43,5 +43,5 @@ export default function RootLayout({
         <Initializer />
       </body>
     </html>
-  );
+  )
 }

@@ -1,12 +1,12 @@
 // System
-import { StateCreator } from "zustand";
-import { produce } from "immer";
+import { StateCreator } from "zustand"
+import { produce } from "immer"
 
 // Constant
-import { ModalName } from "@/constants/modalList";
-import { ModalStoreInterfaceMap } from "@/constants/types/modals";
+import { ModalName } from "@/constants/modalList"
+import { ModalStoreInterfaceMap } from "@/constants/types/modals"
 
-export type OpenedModal = Record<ModalName, ModalStoreInterfaceMap[ModalName]>;
+export type OpenedModal = Record<ModalName, ModalStoreInterfaceMap[ModalName]>
 
 /**
  * Represents the state of the modal system.
@@ -15,7 +15,7 @@ export interface ModalState {
   /**
    * List of all opened modals.
    */
-  listOfOpenModals: Partial<OpenedModal>;
+  listOfOpenModals: Partial<OpenedModal>
 
   /**
    * Opens a modal with the specified name and optional properties.
@@ -26,20 +26,20 @@ export interface ModalState {
    */
   openModal: <Name extends ModalName>(
     modalName: Name,
-    props?: ModalStoreInterfaceMap[Name],
-  ) => void;
+    props?: ModalStoreInterfaceMap[Name]
+  ) => void
 
   /**
    * Closes the modal with the specified name.
    *
    * @param modalName - The name of the modal to close.
    */
-  closeModal: (modalName: ModalName) => void;
+  closeModal: (modalName: ModalName) => void
 
   /**
    * Closes all open modals.
    */
-  closeAllModals: () => void;
+  closeAllModals: () => void
 
   /**
    * Displays an alert modal with the specified text and optional properties.
@@ -47,7 +47,7 @@ export interface ModalState {
    * @param text - The text to display in the alert modal.
    * @param props - Optional properties to pass to the alert modal.
    */
-  alert: (text: string, props?: ModalStoreInterfaceMap["alert"]) => void;
+  alert: (text: string, props?: ModalStoreInterfaceMap["alert"]) => void
 
   /**
    * Displays a confirm modal with the specified text and optional properties.
@@ -55,7 +55,7 @@ export interface ModalState {
    * @param text - The text to display in the confirm modal.
    * @param props - Optional properties to pass to the confirm modal.
    */
-  confirm: (text: string, props?: ModalStoreInterfaceMap["confirm"]) => void;
+  confirm: (text: string, props?: ModalStoreInterfaceMap["confirm"]) => void
 }
 
 /**
@@ -68,50 +68,50 @@ export const createModalStore: StateCreator<ModalState> = (set, get) => ({
       produce((draft: ModalState) => {
         if (!draft.listOfOpenModals[modalName]) {
           draft.listOfOpenModals[modalName] =
-            {} as ModalStoreInterfaceMap[ModalName];
+            {} as ModalStoreInterfaceMap[ModalName]
         }
         draft.listOfOpenModals[modalName] = {
           ...draft.listOfOpenModals[modalName],
-          ...props,
-        };
-      }),
+          ...props
+        }
+      })
     ),
   closeModal: (modalName) =>
     set(
       produce((draft: ModalState) => {
         if (!!draft.listOfOpenModals[modalName]) {
-          delete draft.listOfOpenModals[modalName];
+          delete draft.listOfOpenModals[modalName]
         }
-      }),
+      })
     ),
   closeAllModals: () => {
     set(
       produce((draft: ModalState) => {
-        draft.listOfOpenModals = {};
-      }),
-    );
+        draft.listOfOpenModals = {}
+      })
+    )
   },
   alert: (text, props = {}) => {
-    let alertProps = { ...props };
+    let alertProps = { ...props }
     if (!alertProps) {
       alertProps = {
-        text,
-      };
+        text
+      }
     }
-    alertProps.text = text;
-    alertProps.title = alertProps.title || "Warning!";
-    get().openModal("alert", alertProps);
+    alertProps.text = text
+    alertProps.title = alertProps.title || "Warning!"
+    get().openModal("alert", alertProps)
   },
   confirm: (text, props = {}) => {
-    let confirmProps = { ...props };
+    let confirmProps = { ...props }
     if (!confirmProps) {
       confirmProps = {
-        text,
-      };
+        text
+      }
     }
-    confirmProps.text = text;
-    confirmProps.title = confirmProps.title || "Confirm action";
-    confirmProps.isNotClosable = true;
-    get().openModal("confirm", confirmProps);
-  },
-});
+    confirmProps.text = text
+    confirmProps.title = confirmProps.title || "Confirm action"
+    confirmProps.isNotClosable = true
+    get().openModal("confirm", confirmProps)
+  }
+})

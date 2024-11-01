@@ -1,37 +1,37 @@
-"use client";
-import Checkbox from "@/ui/Form/Checkbox";
-import FormField from "@/ui/Form/Field";
-import Form from "@/ui/Form/Form";
+"use client"
+import Checkbox from "@/ui/Form/Checkbox"
+import FormField from "@/ui/Form/Field"
+import Form from "@/ui/Form/Form"
 import {
   FormContextElementWrapper,
   FormElementNestedWrapper,
-  FormElementWrapper,
-} from "@/ui/Form/FormElementWrapper";
-import FormSubmit from "@/ui/Form/FormSubmit";
-import Input from "@/ui/Form/Input";
-import Radio, { RadioItem } from "@/ui/Form/Radio";
-import Select from "@/ui/Form/Select";
-import Switch from "@/ui/Form/Switch";
-import Beam from "@/ui/Layout/Beam";
-import Wall from "@/ui/Layout/Wall";
-import WallDecorated from "@/ui/Layout/Decorators/WallDecorated";
-import Text from "@/ui/Presentation/Text";
-import Title from "@/ui/Presentation/Title";
-import { useForm, useFormContext } from "react-hook-form";
-import * as yup from "yup";
-import { useState } from "react";
-import Button from "@/ui/Actions/Button";
-import Drawer from "@/ui/Navigation/Drawer";
-import Divider from "@/ui/Presentation/Divider";
-import Pillar from "@/ui/Layout/Pillar";
-import Brick from "@/ui/Layout/Brick";
-import { useStore } from "@/store";
+  FormElementWrapper
+} from "@/ui/Form/FormElementWrapper"
+import FormSubmit from "@/ui/Form/FormSubmit"
+import Input from "@/ui/Form/Input"
+import Radio, { RadioItem } from "@/ui/Form/Radio"
+import Select from "@/ui/Form/Select"
+import Switch from "@/ui/Form/Switch"
+import Beam from "@/ui/Layout/Beam"
+import Wall from "@/ui/Layout/Wall"
+import WallDecorated from "@/ui/Layout/Decorators/WallDecorated"
+import Text from "@/ui/Presentation/Text"
+import Title from "@/ui/Presentation/Title"
+import { useForm, useFormContext } from "react-hook-form"
+import * as yup from "yup"
+import { useState } from "react"
+import Button from "@/ui/Actions/Button"
+import Drawer from "@/ui/Navigation/Drawer"
+import Divider from "@/ui/Presentation/Divider"
+import Pillar from "@/ui/Layout/Pillar"
+import Brick from "@/ui/Layout/Brick"
+import { useStore } from "@/store"
 
 interface TestForm {
-  test1: string;
-  test2: string;
-  test3: string;
-  test4: string;
+  test1: string
+  test2: string
+  test3: string
+  test4: string
 }
 
 const testOptions = [
@@ -44,8 +44,8 @@ const testOptions = [
   { value: 7, title: "Test 7" },
   { value: 8, title: "Test 8" },
   { value: 9, title: "Test 9" },
-  { value: 10, title: "Test 10" },
-];
+  { value: 10, title: "Test 10" }
+]
 
 export default function MainPage() {
   const validationSchema = yup
@@ -56,13 +56,13 @@ export default function MainPage() {
       test4: yup.string().required(),
       testSelect: yup.number().required(),
       checkbox1: yup.mixed().oneOf(["partial", true, false]),
-      radio1: yup.number().required(),
+      radio1: yup.number().required()
     })
-    .required();
-  const [show, setShow] = useState(false);
-  const alert = useStore((state) => state.alert);
-  const confirm = useStore((state) => state.confirm);
-  const snack = useStore((state) => state.snack);
+    .required()
+  const [show, setShow] = useState(false)
+  const alert = useStore((state) => state.alert)
+  const confirm = useStore((state) => state.confirm)
+  const snack = useStore((state) => state.snack)
   return (
     <WallDecorated>
       <Title size={1} uppercase>
@@ -165,7 +165,7 @@ export default function MainPage() {
           name="radio1"
           options={[
             { title: "Test 1", value: 1 },
-            { title: "Test 2", value: 2 },
+            { title: "Test 2", value: 2 }
           ]}
           disabled
         />
@@ -213,7 +213,7 @@ export default function MainPage() {
         nunc consectetur ultricies. Sed et eros eget or
       </Text>
     </WallDecorated>
-  );
+  )
 }
 
 function NestedInput() {
@@ -228,5 +228,5 @@ function NestedInput() {
         icon="search"
       />
     </FormContextElementWrapper>
-  );
+  )
 }

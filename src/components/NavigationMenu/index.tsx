@@ -1,15 +1,15 @@
-"use client";
+"use client"
 // system
-import { useState } from "react";
-import clsx from "clsx";
+import { useState } from "react"
+import clsx from "clsx"
 // ui
-import Menu from "@/ui/Navigation/Menu";
-import Beam from "@/ui/Layout/Beam";
+import Menu from "@/ui/Navigation/Menu"
+import Beam from "@/ui/Layout/Beam"
 // styles and types
-import styles from "./styles.module.scss";
-import Button from "@/ui/Actions/Button";
-import Title from "@/ui/Presentation/Title";
-import Logo from "../Logo";
+import styles from "./styles.module.scss"
+import Button from "@/ui/Actions/Button"
+import Title from "@/ui/Presentation/Title"
+import Logo from "../Logo"
 
 const MENU = [
   {
@@ -17,24 +17,24 @@ const MENU = [
     items: [
       {
         title: "Text",
-        link: "/text",
-      },
-    ],
+        link: "/text"
+      }
+    ]
   },
   {
     title: "Actions",
     items: [
       {
         title: "Button",
-        link: "/button",
-      },
-    ],
-  },
-];
+        link: "/button"
+      }
+    ]
+  }
+]
 
 // component with main navigation menu on the left side of every page
 function NavigationMenu() {
-  const [openMenu, setOpenMenu] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false)
   return (
     <>
       <div
@@ -62,6 +62,6 @@ function NavigationMenu() {
         </Beam>
       </div>
     </>
-  );
+  )
 }
-export default NavigationMenu;
+export default NavigationMenu

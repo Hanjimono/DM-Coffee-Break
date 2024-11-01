@@ -1,35 +1,35 @@
-"use client";
+"use client"
 // System
-import { useCallback, useMemo } from "react";
-import { AnimatePresence } from "framer-motion";
+import { useCallback, useMemo } from "react"
+import { AnimatePresence } from "framer-motion"
 // Ui
-import Snackbar from "@/ui/Navigation/Snackbar";
+import Snackbar from "@/ui/Navigation/Snackbar"
 // Store
-import { useStore } from "@/store";
+import { useStore } from "@/store"
 // Styles and types
-import styles from "./styles.module.scss";
+import styles from "./styles.module.scss"
 
 /**
  * Container for displaying snackbars.
  */
 export default function SnackbarContainer() {
-  const listOfOpenSnackbar = useStore((state) => state.listOfOpenSnackbar);
-  const closeSnackbar = useStore((state) => state.delayCloseSnackbar);
+  const listOfOpenSnackbar = useStore((state) => state.listOfOpenSnackbar)
+  const closeSnackbar = useStore((state) => state.delayCloseSnackbar)
 
   const handleCloseModal = useCallback(
     (snackbarKey: string) => {
       if (listOfOpenSnackbar[snackbarKey]) {
-        closeSnackbar(snackbarKey);
+        closeSnackbar(snackbarKey)
       }
     },
-    [listOfOpenSnackbar, closeSnackbar],
-  );
+    [listOfOpenSnackbar, closeSnackbar]
+  )
 
   const listOfSnackbars = useMemo(() => {
     return Object.entries(listOfOpenSnackbar).map(
       ([snackbarKey, snackbar], idx) => {
-        const { message, type, duration, isClosing, title } = snackbar;
-        const onClose = () => handleCloseModal(snackbarKey);
+        const { message, type, duration, isClosing, title } = snackbar
+        const onClose = () => handleCloseModal(snackbarKey)
         return (
           <AnimatePresence key={snackbarKey} mode="wait">
             {!isClosing && (
@@ -47,10 +47,10 @@ export default function SnackbarContainer() {
               </Snackbar>
             )}
           </AnimatePresence>
-        );
-      },
-    );
-  }, [listOfOpenSnackbar, handleCloseModal]);
+        )
+      }
+    )
+  }, [listOfOpenSnackbar, handleCloseModal])
 
-  return <div className={styles["snackbar-container"]}>{listOfSnackbars}</div>;
+  return <div className={styles["snackbar-container"]}>{listOfSnackbars}</div>
 }

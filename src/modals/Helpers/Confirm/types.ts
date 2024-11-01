@@ -1,18 +1,18 @@
-import { DefaultModalProps } from "@/constants/types/modals";
+import { DefaultModalProps } from "@/constants/types/modals"
 
 /** Renders a confirm modal dialog with customizable text, title, and action buttons. */
 export interface ConfirmModalProps extends DefaultModalProps {
-  type: "confirm";
+  type: "confirm"
   /** Classes */
-  className?: string;
+  className?: string
   /** Text to display in the alert modal */
-  text?: string;
+  text?: string
   /** Function to call when the confirm button is clicked */
-  onConfirm?: () => void;
+  onConfirm?: () => void
   /** Function to call when the cancel button is clicked */
-  onCancel?: () => void;
+  onCancel?: () => void
   /** Title of the modal */
-  confirmButtonTitle?: string;
+  confirmButtonTitle?: string
   /** Text to display on the cancel button */
-  cancelButtonTitle?: string;
+  cancelButtonTitle?: string
 }

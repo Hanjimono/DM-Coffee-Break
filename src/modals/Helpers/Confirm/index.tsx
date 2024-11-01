@@ -1,14 +1,14 @@
 // System
-import clsx from "clsx";
+import clsx from "clsx"
 // Ui
-import Modal from "@/ui/Navigation/Modal";
-import Room from "@/ui/Layout/Room";
-import Text from "@/ui/Presentation/Text";
-import Beam from "@/ui/Layout/Beam";
+import Modal from "@/ui/Navigation/Modal"
+import Room from "@/ui/Layout/Room"
+import Text from "@/ui/Presentation/Text"
+import Beam from "@/ui/Layout/Beam"
 // Styles and types
-import { ConfirmModalProps } from "./types";
-import styles from "./styles.module.scss";
-import Button from "@/ui/Actions/Button";
+import { ConfirmModalProps } from "./types"
+import styles from "./styles.module.scss"
+import Button from "@/ui/Actions/Button"
 
 /**
  * Renders a confirm modal dialog with customizable text, title, and action buttons.
@@ -34,17 +34,17 @@ function ConfirmModal({
   title,
   cancelButtonTitle = "Cancel",
   confirmButtonTitle = "OK",
-  className,
+  className
 }: ConfirmModalProps) {
-  const calculatedClassNames = clsx(styles["confirm-modal"], className);
+  const calculatedClassNames = clsx(styles["confirm-modal"], className)
   const handleAction = (isConfirm: boolean) => {
     if (isConfirm) {
-      onConfirm?.();
+      onConfirm?.()
     } else {
-      onCancel?.();
+      onCancel?.()
     }
-    onClose();
-  };
+    onClose()
+  }
   return (
     <Modal title={title} className={calculatedClassNames}>
       <Room bottomGap>
@@ -59,6 +59,6 @@ function ConfirmModal({
         </Button>
       </Beam>
     </Modal>
-  );
+  )
 }
-export default ConfirmModal;
+export default ConfirmModal
