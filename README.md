@@ -1,1 +1,1 @@
-A tool for helping DM in DnD with notes and music operating
+This is a [Next.js](https://nextjs.org/) project boilerplate
