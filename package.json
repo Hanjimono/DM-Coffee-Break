@@ -24,9 +24,9 @@
     "framer-motion": "^11.11.9",
     "immer": "^10.1.1",
     "js-cookie": "^3.0.5",
-    "next": "^15.0.0-rc.0",
-    "react": "^19.0.0-rc-1460d67c-20241003",
-    "react-dom": "^19.0.0-rc-1460d67c-20241003",
+    "next": "14.2.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.53.0",
     "react-tooltip": "^5.28.0",
     "tsc": "^2.0.4",
@@ -43,7 +43,7 @@
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "prettier": "^3.2.5",
-    "sass": "^1.77.2",
+    "sass": "1.77.2",
     "typescript": "^5"
   }
 }
