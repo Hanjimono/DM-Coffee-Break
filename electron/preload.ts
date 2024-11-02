@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer } from "electron"
+import { databaseRendererHandler } from "./database/rendererHandler"
 
 contextBridge.exposeInMainWorld("electron", {
   ipcRenderer: {
@@ -7,3 +8,5 @@ contextBridge.exposeInMainWorld("electron", {
       ipcRenderer.on(channel, listener)
   }
 })
+
+contextBridge.exposeInMainWorld("database", databaseRendererHandler)
