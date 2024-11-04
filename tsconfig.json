@@ -19,6 +19,8 @@
       }
     ],
     "paths": {
+      "@cross/*": ["./cross/*"],
+      "@database/*": ["./cross/database/*"],
       "@/*": ["./src/*"]
     }
   },

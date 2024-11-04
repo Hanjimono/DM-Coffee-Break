@@ -2,12 +2,12 @@
 // System
 import clsx from "clsx"
 import { motion } from "framer-motion"
+// Ui
+import SmartImage from "@/ui/Presentation/SmartImage"
+import Title from "@/ui/Presentation/Title"
 // Styles and types
 import { LoadingScreenProps } from "./types"
 import styles from "./styles.module.scss"
-import SmartImage from "@/ui/Presentation/SmartImage"
-import Title from "@/ui/Presentation/Title"
-import LoadingCube from "./loadingCube"
 
 function LoadingScreen({
   children,

@@ -17,12 +17,14 @@
     "dist": "run-s next:build electron:dist",
     "dev": "npm-run-all --parallel electron:dev next:dev",
     "electron:build_watch": "tsup --watch",
-    "electron:dev": "npm-run-all --parallel electron:build_watch electron:watch",
+    "electron:dev": "npm-run-all --parallel electron:build_watch electron:watch-delay",
     "electron:watch": "cross-env NODE_ENV='development' nodemon",
+    "electron:watch-delay": "npm-run-all \"delay 1000\" electron:watch",
     "pretty": "npx prettier . --write",
     "prepare-css": "find . -name '*.example.scss' -exec sh -c 'cp \"$0\" \"${0%.example.scss}.scss\"' {} \\;",
     "prepare-husky": "npx husky init",
-    "prepare": "husky"
+    "prepare": "husky",
+    "delay": "node -e \"setTimeout(function() {}, Number(process.argv[1]))\""
   },
   "lint-staged": {
     "*": [

@@ -1,6 +1,8 @@
 // components
 import NavigationMenu from "@/components/NavigationMenu"
 import Initializer from "@/components/Helpers/Initializer"
+import DatabaseProvider from "@/components/Containers/DatabaseProvider"
+import DatabaseProtectedComponent from "@/components/Containers/DatabaseProtectedComponent"
 // constants
 import { openSans } from "@/constants/fonts"
 // ui
@@ -35,12 +37,16 @@ export default function RootLayout({
       </head>
       <body className={openSans.className}>
         <Foundation>
-          <Beam withoutWrap whole withoutGap>
-            <NavigationMenu />
-            <Frame className="main-content">{children}</Frame>
-          </Beam>
+          <DatabaseProvider>
+            <DatabaseProtectedComponent>
+              <Beam withoutWrap whole withoutGap>
+                <NavigationMenu />
+                <Frame className="main-content">{children}</Frame>
+              </Beam>
+            </DatabaseProtectedComponent>
+            <Initializer />
+          </DatabaseProvider>
         </Foundation>
-        <Initializer />
       </body>
     </html>
   )
