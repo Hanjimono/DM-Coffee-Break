@@ -19,9 +19,10 @@ export class Settings extends Model {
 Settings.init(
   {
     id: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     key: {
       type: DataTypes.STRING,

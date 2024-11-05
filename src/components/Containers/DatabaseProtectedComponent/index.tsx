@@ -6,7 +6,7 @@ import { DatabaseContext } from "@/components/Containers/DatabaseProvider"
 import LoadingScreen from "../LoadingScreen"
 
 //TODO: move to constants or env
-const CURRENT_DATABASE_VERSION = "0.0.1"
+export const CURRENT_DATABASE_VERSION = "0.0.1"
 
 /**
  * A component that ensures the database is authenticated and the version is valid before rendering its children.
@@ -32,7 +32,7 @@ export default function DatabaseProtectedComponent({
       }
       const isValidVersion = await checkVersion(CURRENT_DATABASE_VERSION)
       if (!isValidVersion) {
-        router.push("/settings/global")
+        router.push("/settings/database")
       }
       setLoading(false)
       return result

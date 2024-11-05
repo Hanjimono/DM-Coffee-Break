@@ -38,12 +38,7 @@ export default function RootLayout({
       <body className={openSans.className}>
         <Foundation>
           <DatabaseProvider>
-            <DatabaseProtectedComponent>
-              <Beam withoutWrap whole withoutGap>
-                <NavigationMenu />
-                <Frame className="main-content">{children}</Frame>
-              </Beam>
-            </DatabaseProtectedComponent>
+            <DatabaseProtectedComponent>{children}</DatabaseProtectedComponent>
             <Initializer />
           </DatabaseProvider>
         </Foundation>

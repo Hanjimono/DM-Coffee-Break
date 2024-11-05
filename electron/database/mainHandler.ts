@@ -39,15 +39,14 @@ ipcMain.handle("database-sync", async (event, lastVersion: DatabaseVersion) => {
       where: { key: SETTING_DATABASE_VERSION_KEY }
     })
     if (!currentVersion) {
-      currentVersion = await Settings.create({
+      currentVersion = Settings.build({
         key: SETTING_DATABASE_VERSION_KEY,
-        value: lastVersion,
+        value: "0.0.0",
         category: SETTINGS_CATEGORIES.GENERAL
       })
-    } else {
-      currentVersion.value = lastVersion
-      await currentVersion.save()
     }
+    currentVersion.value = lastVersion
+    await currentVersion.save()
     return lastVersion
   } catch (error) {
     return "0.0.0"
