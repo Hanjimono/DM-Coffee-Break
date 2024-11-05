@@ -55,7 +55,7 @@ export default function DatabaseSyncForm() {
         successSnack("Database updated successfully")
         setVersion(resultVersion)
         setLoading(false)
-        router.push("/settings/global")
+        router.push("/settings/global/database")
       } catch (error) {
         errorSnack("Database update failed")
       } finally {
