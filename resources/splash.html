@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DM Coffee Break</title>
+  </head>
+  <style>
+    @-webkit-keyframes rotating {
+      from {
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      to {
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes rotating {
+      from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    .loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    .image-container {
+      position: relative;
+      max-width: 500;
+    }
+    .cube {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      top: 100px;
+      left: 95px;
+      -webkit-animation: rotating 2s linear infinite;
+      -moz-animation: rotating 2s linear infinite;
+      -ms-animation: rotating 2s linear infinite;
+      -o-animation: rotating 2s linear infinite;
+      animation: rotating 2s linear infinite;
+    }
+  </style>
+  <body>
+    <div class="loader">
+      <div class="image-container">
+        <img
+          src="./Logo Transparent_no_cube.png"
+          height="280"
+          alt="DM Coffee Break"
+        />
+        <div class="cube">
+          <img src="./twenty-sided-dice.svg" alt="DM Coffee Break" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

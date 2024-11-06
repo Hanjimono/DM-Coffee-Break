@@ -2,23 +2,50 @@ import { is } from "@electron-toolkit/utils"
 import { app, BrowserWindow, ipcMain } from "electron"
 import { getPort } from "get-port-please"
 import { startServer } from "next/dist/server/lib/start-server"
-import { join } from "path"
+import path, { join } from "path"
+
+let mainWindow: BrowserWindow
+let splash: BrowserWindow
 
 const createWindow = () => {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     minWidth: 900,
     minHeight: 670,
+    show: false,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: join(__dirname, "preload.js"),
       nodeIntegration: true
     }
   })
 
-  mainWindow.maximize()
+  splash = new BrowserWindow({
+    width: 500,
+    height: 300,
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true
+  })
 
-  mainWindow.on("ready-to-show", () => mainWindow.show())
+  splash.loadFile(
+    path.resolve(is.dev ? "./resources" : process.resourcesPath, "splash.html")
+  )
+  splash.center()
+
+  mainWindow.webContents.on("did-finish-load", () => {
+    mainWindow.maximize()
+    mainWindow.show()
+    splash.close()
+    mainWindow.focus()
+  })
+
+  mainWindow.on("app-command", (e, cmd) => {
+    if (cmd === "browser-backward" || cmd === "browser-forward") {
+      e.preventDefault()
+    }
+  })
 
   const loadURL = async () => {
     if (is.dev) {
@@ -72,6 +99,12 @@ app.whenReady().then(() => {
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit()
+})
+
+ipcMain.on("ready", () => {
+  splash.close()
+  mainWindow.maximize()
+  mainWindow.show()
 })
 
 import "./database/mainHandler"
