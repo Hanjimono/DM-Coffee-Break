@@ -69,9 +69,9 @@ export default function DatabaseSyncForm() {
   }
   return (
     <>
-      <Room bottomGap>
-        <Title noPadding>Database Settings</Title>
-        <Divider gap="default" />
+      <Room bottomGap="same-level">
+        <Title bottomGap="same">Database Settings</Title>
+        <Divider bottomGap="close" />
         <Text>
           All main info stored in database. It&apos;s important to keep it up to
           date.
@@ -87,13 +87,13 @@ export default function DatabaseSyncForm() {
       </Room>
       <HiddenRoom isShown={!wrongVersion}>
         {!wrongVersion && (
-          <Note type="success" withoutMargin>
+          <Note type="success" bottomGap="same">
             The database is up to date.
           </Note>
         )}
       </HiddenRoom>
       <HiddenRoom isShown={wrongVersion}>
-        <Note type="warning" withoutMargin>
+        <Note type="warning" bottomGap="same">
           The database version is outdated. Please update the database.
         </Note>
         <Text>
