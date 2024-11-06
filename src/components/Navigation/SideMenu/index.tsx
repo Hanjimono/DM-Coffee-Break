@@ -7,7 +7,7 @@ import styles from "./styles.module.scss"
 const MenuItems = [
   {
     icon: "home",
-    link: "/",
+    link: "/home",
     iconType: "md" as IconType
   }
 ]

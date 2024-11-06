@@ -12,6 +12,12 @@ html {
 body {
   overflow: hidden;
 }
+
+a {
+  color: unset;
+  text-decoration: none;
+}
+
 /* custom scrollbar */
 ::-webkit-scrollbar {
   width: 20px;

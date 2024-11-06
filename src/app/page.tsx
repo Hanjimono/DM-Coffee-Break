@@ -1,11 +1,12 @@
-import SideMenu from "@/components/Navigation/SideMenu"
+// Components
+import LoadingScreen from "@/components/Containers/LoadingScreen"
+// Ui
 import WallDecorated from "@/ui/Layout/Decorators/WallDecorated"
 
 export default function MainPage() {
   return (
     <WallDecorated>
-      <SideMenu />
-      11111
+      <LoadingScreen loaded={false} />
     </WallDecorated>
   )
 }

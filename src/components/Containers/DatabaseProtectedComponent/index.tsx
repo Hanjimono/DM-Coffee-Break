@@ -33,6 +33,8 @@ export default function DatabaseProtectedComponent({
       const isValidVersion = await checkVersion(CURRENT_DATABASE_VERSION)
       if (!isValidVersion) {
         router.push("/settings/database")
+      } else {
+        router.push("/home")
       }
       setLoading(false)
       return result
