@@ -18,6 +18,7 @@ function LinkBlock({
   image,
   description,
   href,
+  onClick,
   big
 }: LinkBlockProps) {
   const calculatedClassNames = clsx(
@@ -26,7 +27,7 @@ function LinkBlock({
     !!big && styles["big"]
   )
   return (
-    <Link href={href}>
+    <Link href={href || ""} onClick={onClick}>
       <motion.div
         layout
         initial={{ scale: 0.9 }}

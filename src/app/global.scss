@@ -157,9 +157,3 @@ a {
 .left-gap-almost-same {
   margin-left: var(--spacingItemsAlmostSame);
 }
-
-@media (max-width: $mediumDevices) {
-  .main-content {
-    padding-top: 50px;
-  }
-}
