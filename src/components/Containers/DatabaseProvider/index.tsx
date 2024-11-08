@@ -1,6 +1,6 @@
 "use client"
 // System
-import { DatabaseHandler } from "@database/types/handlers/database"
+import { DatabaseHandler } from "@cross/types/handlers/database"
 import { createContext, useEffect, useState } from "react"
 
 export const DatabaseContext = createContext({} as DatabaseHandler)

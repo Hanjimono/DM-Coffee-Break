@@ -1,4 +1,4 @@
-import { DatabaseVersion } from "../settings/version"
+import { DatabaseVersion } from "@cross/types/database/settings/version"
 
 /**
  * Interface representing a handler for database operations.

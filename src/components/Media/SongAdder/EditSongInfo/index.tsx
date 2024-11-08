@@ -14,12 +14,13 @@ import Button from "@/ui/Actions/Button"
 function EditSongInfo({
   className,
   cancelLink,
-  handleCancelClick
+  handleCancelClick,
+  defaultValues
 }: EditSongInfoProps) {
   const calculatedClassNames = clsx(styles["edit-song-info"], className)
   return (
-    <Form className={calculatedClassNames}>
-      <Input label="Name" name="name" />
+    <Form className={calculatedClassNames} defaultValues={defaultValues}>
+      <Input label="Title" name="title" />
       <Input label="Artist" name="artist" />
       <Text italic>
         You can add your own short comment about this song to easily find it

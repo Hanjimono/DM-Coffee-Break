@@ -87,6 +87,7 @@
     "react-hook-form": "^7.53.0",
     "react-tooltip": "^5.28.0",
     "sequelize": "^6.37.5",
+    "soundcloud-downloader": "^1.0.0",
     "sqlite3": "^5.1.7",
     "tsc": "^2.0.4",
     "yup": "^1.4.0",

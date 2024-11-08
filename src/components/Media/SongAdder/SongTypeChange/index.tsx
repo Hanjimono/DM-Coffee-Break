@@ -1,5 +1,5 @@
 // Constants
-import { MEDIA_TYPES } from "@cross/database/constants/media"
+import { MEDIA_TYPES } from "@cross/constants/media"
 // Components
 import LinkBlock from "@/components/Navigation/LinkBlock"
 // ui

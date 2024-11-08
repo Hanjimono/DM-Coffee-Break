@@ -107,4 +107,5 @@ ipcMain.on("ready", () => {
   mainWindow.show()
 })
 
-import "./database/mainHandler"
+import "./handlers/main/databaseMainHandler"
+import "./handlers/main/songParserMainHandler"

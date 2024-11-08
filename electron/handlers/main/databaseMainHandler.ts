@@ -1,9 +1,9 @@
 import { ipcMain } from "electron"
-import { sequelize } from "./connect"
-import { DatabaseVersion } from "@cross/database/types/settings/version"
-import { Settings } from "./models/settings"
-import { SETTING_DATABASE_VERSION_KEY } from "@cross/database/constants/mainSettings"
-import { SETTINGS_CATEGORIES } from "@cross/database/constants/settingsCategories"
+import { sequelize } from "../../database/connect"
+import { DatabaseVersion } from "@cross/types/database/settings/version"
+import { Settings } from "../../database/models/settings"
+import { SETTING_DATABASE_VERSION_KEY } from "@cross/constants/mainSettings"
+import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 
 ipcMain.handle("database-authenticate", async () => {
   try {

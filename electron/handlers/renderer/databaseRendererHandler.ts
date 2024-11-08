@@ -1,5 +1,5 @@
 import { ipcRenderer } from "electron"
-import { DatabaseHandler } from "@cross/database/types/handlers/database"
+import { DatabaseHandler } from "@cross/types/handlers/database"
 
 export const databaseRendererHandler: DatabaseHandler = {
   authenticate: async () => ipcRenderer.invoke("database-authenticate"),

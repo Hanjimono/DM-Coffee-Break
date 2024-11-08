@@ -1,6 +1,6 @@
 import { DataTypes, Model } from "sequelize"
 import { sequelize } from "../connect"
-import { SETTINGS_CATEGORIES } from "../../../cross/database/constants/settingsCategories"
+import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 
 /**
  * Represents the settings model in the database.

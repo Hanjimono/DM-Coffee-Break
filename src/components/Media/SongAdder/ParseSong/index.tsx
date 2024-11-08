@@ -1,7 +1,10 @@
 // System
-import { useState } from "react"
+import { useContext, useState } from "react"
+// Store
+import { useStore } from "@/store"
 // Components
 import EditSongInfo from "../EditSongInfo"
+import { SongParserContext } from "@/components/Containers/SongParserProvider"
 // Ui
 import Input from "@/ui/Form/Input"
 import Beam from "@/ui/Layout/Beam"
@@ -9,22 +12,40 @@ import Brick from "@/ui/Layout/Brick"
 import Note from "@/ui/Presentation/Note"
 import Title from "@/ui/Presentation/Title"
 import Pillar from "@/ui/Layout/Pillar"
+// Styles and types
+import { ParsedSongInfo } from "@cross/types/media/song"
 
 export default function ParseSong() {
+  const errorSnack = useStore((state) => state.errorSnack)
+  const successSnack = useStore((state) => state.successSnack)
   const [link, setLink] = useState("")
   const [parsingInProcess, setParsingInProcess] = useState(false)
-  const [parsedInfo, setParsedInfo] = useState<object | null>(null)
-  const parseSong = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+  const [parsedInfo, setParsedInfo] = useState<ParsedSongInfo | null>(null)
+  const songParser = useContext(SongParserContext)
+  const parseSong = async (url: string) => {
+    if (!url) {
+      return
+    }
+    setParsingInProcess(true)
+    try {
+      const info = await songParser.parseSongInfo({ url })
+      setParsedInfo(info)
+      successSnack("Song parsed successfully")
+    } catch (error: any) {
+      setParsingInProcess(false)
+      if (!error?.message) {
+        errorSnack("Error parsing song")
+        return
+      }
+      errorSnack(error.message)
+    }
     setParsingInProcess(false)
-    setParsedInfo({})
   }
   const handleLinkChange = (name: string, value: string) => {
     setLink(value)
     ;(window as any).clearTimeout((window as any).parseSongTimeout)
     ;(window as any).parseSongTimeout = window.setTimeout(() => {
-      setParsingInProcess(true)
-      parseSong()
+      parseSong(value)
     }, 600)
   }
   const handleCancelClick = () => {
@@ -54,7 +75,18 @@ export default function ParseSong() {
             />
           </Pillar>
         </Beam>
-        {parsedInfo && <EditSongInfo handleCancelClick={handleCancelClick} />}
+        {parsedInfo && (
+          <EditSongInfo
+            handleCancelClick={handleCancelClick}
+            defaultValues={{
+              title: parsedInfo.title || "",
+              artist: parsedInfo.artist || "",
+              comment: "",
+              source: parsedInfo.source,
+              url: parsedInfo.url
+            }}
+          />
+        )}
       </Brick>
     </Beam>
   )

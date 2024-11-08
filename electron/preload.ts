@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from "electron"
-import { databaseRendererHandler } from "./database/rendererHandler"
+import { databaseRendererHandler } from "./handlers/renderer/databaseRendererHandler"
+import { songParserRendererHandler } from "./handlers/renderer/songParserRendererHandler"
 
 contextBridge.exposeInMainWorld("electron", {
   ipcRenderer: {
@@ -10,3 +11,5 @@ contextBridge.exposeInMainWorld("electron", {
 })
 
 contextBridge.exposeInMainWorld("database", databaseRendererHandler)
+
+contextBridge.exposeInMainWorld("songParser", songParserRendererHandler)

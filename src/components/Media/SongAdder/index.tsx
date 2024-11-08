@@ -1,8 +1,9 @@
 "use client"
 import { useState } from "react"
 // Constants
-import { MEDIA_TYPES } from "@cross/database/constants/media"
+import { MEDIA_TYPES } from "@cross/constants/media"
 // Components
+import SongParserProvider from "@/components/Containers/SongParserProvider"
 import SongTypeChange from "./SongTypeChange"
 import ParseSong from "./ParseSong"
 // Ui
@@ -14,7 +15,7 @@ export default function SongAdder() {
     (typeof MEDIA_TYPES)[keyof typeof MEDIA_TYPES] | undefined
   >(undefined)
   return (
-    <>
+    <SongParserProvider>
       {!songType && <SongTypeChange onChange={setSongType} />}
       {!!songType && (
         <Beam>
@@ -29,6 +30,6 @@ export default function SongAdder() {
         </Beam>
       )}
       {songType == MEDIA_TYPES.PARSED && <ParseSong />}
-    </>
+    </SongParserProvider>
   )
 }
