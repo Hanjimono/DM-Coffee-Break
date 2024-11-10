@@ -1,12 +1,12 @@
 // components
-import DatabaseSyncForm from "./syncForm"
+import SongCardSettingsForm from "./formSettings"
 // ui
 import WallDecorated from "@/ui/Layout/Decorators/WallDecorated"
 
-export default function DatabaseImportantSettingsPage() {
+export default function SongCardSettingsPage() {
   return (
     <WallDecorated>
-      <DatabaseSyncForm />
+      <SongCardSettingsForm />
     </WallDecorated>
   )
 }

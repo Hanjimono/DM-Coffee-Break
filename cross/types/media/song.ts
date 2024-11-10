@@ -1,4 +1,10 @@
-import { AVAILABLE_MEDIA_SOURCES } from "@cross/constants/media"
+import { MEDIA_SOURCES, MEDIA_TYPES } from "@cross/constants/media"
+
+export type AVAILABLE_MEDIA_SOURCES =
+  (typeof MEDIA_SOURCES)[keyof typeof MEDIA_SOURCES]
+
+export type AVAILABLE_MEDIA_TYPE =
+  (typeof MEDIA_TYPES)[keyof typeof MEDIA_TYPES]
 
 export interface SongToParseData {
   url: string

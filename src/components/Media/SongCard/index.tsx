@@ -8,12 +8,11 @@ import styles from "./styles.module.scss"
 import ShortSongCard from "./shortSongCard"
 import BigSongCard from "./bigSongCard"
 
-function SongCard({ className, info }: SongCardProps) {
+function SongCard({ className, info, type, ...rest }: SongCardProps) {
   const calculatedClassNames = clsx(styles["song-card-container"], className)
-  const type = SONG_CARD_TYPES.SHORT
   if (type === SONG_CARD_TYPES.SHORT) {
-    return <ShortSongCard info={info} />
+    return <ShortSongCard info={info} {...rest} />
   }
-  return <BigSongCard info={info} />
+  return <BigSongCard info={info} {...rest} />
 }
 export default SongCard

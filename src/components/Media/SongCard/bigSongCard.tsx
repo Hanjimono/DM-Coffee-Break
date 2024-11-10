@@ -10,46 +10,61 @@ import Button from "@/ui/Actions/Button"
 // Styles and types
 import { SongCardProps } from "./types"
 import styles from "./styles.module.scss"
+import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 
-function BigSongCard({ info, className }: SongCardProps) {
+function BigSongCard({ info, className, settings, isEdit }: SongCardProps) {
   const calculatedClassNames = clsx(
     styles["big-song-card-container"],
     className
   )
-  const primary = info.title
-  const secondary = info.comment
+  const primary =
+    settings && settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY] === "title"
+      ? info.title
+      : info.comment
+  const secondary =
+    settings &&
+    settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY] === "title"
+      ? info.title
+      : settings &&
+          settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY] === "comment"
+        ? info.comment
+        : info.artist
   return (
     <motion.div
       className={calculatedClassNames}
       initial={{ opacity: 0 }}
       animate={{ opacity: 0.9 }}
       exit={{ opacity: 0 }}
-      whileHover={{ scale: 1.01, opacity: 1 }}
+      whileHover={isEdit ? undefined : { scale: 1.01, opacity: 1 }}
     >
       <Beam className={styles["big-song-card-primary"]}>
         <Text type="fit-line" bold>
-          {primary}
+          {primary || info.title}
         </Text>
-        <div className={styles["big-song-card-actions"]}>
-          <Button
-            className={styles["big-song-card-actions-button"]}
-            icon="edit"
-            secondary
-          />
-          <Button
-            className={styles["big-song-card-actions-button"]}
-            icon="delete"
-            remove
-          />
-        </div>
+        {!isEdit && (
+          <div className={styles["big-song-card-actions"]}>
+            <Button
+              className={styles["big-song-card-actions-button"]}
+              icon="edit"
+              secondary
+            />
+            <Button
+              className={styles["big-song-card-actions-button"]}
+              icon="delete"
+              remove
+            />
+          </div>
+        )}
       </Beam>
       <Beam className={styles["big-song-card-image"]} bottomGap="almost-same">
         <SmartImage src={info.thumbnail} alt={info.title} />
-        <Button
-          className={styles["big-song-card-play"]}
-          success
-          icon="play_arrow"
-        />
+        {!isEdit && (
+          <Button
+            className={styles["big-song-card-play"]}
+            success
+            icon="play_arrow"
+          />
+        )}
       </Beam>
       <Beam className={styles["big-song-card-secondary"]}>
         <Text type="fit-line">{secondary}</Text>

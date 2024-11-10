@@ -4,9 +4,6 @@ export const MEDIA_TYPES = {
   PARSED: 3
 } as const
 
-export type AVAILABLE_MEDIA_TYPE =
-  (typeof MEDIA_TYPES)[keyof typeof MEDIA_TYPES]
-
 export const MEDIA_SOURCES = {
   UNSUPPORTED: 1,
   PC: 2,
@@ -14,9 +11,6 @@ export const MEDIA_SOURCES = {
   YOUTUBE: 4,
   SPOTIFY: 5
 } as const
-
-export type AVAILABLE_MEDIA_SOURCES =
-  (typeof MEDIA_SOURCES)[keyof typeof MEDIA_SOURCES]
 
 export const MEDIA_SOURCE_INFO = {
   [MEDIA_SOURCES.UNSUPPORTED]: {
@@ -49,4 +43,14 @@ export const MEDIA_SOURCE_INFO = {
     key: "spotify",
     supported: false
   }
+} as const
+
+export const SONG_EXAMPLE = {
+  title: "Song REAL Title",
+  artist: "Very cool singer",
+  duration: 123,
+  source: MEDIA_SOURCES.SOUNDCLOUD,
+  url: "https://soundcloud.com/ayerpk/tagged",
+  thumbnail: "/public/images/Logo Transparent.png",
+  comment: "My favorite song"
 } as const

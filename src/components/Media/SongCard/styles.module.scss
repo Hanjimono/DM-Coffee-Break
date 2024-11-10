@@ -52,6 +52,9 @@ $bigCardDynamicButtonPosition: calc(
     width: 100%;
     text-align: left;
     padding: var(--spacingItemsAlmostSame);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     .short-song-card-actions {
       display: none;

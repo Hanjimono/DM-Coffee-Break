@@ -109,3 +109,4 @@ ipcMain.on("ready", () => {
 
 import "./handlers/main/databaseMainHandler"
 import "./handlers/main/songParserMainHandler"
+import "./handlers/main/songCardSettingsMainHandler"

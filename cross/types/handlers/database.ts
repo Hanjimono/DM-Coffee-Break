@@ -1,4 +1,5 @@
 import { DatabaseVersion } from "@cross/types/database/settings/version"
+import { SETTINGS_HANDLER } from "./settings"
 
 /**
  * Interface representing a handler for database operations.
@@ -34,4 +35,6 @@ export interface DatabaseHandler {
    * @returns A promise that resolves to the current version of the database.
    */
   getVersion: () => Promise<DatabaseVersion>
+
+  settings: SETTINGS_HANDLER
 }

@@ -1,5 +1,8 @@
-import { AVAILABLE_MEDIA_SOURCES, MEDIA_SOURCES } from "@cross/constants/media"
-import { SongToParseData } from "@cross/types/media/song"
+import { MEDIA_SOURCES } from "@cross/constants/media"
+import {
+  AVAILABLE_MEDIA_SOURCES,
+  SongToParseData
+} from "@cross/types/media/song"
 import soundCloudDownloader from "soundcloud-downloader"
 
 const SOURCES_PATTERNS = new Map<AVAILABLE_MEDIA_SOURCES, RegExp>([

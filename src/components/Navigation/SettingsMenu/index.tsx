@@ -12,6 +12,15 @@ const MENU = [
         link: "/settings/global/database"
       }
     ]
+  },
+  {
+    title: "Media",
+    items: [
+      {
+        title: "Song Card",
+        link: "/settings/media/songCard"
+      }
+    ]
   }
 ]
 function SettingsMenu() {
