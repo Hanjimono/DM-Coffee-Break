@@ -83,7 +83,8 @@ export default function ParseSong() {
               artist: parsedInfo.artist || "",
               comment: "",
               source: parsedInfo.source,
-              url: parsedInfo.url
+              url: parsedInfo.url,
+              thumbnail: parsedInfo.thumbnail
             }}
           />
         )}

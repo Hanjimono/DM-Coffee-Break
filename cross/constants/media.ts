@@ -54,3 +54,9 @@ export const SONG_EXAMPLE = {
   thumbnail: "/public/images/Logo Transparent.png",
   comment: "My favorite song"
 } as const
+
+export const UNSORTED_CATEGORY = {
+  id: undefined,
+  title: "Unsorted",
+  hex: "#202020"
+} as const

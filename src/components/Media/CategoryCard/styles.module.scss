@@ -1,0 +1,14 @@
+.media-category-card {
+  overflow: hidden;
+  .media-category-block {
+    overflow: hidden;
+  }
+  .media-category-title {
+    padding: var(--spacingListItemTop) var(--spacingListItemSides);
+    cursor: pointer;
+  }
+  .media-category-content {
+    padding: 3rem 1.5rem;
+    overflow: auto;
+  }
+}

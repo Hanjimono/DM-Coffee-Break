@@ -12,6 +12,19 @@ import Text from "@/ui/Presentation/Text"
 import { LinkBlockProps } from "./types"
 import styles from "./styles.module.scss"
 
+/**
+ * A block with image representing a link or a button to navigate to a different page.
+ *
+ * @param {string} className - Additional class names to apply to the link block.
+ * @param {string} title - The title text to display in the link block.
+ * @param {string} image - The URL of the image to display in the link block.
+ * @param {string} description - The description text to display in the link block.
+ * @param {string} href - The URL to navigate to when the link block is clicked.
+ * @param {function} onClick - The function to call when the link block is clicked.
+ * @param {boolean} big - A flag to determine if the link block should be rendered in a larger size.
+ *
+ * @returns {JSX.Element} The rendered link block component.
+ */
 function LinkBlock({
   className,
   title,

@@ -107,6 +107,8 @@ ipcMain.on("ready", () => {
   mainWindow.show()
 })
 
+// Load all main handlers
 import "./handlers/main/databaseMainHandler"
 import "./handlers/main/songParserMainHandler"
 import "./handlers/main/songCardSettingsMainHandler"
+import "./handlers/main/mediaMainHandler"

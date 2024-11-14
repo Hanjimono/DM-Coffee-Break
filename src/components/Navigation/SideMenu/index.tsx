@@ -20,6 +20,12 @@ const EndItems = [
   }
 ]
 
+/**
+ * SideMenu component renders a vertical action panel with navigation items.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered SideMenu component.
+ */
 export default function SideMenu() {
   return (
     <ActionPanel

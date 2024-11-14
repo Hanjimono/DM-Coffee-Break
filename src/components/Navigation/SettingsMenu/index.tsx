@@ -23,6 +23,12 @@ const MENU = [
     ]
   }
 ]
+
+/**
+ * SettingsMenu component renders a menu with categories and pages for application settings.
+ *
+ * @returns {JSX.Element} The rendered settings menu component.
+ */
 function SettingsMenu() {
   return <Menu className={styles["settings-menu"]} items={MENU} />
 }

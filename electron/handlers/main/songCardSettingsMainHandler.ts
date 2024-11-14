@@ -4,6 +4,9 @@ import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { Op } from "sequelize"
 
+/**
+ * Function to get all setting from the database related to the song card
+ */
 ipcMain.handle("song-card-settings-get", async () => {
   let settings = {} as Record<string, string>
   let settingsFromDb = await sequelize.models.Settings.findAll({
@@ -20,6 +23,9 @@ ipcMain.handle("song-card-settings-get", async () => {
   return settings
 })
 
+/**
+ * Function to update song card settings in the database
+ */
 ipcMain.handle("song-card-settings-set", async (event, data) => {
   try {
     for (const setting of data) {
@@ -45,6 +51,9 @@ ipcMain.handle("song-card-settings-set", async (event, data) => {
   }
 })
 
+/**
+ * Function to update one song card setting in the database
+ */
 ipcMain.handle("song-card-settings-set-one", async (event, key, value) => {
   try {
     const settingExists = await sequelize.models.Settings.findOne({

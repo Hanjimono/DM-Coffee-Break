@@ -1,5 +1,6 @@
 import { DatabaseVersion } from "@cross/types/database/settings/version"
 import { SETTINGS_HANDLER } from "./settings"
+import { MediaHandler } from "./media"
 
 /**
  * Interface representing a handler for database operations.
@@ -36,5 +37,13 @@ export interface DatabaseHandler {
    */
   getVersion: () => Promise<DatabaseVersion>
 
+  /**
+   * Handles settings related operations in the database.
+   */
   settings: SETTINGS_HANDLER
+
+  /**
+   * Handles media related operations in the database.
+   */
+  media: MediaHandler
 }
