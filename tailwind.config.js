@@ -52,50 +52,50 @@ export const config = {
         "gap-11/12": `calc(100% * 11 / 12 - (12 - 11) * (${GLOBAL_SPACING["same-level"]} / 12))`
       },
       colors: {
-        page: "#0b1111",
+        page: "#231915",
         primary: {
-          main: "#14b8a4",
-          hover: "#28ccb8",
-          pressed: "#00a490",
-          text: "#14b8a4",
-          transparent: "#14b8a421"
+          main: "#bb9457",
+          hover: "#d4a96b",
+          pressed: "#a37e4d",
+          text: "#bb9457",
+          transparent: "#a37e4d17"
         },
         secondary: {
-          main: "#255cc0",
-          hover: "#3970d4",
-          pressed: "#1148ac",
-          text: "#255cc0"
+          main: "#5e503f",
+          hover: "#6f5c4a",
+          pressed: "#8f7a5f",
+          text: "#5e503f"
         },
         success: {
-          main: "#7ed7cc",
-          hover: "#92ebe0",
-          pressed: "#6ac3b8",
-          text: "#247d72"
+          main: "#656d4a",
+          hover: "#7b8a5f",
+          pressed: "#4d5639",
+          text: "#2e3222"
         },
         cancel: {
-          main: "#ffd995",
-          hover: "#ffeda9",
-          pressed: "#d7c581",
-          text: "#a57f3b"
+          main: "#b6ad90",
+          hover: "#c1b8a0",
+          pressed: "#a49b7e",
+          text: "#615c4c"
         },
         remove: {
-          main: "#ffc195",
-          hover: "#ffd5a9",
-          pressed: "#d7ad81",
-          text: "#a5673b"
+          main: "#d04a47",
+          hover: "#e05a57",
+          pressed: "#b63a37",
+          text: "#3c0e0d"
         },
         block: {
-          100: "#d3d5d7",
-          200: "#a7abaf",
-          300: "#7a8287",
-          400: "#4e585f",
-          500: "#222e37",
-          600: "#1b252c",
-          700: "#141c21",
-          800: "#0e1216",
-          900: "#07090b"
+          100: "#d5d3d2",
+          200: "#aca6a4",
+          300: "#827a77",
+          400: "#594d49",
+          500: "#2f211c",
+          600: "#261a16",
+          700: "#1c1411",
+          800: "#130d0b",
+          900: "#090706"
         },
-        menu: "#11151d",
+        menu: "#1c1815",
         form: "#1b252c",
         mask: "#212d42"
       },
