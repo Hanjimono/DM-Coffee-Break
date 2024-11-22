@@ -1,9 +1,0 @@
-@import "./variables.module.scss";
-
-.snackbar-container {
-  position: absolute;
-  bottom: var(--spacingItemsClose);
-  right: var(--spacingItemsClose);
-  min-width: $snackbarContainerWidth;
-  max-width: $snackbarContainerWidth;
-}

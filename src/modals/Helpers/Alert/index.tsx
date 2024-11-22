@@ -1,12 +1,12 @@
 // System
-import clsx from "clsx"
+import { cx } from "class-variance-authority"
+import { twMerge } from "tailwind-merge"
 // Ui
 import Modal from "@/ui/Navigation/Modal"
 import Room from "@/ui/Layout/Room"
 import Text from "@/ui/Presentation/Text"
 // Styles and types
 import { AlertModalProps } from "./types"
-import styles from "./styles.module.scss"
 
 /**
  * Renders a simple modal with a text.
@@ -18,7 +18,9 @@ import styles from "./styles.module.scss"
  *
  */
 function AlertModal({ className, text, title, onClose }: AlertModalProps) {
-  const calculatedClassNames = clsx(styles["alert-modal"], className)
+  const calculatedClassNames = twMerge(
+    cx("alert box-border min-w-[200px] max-w-[400px]", className)
+  )
   return (
     <Modal title={title} onClose={onClose} className={calculatedClassNames}>
       <Room>

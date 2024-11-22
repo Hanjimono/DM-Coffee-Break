@@ -1,5 +1,6 @@
 // System
-import clsx from "clsx"
+import { cx } from "class-variance-authority"
+import { twMerge } from "tailwind-merge"
 // Ui
 import Modal from "@/ui/Navigation/Modal"
 import Room from "@/ui/Layout/Room"
@@ -7,7 +8,6 @@ import Text from "@/ui/Presentation/Text"
 import Beam from "@/ui/Layout/Beam"
 // Styles and types
 import { ConfirmModalProps } from "./types"
-import styles from "./styles.module.scss"
 import Button from "@/ui/Actions/Button"
 
 /**
@@ -36,7 +36,9 @@ function ConfirmModal({
   confirmButtonTitle = "OK",
   className
 }: ConfirmModalProps) {
-  const calculatedClassNames = clsx(styles["confirm-modal"], className)
+  const calculatedClassNames = twMerge(
+    cx("confirm box-border min-w-[300px] max-w-[420px]", className)
+  )
   const handleAction = (isConfirm: boolean) => {
     if (isConfirm) {
       onConfirm?.()

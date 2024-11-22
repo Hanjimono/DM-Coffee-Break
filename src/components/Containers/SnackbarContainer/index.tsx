@@ -6,8 +6,6 @@ import { AnimatePresence } from "framer-motion"
 import Snackbar from "@/ui/Navigation/Snackbar"
 // Store
 import { useStore } from "@/store"
-// Styles and types
-import styles from "./styles.module.scss"
 
 /**
  * Container for displaying snackbars.
@@ -43,7 +41,7 @@ export default function SnackbarContainer() {
                   idx === 0 && Object.entries(listOfOpenSnackbar).length <= 1
                 }
               >
-                {message}
+                {message} + + {snackbarKey}
               </Snackbar>
             )}
           </AnimatePresence>
@@ -52,5 +50,13 @@ export default function SnackbarContainer() {
     )
   }, [listOfOpenSnackbar, handleCloseModal])
 
-  return <div className={styles["snackbar-container"]}>{listOfSnackbars}</div>
+  return (
+    <div
+      className={
+        "snackbar-container absolute right-4 bottom-4 min-w-[420px] max-w-[420px]"
+      }
+    >
+      {listOfSnackbars}
+    </div>
+  )
 }
