@@ -15,7 +15,8 @@ import Button from "@/ui/Actions/Button"
 import Input from "@/ui/Form/Input"
 // Styles and types
 import { CategoryEditModalProps } from "./types"
-import styles from "./styles.module.scss"
+import { cx } from "class-variance-authority"
+import { twMerge } from "tailwind-merge"
 
 /**
  * CategoryEditModal component allows users to add or edit a media category.
@@ -31,7 +32,9 @@ function CategoryEditModal({
   className,
   data
 }: CategoryEditModalProps) {
-  const calculatedClassNames = clsx(styles["category-edit-modal"], className)
+  const calculatedClassNames = twMerge(
+    cx("category-edit-modal min-w-80", className)
+  )
   const successSnack = useStore((state) => state.successSnack)
   const errorSnack = useStore((state) => state.errorSnack)
   const [categoryTitle, setCategoryTitle] = useState(data?.title || "")

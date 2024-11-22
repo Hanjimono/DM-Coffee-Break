@@ -1,6 +1,7 @@
 // System
 import { useCallback, useContext, useState } from "react"
-import clsx from "clsx"
+import { cx } from "class-variance-authority"
+import { twMerge } from "tailwind-merge"
 // Components
 import { DatabaseContext } from "@/components/Containers/DatabaseProvider"
 // Ui
@@ -12,10 +13,11 @@ import Beam from "@/ui/Layout/Beam"
 import Button from "@/ui/Actions/Button"
 // Styles and types
 import { MediaCategoryCardProps } from "./types"
-import styles from "./styles.module.scss"
 
 function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
-  const calculatedClassNames = clsx(styles["media-category-card"], className)
+  const calculatedClassNames = twMerge(
+    cx("media-category rounded-lg overflow-hidden", className)
+  )
   const database = useContext(DatabaseContext)
   const [opened, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -32,20 +34,18 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
   }, [])
   return (
     <div className={calculatedClassNames}>
-      <Brick noPadding className={styles["media-category-block"]}>
-        <div>
-          <div
-            style={{ background: data.hex }}
-            className={styles["media-category-title"]}
-            onClick={() => openSongList(!opened)}
-          >
-            <Beam contentJustify="between" contentAlign="center" withoutWrap>
-              <Text type="fit-line" bold>
-                {data.title}
-              </Text>
-              {opened && <Button>Add song</Button>}
-            </Beam>
-          </div>
+      <Brick noPadding className={""}>
+        <div
+          style={{ background: data.hex }}
+          className={"p-2 h-14 flex items-center box-border cursor-pointer"}
+          onClick={() => openSongList(!opened)}
+        >
+          <Beam contentJustify="between" contentAlign="center" withoutWrap>
+            <Text type="fit-line" bold>
+              {data.title}
+            </Text>
+            {opened && <Button>Add song</Button>}
+          </Beam>
         </div>
         {opened && (
           <div>
@@ -53,11 +53,15 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
           </div>
         )}
         {opened && (
-          <div>
-            <div className={styles["media-category-content"]}>
-              {loading && <Loader />}
-              {!loading && <div>11111</div>}
-            </div>
+          <div
+            className={"p-4 min-h-36 max-h-96 flex flex-col overflow-y-auto"}
+          >
+            {loading && (
+              <div className="w-full flex-1 h-full flex justify-center items-center">
+                <Loader size="lg" />
+              </div>
+            )}
+            {!loading && <div>11111</div>}
           </div>
         )}
       </Brick>

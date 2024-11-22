@@ -10,7 +10,6 @@ import Room from "@/ui/Layout/Room"
 // Constants
 import { UNSORTED_CATEGORY } from "@cross/constants/media"
 // Styles and types
-import styles from "./styles.module.scss"
 import { MediaCategory } from "@cross/types/media/category"
 
 export default function Library() {
@@ -27,9 +26,13 @@ export default function Library() {
   }, [database, getCategories])
 
   return (
-    <Room className={styles["media-library-container"]}>
+    <Room className={"media-library flex flex-col flex-1 gap-same-level py-5"}>
       {categoryList.length == 0 && (
-        <div className={styles["library-empty"]}>
+        <div
+          className={
+            "flex-1 w-full h-full flex justify-center items-center text-center text-amber-800"
+          }
+        >
           <Text>
             No media files found. You can add media files by clicking the
             &quot;Add Song&quot; button above.

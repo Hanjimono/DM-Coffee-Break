@@ -1,12 +1,12 @@
 // System
-import clsx from "clsx"
+import { cx } from "class-variance-authority"
+import { twMerge } from "tailwind-merge"
 // ui
 import Form from "@/ui/Form/Form"
 import Input from "@/ui/Form/Input"
 import Text from "@/ui/Presentation/Text"
 // Styles and types
 import { EditSongInfoProps } from "./types"
-import styles from "./styles.module.scss"
 import Beam from "@/ui/Layout/Beam"
 import FormSubmit from "@/ui/Form/FormSubmit"
 import Button from "@/ui/Actions/Button"
@@ -28,7 +28,7 @@ function EditSongInfo({
   handleCancelClick,
   defaultValues
 }: EditSongInfoProps) {
-  const calculatedClassNames = clsx(styles["edit-song-info"], className)
+  const calculatedClassNames = twMerge(cx("edit-song-info", className))
   const methods = useForm({
     mode: "onChange",
     resolver: yupResolver(yup.object(formValues).shape({})) as any,
