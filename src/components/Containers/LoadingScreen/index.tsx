@@ -1,13 +1,13 @@
 "use client"
 // System
-import clsx from "clsx"
+import { cx } from "class-variance-authority"
 import { motion } from "framer-motion"
+import { twMerge } from "tailwind-merge"
 // Ui
 import SmartImage from "@/ui/Presentation/SmartImage"
 import Title from "@/ui/Presentation/Title"
 // Styles and types
 import { LoadingScreenProps } from "./types"
-import styles from "./styles.module.scss"
 
 function LoadingScreen({
   children,
@@ -15,12 +15,17 @@ function LoadingScreen({
   loaded,
   text
 }: LoadingScreenProps) {
-  const calculatedClassNames = clsx(styles["loading-screen"], className)
+  const calculatedClassNames = twMerge(
+    cx(
+      "loading-screen flex w-full h-full items-center justify-center",
+      className
+    )
+  )
   return (
     <div className={calculatedClassNames}>
       {!loaded && (
-        <div className={styles["loading-screen-content"]}>
-          <div className={styles["loading-screen-image"]}>
+        <div className={"flex flex-col items-center justify-center"}>
+          <div className={"relative"}>
             <SmartImage
               src="/public/images/Logo Transparent_no_cube.png"
               alt="Loading"
@@ -30,7 +35,9 @@ function LoadingScreen({
               initial={{ rotate: 0 }}
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1.5, repeatDelay: 0.3 }}
-              className={styles["loading-cube"]}
+              className={
+                "absolute max-w-24 max-h-24 flex top-[85px] left-[85px]"
+              }
             >
               <SmartImage
                 src="/public/images/twenty-sided-dice.svg"
@@ -40,7 +47,7 @@ function LoadingScreen({
               />
             </motion.div>
           </div>
-          <div className={styles["loading-screen-text"]}>
+          <div className={"w-full flex justify-center mt-2"}>
             <Title size={4} align="center">
               {text || "Loading... Please wait"}
             </Title>

@@ -6,5 +6,9 @@ export default function DatabaseSettingsLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <MainContentWrapper hideMenu>{children}</MainContentWrapper>
+  return (
+    <MainContentWrapper hideMenu>
+      <div className="pl-44 w-full">{children}</div>
+    </MainContentWrapper>
+  )
 }

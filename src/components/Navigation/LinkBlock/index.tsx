@@ -1,6 +1,7 @@
 "use client"
 // System
-import clsx from "clsx"
+import { cx } from "class-variance-authority"
+import { twMerge } from "tailwind-merge"
 import { motion } from "framer-motion"
 import Link from "next/link"
 // Ui
@@ -10,7 +11,6 @@ import Title from "@/ui/Presentation/Title"
 import Text from "@/ui/Presentation/Text"
 // Styles and types
 import { LinkBlockProps } from "./types"
-import styles from "./styles.module.scss"
 
 /**
  * A block with image representing a link or a button to navigate to a different page.
@@ -34,10 +34,12 @@ function LinkBlock({
   onClick,
   big
 }: LinkBlockProps) {
-  const calculatedClassNames = clsx(
-    styles["link-block"],
-    className,
-    !!big && styles["big"]
+  const calculatedClassNames = twMerge(
+    cx(
+      "link-block flex flex-col rounded-lg overflow-hidden min-w-48 max-w-48",
+      !!big && "min-w-72 max-w-72",
+      className
+    )
   )
   return (
     <Link href={href || ""} onClick={onClick}>
@@ -48,10 +50,16 @@ function LinkBlock({
         whileHover={{ scale: 1.1 }}
       >
         <Brick className={calculatedClassNames} noPadding>
-          <div className={styles["images-block"]}>
-            {image && <SmartImage src={image} alt={title || ""} />}
+          <div className={"w-full"}>
+            {image && (
+              <SmartImage
+                className="max-w-full"
+                src={image}
+                alt={title || ""}
+              />
+            )}
           </div>
-          <div className={styles["content"]}>
+          <div className={"p-4"}>
             <Title size={big ? 4 : 6} bottomGap="almost-same">
               {title}
             </Title>

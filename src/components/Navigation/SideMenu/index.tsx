@@ -2,7 +2,6 @@
 import ActionPanel from "@/ui/Actions/ActionPanel"
 // Styles and types
 import { IconType } from "@/ui/Presentation/Icon/types"
-import styles from "./styles.module.scss"
 
 const MenuItems = [
   {
@@ -29,7 +28,7 @@ const EndItems = [
 export default function SideMenu() {
   return (
     <ActionPanel
-      className={styles["side-navigation"]}
+      className={"rounded-none"}
       items={MenuItems}
       endItems={EndItems}
       orientation="vertical"

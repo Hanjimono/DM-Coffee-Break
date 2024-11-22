@@ -13,7 +13,7 @@ export default function SettingsLayout({
     <MainContentWrapper>
       <Beam withoutWrap whole withoutGap>
         <SettingsMenu />
-        {children}
+        <div className="pl-44 w-full">{children}</div>
       </Beam>
     </MainContentWrapper>
   )

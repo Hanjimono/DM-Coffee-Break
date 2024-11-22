@@ -1,7 +1,5 @@
 // Ui
 import Menu from "@/ui/Navigation/Menu"
-// Styles and types
-import styles from "./styles.module.scss"
 
 const MENU = [
   {
@@ -30,6 +28,6 @@ const MENU = [
  * @returns {JSX.Element} The rendered settings menu component.
  */
 function SettingsMenu() {
-  return <Menu className={styles["settings-menu"]} items={MENU} />
+  return <Menu className={"fixed h-full p-4 w-44"} items={MENU} />
 }
 export default SettingsMenu

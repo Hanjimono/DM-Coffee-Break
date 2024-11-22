@@ -1,5 +1,4 @@
 // components
-import NavigationMenu from "@/components/NavigationMenu"
 import Initializer from "@/components/Helpers/Initializer"
 import DatabaseProvider from "@/components/Containers/DatabaseProvider"
 import DatabaseProtectedComponent from "@/components/Containers/DatabaseProtectedComponent"

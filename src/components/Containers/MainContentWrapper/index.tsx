@@ -1,7 +1,5 @@
 // System
 import clsx from "clsx"
-// Components
-import NavigationMenu from "@/components/NavigationMenu"
 // Ui
 import Frame from "@/ui/Layout/Frame"
 import Beam from "@/ui/Layout/Beam"
