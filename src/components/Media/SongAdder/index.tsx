@@ -24,6 +24,7 @@ export default function SongAdder() {
             onClick={() => setSongType(undefined)}
             text
             secondary
+            isNoPadding
           >
             Back to change song type
           </Button>

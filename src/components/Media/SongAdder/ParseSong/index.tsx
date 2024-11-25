@@ -56,15 +56,15 @@ export default function ParseSong() {
     <Beam withoutGap>
       <Title>Parse song from Web</Title>
       {!parsedInfo && (
-        <Note bottomGap="same-level" type="info">
+        <Note className="w-full" bottomGap="same-level" type="info">
           Copy link to song from popular service, such as youtube, soundcloud or
           spotify and paste it to the input below to automatically parse song
           info.
         </Note>
       )}
-      <Brick whole durability={3} bottomGap="other-level-large">
+      <Brick whole bottomGap="other-level-large">
         <Beam bottomGap="same-level">
-          <Pillar sm={12}>
+          <Pillar sm={12} className="pt-4 px-5">
             <Input
               name="link"
               label="Song link"
