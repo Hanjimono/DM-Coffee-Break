@@ -85,10 +85,10 @@ export const config = {
           text: "#3c0e0d"
         },
         block: {
-          100: "#d5d3d2",
-          200: "#aca6a4",
-          300: "#827a77",
-          400: "#594d49",
+          100: "#decac3",
+          200: "#af9c95",
+          300: "#817069",
+          400: "#574641",
           500: "#2f211c",
           600: "#261a16",
           700: "#1c1411",
@@ -97,8 +97,8 @@ export const config = {
         },
         menu: "#1c1815",
         form: {
-          main: "#1b252c",
-          disabled: "rgb(17 24 39)",
+          main: "#141414",
+          disabled: "#272626",
           border: "#e5e7eb"
         },
         mask: "#212d42"
