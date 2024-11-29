@@ -1,20 +1,26 @@
 "use client"
 // System
-import clsx from "clsx"
+import { cx } from "class-variance-authority"
+import { twMerge } from "tailwind-merge"
 import { motion } from "framer-motion"
 // Ui
 import Beam from "@/ui/Layout/Beam"
 import Button from "@/ui/Actions/Button"
 import SmartImage from "@/ui/Presentation/SmartImage"
 import Text from "@/ui/Presentation/Text"
+// Constants
+import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 
 // Styles and types
 import { SongCardProps } from "./types"
-import styles from "./styles.module.scss"
-import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 
 function ShortSongCard({ className, info, settings, isEdit }: SongCardProps) {
-  const calculatedClassNames = clsx(styles["short-song-card"], className)
+  const calculatedClassNames = twMerge(
+    cx(
+      "song-card group/main relative flex overflow-hidden box-border max-h-12 min-h-12 max-w-72 min-w-72 bg-menu rounded-xl",
+      className
+    )
+  )
   const primary =
     settings && settings[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY] === "title"
       ? info.title
@@ -39,44 +45,44 @@ function ShortSongCard({ className, info, settings, isEdit }: SongCardProps) {
       exit={{ opacity: 0 }}
       whileHover={isEdit ? undefined : { scale: 1.01, opacity: 1 }}
     >
-      <Beam withoutGap withoutWrap contentJustify="center">
-        <div className={styles["short-song-card-image"]}>
-          <SmartImage src={info.thumbnail} alt={info.title} />
+      <Beam withoutGap withoutWrap contentAlign="center">
+        <div className={"min-w-12 min-h-12 max-w-12 max-h-12"}>
+          <SmartImage
+            className="max-w-full"
+            src={info.thumbnail}
+            alt={info.title}
+          />
           {!isEdit && (
             <Button
-              className={styles["short-song-card-play"]}
+              className={
+                "absolute left-1 top-1 opacity-0 group-hover/main:opacity-100 transition-opacity"
+              }
               success
               icon="play_arrow"
             />
           )}
         </div>
-        <div className={styles["short-song-card-info"]}>
-          <div className={styles["short-song-card-primary"]}>
+        <div className={"flex group flex-col w-full px-2 py-1 overflow-hidden"}>
+          <div className={"flex font-bold"}>
             <Text type="fit-line" bold>
               {primary || info.title}
             </Text>
           </div>
           {!hideSecondary && secondary && (
-            <div className={styles["short-song-card-secondary"]}>
+            <div className={"opacity-90"}>
               <Text type="fit-line" size="small">
                 {secondary}
               </Text>
             </div>
           )}
           {!isEdit && (
-            <div className={styles["short-song-card-actions"]}>
-              <Button
-                className={styles["short-song-card-actions-button"]}
-                icon="edit"
-                secondary
-                text
-              />
-              <Button
-                className={styles["short-song-card-actions-button"]}
-                icon="delete"
-                remove
-                text
-              />
+            <div
+              className={
+                "absolute right-1 top-1 flex opacity-0 group-hover:opacity-100 transition-opacity"
+              }
+            >
+              <Button icon="edit" secondary text />
+              <Button icon="delete" remove text />
             </div>
           )}
         </div>

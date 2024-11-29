@@ -1,5 +1,5 @@
+import { SongInfo } from "@cross/types/database/media"
 import { SONG_CARD_SETTINGS } from "@cross/types/database/settings/media"
-import { SongInfo } from "@cross/types/media/song"
 
 export type SongCardType = "short" | "full" | "tooltip"
 

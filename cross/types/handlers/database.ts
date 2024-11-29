@@ -1,6 +1,8 @@
 import { DatabaseVersion } from "@cross/types/database/settings/version"
 import { SETTINGS_HANDLER } from "./settings"
 import { MediaHandler } from "./media"
+import { DictionaryHandler } from "./dictionary"
+import { TagHandler } from "./tag"
 
 /**
  * Interface representing a handler for database operations.
@@ -46,4 +48,14 @@ export interface DatabaseHandler {
    * Handles media related operations in the database.
    */
   media: MediaHandler
+
+  /**
+   * Handles dictionary related operations in the database.
+   */
+  dictionary: DictionaryHandler
+
+  /**
+   * Handles tag related operations in the database.
+   */
+  tag: TagHandler
 }

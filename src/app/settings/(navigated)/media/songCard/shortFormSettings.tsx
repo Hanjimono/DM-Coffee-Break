@@ -36,13 +36,20 @@ export default function ShortFormSettings({
     ]
   }, [settings])
   return (
-    <>
-      <Title bottomGap="same" size={6}>
-        Short card settings
-      </Title>
-      <Beam bottomGap="same-level">
-        <SongCard info={SONG_EXAMPLE} type="short" settings={settings} isEdit />
-      </Beam>
+    <Room>
+      <Room>
+        <Title bottomGap="same" size={6}>
+          Short card settings
+        </Title>
+        <Beam bottomGap="same-level">
+          <SongCard
+            info={SONG_EXAMPLE}
+            type="short"
+            settings={settings}
+            isEdit
+          />
+        </Beam>
+      </Room>
       <Room>
         <Select
           name={SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY}
@@ -96,6 +103,6 @@ export default function ShortFormSettings({
           }
         />
       </HiddenRoom>
-    </>
+    </Room>
   )
 }

@@ -15,6 +15,10 @@ import SongCard from "../../SongCard"
 import * as yup from "yup"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
+import Dictionary from "@/components/Helpers/Dictionary"
+import { useState } from "react"
+import TagEditor from "@/components/Helpers/TagEditor"
+import { useLocalTags } from "@/components/Helpers/TagEditor/hooks"
 
 const formValues = {
   title: yup.string().required("Title is required"),
@@ -29,6 +33,9 @@ function EditSongInfo({
   defaultValues
 }: EditSongInfoProps) {
   const calculatedClassNames = twMerge(cx("edit-song-info", className))
+  const [tags, handleSelectTag, handleDeselectTag] = useLocalTags(
+    defaultValues?.tags
+  )
   const methods = useForm({
     mode: "onChange",
     resolver: yupResolver(yup.object(formValues).shape({})) as any,
@@ -37,10 +44,20 @@ function EditSongInfo({
   const currentValues = methods.watch()
   return (
     <Beam>
-      <Pillar sm={6}>
+      <Pillar sm={7}>
         <Form className={calculatedClassNames} methods={methods}>
           <Input label="Title" name="title" />
           <Input label="Artist" name="artist" />
+          <Dictionary
+            dictionary="mediaCategories"
+            name="categoryId"
+            label="Category"
+          />
+          <TagEditor
+            selectedTagIds={tags}
+            onSelectTag={handleSelectTag}
+            onDeselectTag={handleDeselectTag}
+          />
           <Text italic>
             You can add your own short comment about this song to easily find it
             later. Like &quot;Funny tavern song&quot; or &quot;Epic boss
@@ -56,14 +73,14 @@ function EditSongInfo({
         </Form>
       </Pillar>
       <Pillar sm={5}>
-        <Beam bottomGap="almost-same">
+        <Beam className="" bottomGap="same-level">
           <SongCard
             type="short"
             info={{ ...currentValues, thumbnail: defaultValues?.thumbnail }}
             isEdit
           />
         </Beam>
-        <Beam>
+        <Beam className="px-10">
           <SongCard
             type="full"
             info={{ ...currentValues, thumbnail: defaultValues?.thumbnail }}

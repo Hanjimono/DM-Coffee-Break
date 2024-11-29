@@ -14,6 +14,7 @@ import Title from "@/ui/Presentation/Title"
 import Pillar from "@/ui/Layout/Pillar"
 // Styles and types
 import { ParsedSongInfo } from "@cross/types/media/song"
+import { cx } from "class-variance-authority"
 
 export default function ParseSong() {
   const errorSnack = useStore((state) => state.errorSnack)
@@ -62,9 +63,9 @@ export default function ParseSong() {
           info.
         </Note>
       )}
-      <Brick whole bottomGap="other-level-large">
-        <Beam bottomGap="same-level">
-          <Pillar sm={12} className="pt-4 px-5">
+      <Brick className="px-12 py-8" whole bottomGap="other-level-large">
+        <Beam className="pt-4" bottomGap="same-level">
+          <Pillar sm={12}>
             <Input
               name="link"
               label="Song link"

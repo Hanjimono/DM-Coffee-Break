@@ -18,10 +18,7 @@ export function formateSettingsFormAfterChange(
     formattedSettings[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY] =
       value == "title" ? "comment" : "title"
   }
-  if (
-    name == SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY &&
-    formattedSettings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY] == value
-  ) {
+  if (name == SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY) {
     formattedSettings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY] =
       value == "title" ? "comment" : "title"
   }

@@ -3,6 +3,7 @@ import { sequelize } from "../../database/connect"
 import { DatabaseVersion } from "@cross/types/database/settings/version"
 import { Settings } from "../../database/models/settings"
 import { MediaCategory } from "../../database/models/mediaCategory"
+import { Tag } from "../../database/models/tag"
 import { SETTING_DATABASE_VERSION_KEY } from "@cross/constants/mainSettings"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 

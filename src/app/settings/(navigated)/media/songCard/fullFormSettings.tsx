@@ -36,46 +36,37 @@ export default function FullFormSettings({
       </Title>
       <Beam bottomGap="same-level">
         <Pillar sm={7}>
-          <Room bottomGap="same-level">
-            <Select
-              name={SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY}
-              label="Primary text"
-              options={[
-                { value: "title", title: "Title" },
-                { value: "comment", title: "Comment" }
-              ]}
-              value={
-                (settings &&
-                  settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY]) ||
-                "title"
-              }
-              onChange={(name, value) =>
-                handleChange(name as AVAILABLE_SONG_CARD_SETTINGS, value)
-              }
-            />
-          </Room>
-          <HiddenRoom
-            isShown={
-              !settings ||
-              settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_HIDE_SECONDARY] !==
-                "true"
+          <Select
+            className="mb-same-level"
+            name={SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY}
+            label="Primary text"
+            options={[
+              { value: "title", title: "Title" },
+              { value: "comment", title: "Comment" }
+            ]}
+            value={
+              (settings &&
+                settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY]) ||
+              "title"
             }
-          >
-            <Select
-              name={SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY}
-              label="Secondary text"
-              options={secondaryOptions}
-              value={
-                (settings &&
-                  settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY]) ||
-                "author"
-              }
-              onChange={(name, value) =>
-                handleChange(name as AVAILABLE_SONG_CARD_SETTINGS, value)
-              }
-              disabled
-            />
-          </HiddenRoom>
+            onChange={(name, value) =>
+              handleChange(name as AVAILABLE_SONG_CARD_SETTINGS, value)
+            }
+          />
+          <Select
+            name={SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY}
+            label="Secondary text"
+            options={secondaryOptions}
+            value={
+              (settings &&
+                settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY]) ||
+              "title"
+            }
+            onChange={(name, value) =>
+              handleChange(name as AVAILABLE_SONG_CARD_SETTINGS, value)
+            }
+            disabled
+          />
         </Pillar>
         <Pillar sm={5}>
           <Beam contentJustify="center">

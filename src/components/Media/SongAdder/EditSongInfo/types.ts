@@ -1,4 +1,4 @@
-import { SongInfo } from "@cross/types/media/song"
+import { SongInfo } from "@cross/types/database/media"
 
 export interface EditSongInfoProps {
   /** Classes */
