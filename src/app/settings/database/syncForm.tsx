@@ -7,7 +7,7 @@ import { useStore } from "@/store"
 // Constants
 import { CURRENT_DATABASE_VERSION } from "@/components/Containers/DatabaseProtectedComponent"
 // Components
-import { useDatabase, useSettings } from "@/components/Helpers/Hooks"
+import { useDatabase, useUpdateSettings } from "@/components/Helpers/Hooks"
 // Ui
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
 import Input from "@/ui/Form/Input"
@@ -30,7 +30,7 @@ import Title from "@/ui/Presentation/Title"
  */
 export default function DatabaseSyncForm() {
   const { getVersion, sync } = useDatabase()
-  const [settings, updateSettings] = useSettings()
+  const updateSettings = useUpdateSettings()
   const [version, setVersion] = useState("0.0.0")
   const [loading, setLoading] = useState(false)
   const successSnack = useStore((state) => state.successSnack)

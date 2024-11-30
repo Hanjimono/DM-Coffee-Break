@@ -15,10 +15,15 @@ import { useEffect, useState } from "react"
 import ShortFormSettings from "./shortFormSettings"
 import FullFormSettings from "./fullFormSettings"
 import { formateSettingsFormAfterChange } from "./utils"
-import { useDatabase, useSettings } from "@/components/Helpers/Hooks"
+import {
+  useDatabase,
+  useSettings,
+  useUpdateSettings
+} from "@/components/Helpers/Hooks"
 
 export default function SongCardSettingsForm() {
-  const [dbSettings, updateDbSettings] = useSettings()
+  const dbSettings = useSettings()
+  const updateDbSettings = useUpdateSettings()
   const [currentSettings, setCurrentSettings] = useState<
     SONG_CARD_SETTINGS | undefined
   >(dbSettings.media.songCard)

@@ -1,6 +1,7 @@
 import { ipcMain } from "electron"
 import { sequelize } from "../../database/connect"
 import { MediaCategory } from "@cross/types/media/category"
+import { Song } from "../../database/models/song"
 import { MediaCategory as MediaCategoryModel } from "../../database/models/mediaCategory"
 import { SongInfo } from "@cross/types/database/media"
 
@@ -72,7 +73,7 @@ ipcMain.handle("media-edit-song", async (event, song: SongInfo) => {
     if (song.id) {
       const tags = song.tags
       delete song.tags
-      let songFromDb = await sequelize.models.Song.findOne({
+      let songFromDb = await Song.findOne({
         where: { id: song.id }
       })
       if (songFromDb) {
@@ -84,7 +85,7 @@ ipcMain.handle("media-edit-song", async (event, song: SongInfo) => {
       }
       return false
     }
-    await sequelize.models.Song.create({ ...song })
+    await Song.create({ ...song })
     return true
   } catch (error) {
     return false
@@ -96,7 +97,7 @@ ipcMain.handle("media-edit-song", async (event, song: SongInfo) => {
  */
 ipcMain.handle("media-delete-song", async (event, id) => {
   try {
-    let song = await sequelize.models.Song.findOne({
+    let song = await Song.findOne({
       where: { id }
     })
     if (song) {
@@ -114,7 +115,7 @@ ipcMain.handle("media-delete-song", async (event, id) => {
  */
 ipcMain.handle("media-get-songs", async (event, categoryId) => {
   let songs = []
-  let songsFromDb = await sequelize.models.Song.findAll({
+  let songsFromDb = await Song.findAll({
     where: { categoryId }
   })
   for (const song of songsFromDb) {
@@ -128,7 +129,7 @@ ipcMain.handle("media-get-songs", async (event, categoryId) => {
  */
 ipcMain.handle("media-get-unassigned-songs", async () => {
   let songs = []
-  let songsFromDb = await sequelize.models.Song.findAll({
+  let songsFromDb = await Song.findAll({
     where: { categoryId: null }
   })
   for (const song of songsFromDb) {

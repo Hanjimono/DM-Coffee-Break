@@ -2,6 +2,8 @@
 import { cx } from "class-variance-authority"
 import { motion } from "framer-motion"
 import { twMerge } from "tailwind-merge"
+// components
+import { useSettings } from "@/components/Helpers/Hooks"
 // ui
 import Beam from "@/ui/Layout/Beam"
 import SmartImage from "@/ui/Presentation/SmartImage"
@@ -11,7 +13,8 @@ import Button from "@/ui/Actions/Button"
 import { SongCardProps } from "./types"
 import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 
-function BigSongCard({ info, className, settings, isEdit }: SongCardProps) {
+function BigSongCard({ info, className, isEdit }: SongCardProps) {
+  const settings = useSettings()
   const calculatedClassNames = twMerge(
     cx(
       "song-card group relative flex flex-1 flex-col bg-menu overflow-hidden min-w-52 max-w-52 min-h-72 max-h-72 rounded-xl",
@@ -19,15 +22,20 @@ function BigSongCard({ info, className, settings, isEdit }: SongCardProps) {
     )
   )
   const primary =
-    settings && settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY] === "title"
+    settings &&
+    settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY] ===
+      "title"
       ? info.title
       : info.comment
   const secondary =
     settings &&
-    settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY] === "title"
+    settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY] ===
+      "title"
       ? info.title
       : settings &&
-          settings[SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY] === "comment"
+          settings.media.songCard[
+            SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY
+          ] === "comment"
         ? info.comment
         : info.artist
   return (

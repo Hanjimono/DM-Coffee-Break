@@ -13,6 +13,8 @@ import Beam from "@/ui/Layout/Beam"
 import Button from "@/ui/Actions/Button"
 // Styles and types
 import { MediaCategoryCardProps } from "./types"
+import { SongInfo } from "@cross/types/database/media"
+import SongCard from "../SongCard"
 
 function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
   const calculatedClassNames = twMerge(
@@ -21,17 +23,28 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
   const database = useDatabase()
   const [opened, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [songs, setSongs] = useState([])
-  const openSongList = useCallback(async (isOpen: boolean) => {
-    setOpen(isOpen)
-    if (isOpen) {
-      setLoading(true)
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      // const songs = await database.getCategorySongs(data.id)
-      // setSongs(songs)
-      setLoading(false)
-    }
-  }, [])
+  const [songs, setSongs] = useState<SongInfo[]>([])
+  console.log("🚀 -------------------------------------🚀")
+  console.log("🚀 ~ MediaCategoryCard ~ songs:", songs)
+  console.log("🚀 -------------------------------------🚀")
+  const openSongList = useCallback(
+    async (isOpen: boolean) => {
+      setOpen(isOpen)
+      if (isOpen) {
+        setLoading(true)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        if (data.id) {
+          const songs = await database.media.getSongs(data.id)
+          setSongs(songs)
+        } else {
+          const songs = await database.media.getUnassignedSongs()
+          setSongs(songs)
+        }
+        setLoading(false)
+      }
+    },
+    [database, data.id]
+  )
   return (
     <div className={calculatedClassNames}>
       <Brick noPadding className={""}>
@@ -61,7 +74,21 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
                 <Loader size="lg" />
               </div>
             )}
-            {!loading && <div>11111</div>}
+            {!loading && (
+              <div className="flex wrap gap-same-level">
+                {songs.map((song: SongInfo) => (
+                  <SongCard key={song.id} info={song} />
+                ))}
+                {songs.length == 0 && (
+                  <div className="w-full flex-1 h-full flex justify-center items-center text-center text-amber-800">
+                    <Text>
+                      No media files found. You can add media files by clicking
+                      the &quot;Add Song&quot; button above.
+                    </Text>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
       </Brick>

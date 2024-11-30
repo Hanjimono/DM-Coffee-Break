@@ -19,10 +19,18 @@ import Dictionary from "@/components/Helpers/Dictionary"
 import { useState } from "react"
 import TagEditor from "@/components/Helpers/TagEditor"
 import { useLocalTags } from "@/components/Helpers/TagEditor/hooks"
+import { SongInfo } from "@cross/types/database/media"
+import FormElementWrapper, {
+  FormElementNestedWrapper
+} from "@/ui/Form/FormElementWrapper"
+import { useDatabase } from "@/components/Helpers/Hooks"
+import { useRouter } from "next/navigation"
+import { useStore } from "@/store"
 
 const formValues = {
   title: yup.string().required("Title is required"),
   artist: yup.string(),
+  categoryId: yup.number(),
   comment: yup.string()
 }
 
@@ -32,20 +40,45 @@ function EditSongInfo({
   handleCancelClick,
   defaultValues
 }: EditSongInfoProps) {
+  const database = useDatabase()
+  const router = useRouter()
+  const errorSnack = useStore((state) => state.errorSnack)
   const calculatedClassNames = twMerge(cx("edit-song-info", className))
   const [tags, handleSelectTag, handleDeselectTag] = useLocalTags(
     defaultValues?.tags
   )
+  const [loading, setLoading] = useState(false)
   const methods = useForm({
     mode: "onChange",
     resolver: yupResolver(yup.object(formValues).shape({})) as any,
     defaultValues: defaultValues
   })
   const currentValues = methods.watch()
+  const handleSubmit = async (formValues: SongInfo) => {
+    const formattedSong = { ...formValues, tags }
+    setLoading(true)
+    if (database) {
+      try {
+        const result = await database.media.editSong(formattedSong)
+        if (!result) {
+          throw new Error("Failed to save song info")
+        }
+      } catch (error) {
+        errorSnack("Failed to save song info")
+        return
+      }
+    }
+    setLoading(false)
+    router.push("/media")
+  }
   return (
     <Beam>
       <Pillar sm={7}>
-        <Form className={calculatedClassNames} methods={methods}>
+        <Form
+          className={calculatedClassNames}
+          methods={methods}
+          onSubmit={handleSubmit}
+        >
           <Input label="Title" name="title" />
           <Input label="Artist" name="artist" />
           <Dictionary
@@ -64,12 +97,18 @@ function EditSongInfo({
             battle&quot;.
           </Text>
           <Input label="Comment" name="comment" />
-          <Beam contentJustify="end">
-            <FormSubmit success>Save</FormSubmit>
-            <Button link={cancelLink} onClick={handleCancelClick} cancel>
-              Cancel
-            </Button>
-          </Beam>
+          <FormElementNestedWrapper>
+            <Beam contentJustify="end">
+              <FormElementWrapper>
+                <FormSubmit loading={loading} success>
+                  Save
+                </FormSubmit>
+              </FormElementWrapper>
+              <Button link={cancelLink} onClick={handleCancelClick} cancel>
+                Cancel
+              </Button>
+            </Beam>
+          </FormElementNestedWrapper>
         </Form>
       </Pillar>
       <Pillar sm={5}>

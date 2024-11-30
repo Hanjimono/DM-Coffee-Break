@@ -90,11 +90,21 @@ export const useCreateSettingsContext: () => [
 }
 
 /**
- * Custom hook to access and update user settings from the SettingsContext.
+ * Custom hook to access the settings from the SettingsContext.
  *
- * @returns {[UserSettings, () => void]} A tuple containing the current user settings and a function to update the settings.
+ * @returns {object} The current settings from the SettingsContext.
  */
-export const useSettings: () => [UserSettings, () => void] = () => {
-  const { settings, updateSettings } = useContext(SettingsContext)
-  return [settings, updateSettings]
+export const useSettings = () => {
+  const { settings } = useContext(SettingsContext)
+  return settings
+}
+
+/**
+ * Custom hook to retrieve the `updateSettings` function from the `SettingsContext`.
+ *
+ * @returns {Function} The `updateSettings` function from the `SettingsContext`.
+ */
+export const useUpdateSettings = () => {
+  const { updateSettings } = useContext(SettingsContext)
+  return updateSettings
 }

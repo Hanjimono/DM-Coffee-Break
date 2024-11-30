@@ -3,10 +3,10 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 // Components
 import LoadingScreen from "../LoadingScreen"
-import { useDatabase, useSettings } from "@/components/Helpers/Hooks"
+import { useDatabase, useUpdateSettings } from "@/components/Helpers/Hooks"
 
 //TODO: move to constants or env
-export const CURRENT_DATABASE_VERSION = "0.0.4"
+export const CURRENT_DATABASE_VERSION = "0.0.3"
 
 /**
  * A component that ensures the database is authenticated and the version is valid before rendering its children.
@@ -22,7 +22,7 @@ export default function DatabaseProtectedComponent({
 }) {
   const [loading, setLoading] = useState(true)
   const { authenticate, checkVersion } = useDatabase()
-  const [settings, updateSettings] = useSettings()
+  const updateSettings = useUpdateSettings()
   const router = useRouter()
   useEffect(() => {
     if (!authenticate) return

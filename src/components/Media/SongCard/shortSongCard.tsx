@@ -13,8 +13,10 @@ import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 
 // Styles and types
 import { SongCardProps } from "./types"
+import { useSettings } from "@/components/Helpers/Hooks"
 
-function ShortSongCard({ className, info, settings, isEdit }: SongCardProps) {
+function ShortSongCard({ className, info, isEdit }: SongCardProps) {
+  const settings = useSettings()
   const calculatedClassNames = twMerge(
     cx(
       "song-card group/main relative flex overflow-hidden box-border max-h-12 min-h-12 max-w-72 min-w-72 bg-menu rounded-xl",
@@ -22,20 +24,27 @@ function ShortSongCard({ className, info, settings, isEdit }: SongCardProps) {
     )
   )
   const primary =
-    settings && settings[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY] === "title"
+    settings &&
+    settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY] ===
+      "title"
       ? info.title
       : info.comment
   const secondary =
     settings &&
-    settings[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY] === "title"
+    settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY] ===
+      "title"
       ? info.title
       : settings &&
-          settings[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY] === "comment"
+          settings.media.songCard[
+            SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY
+          ] === "comment"
         ? info.comment
         : info.artist
   const hideSecondary =
     settings &&
-    settings[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY] === "true"
+    settings.media.songCard[
+      SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY
+    ] === "true"
   return (
     <motion.div
       layout
