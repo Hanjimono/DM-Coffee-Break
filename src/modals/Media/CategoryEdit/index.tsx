@@ -1,8 +1,8 @@
 // System
 import clsx from "clsx"
-import { useContext, useState } from "react"
+import { useState } from "react"
 // Components
-import { DatabaseContext } from "@/components/Containers/DatabaseProvider"
+import { useDatabase } from "@/components/Helpers/Hooks"
 // Utils
 import { getRandomDarkColor } from "@cross/utils/randomColor"
 // Store
@@ -38,7 +38,7 @@ function CategoryEditModal({
   const successSnack = useStore((state) => state.successSnack)
   const errorSnack = useStore((state) => state.errorSnack)
   const [categoryTitle, setCategoryTitle] = useState(data?.title || "")
-  const database = useContext(DatabaseContext)
+  const database = useDatabase()
   const handleAction = async (isConfirm: boolean) => {
     if (isConfirm) {
       const result = await database.media.saveCategory({

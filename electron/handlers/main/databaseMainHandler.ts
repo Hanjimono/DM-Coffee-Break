@@ -4,8 +4,11 @@ import { DatabaseVersion } from "@cross/types/database/settings/version"
 import { Settings } from "../../database/models/settings"
 import { MediaCategory } from "../../database/models/mediaCategory"
 import { Tag } from "../../database/models/tag"
+import { Song } from "../../database/models/song"
 import { SETTING_DATABASE_VERSION_KEY } from "@cross/constants/mainSettings"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
+import { DEFAULT_USER_SETTINGS } from "@cross/constants/settings"
+import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 
 /**
  * Function to check if the database is connected
@@ -76,5 +79,32 @@ ipcMain.handle("database-getVersion", async () => {
     return currentVersion ? currentVersion.value : "0.0.0"
   } catch (error) {
     return "0.0.0"
+  }
+})
+
+/**
+ * Function to get the user settings from the database
+ */
+ipcMain.handle("database-settings-get", async () => {
+  let settings = { ...DEFAULT_USER_SETTINGS }
+  try {
+    const currentVersion = await Settings.findOne({
+      where: { key: SETTING_DATABASE_VERSION_KEY }
+    })
+    if (currentVersion) {
+      settings.main.version = currentVersion.value as DatabaseVersion
+    }
+    for (const key of Object.values(SONG_CARD_SETTINGS_KEYS) as string[]) {
+      const setting = await Settings.findOne({
+        where: { key, category: SETTINGS_CATEGORIES.MEDIA }
+      })
+      if (setting) {
+        settings.media.songCard[key as keyof typeof settings.media.songCard] =
+          setting.value
+      }
+    }
+    return settings
+  } catch (error) {
+    return settings
   }
 })

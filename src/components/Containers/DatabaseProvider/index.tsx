@@ -1,9 +1,12 @@
 "use client"
+// Components
+import {
+  DatabaseContext,
+  useCreateDatabaseContext
+} from "@/components/Helpers/Hooks"
 // System
 import { DatabaseHandler } from "@cross/types/handlers/database"
-import { createContext, useEffect, useState } from "react"
-
-export const DatabaseContext = createContext({} as DatabaseHandler)
+import SettingsProvider from "../SettingsProvider"
 
 /**
  * Provides a context for accessing the database throughout the application.
@@ -11,17 +14,11 @@ export const DatabaseContext = createContext({} as DatabaseHandler)
  * @param {React.ReactNode} props.children - The child components that will have access to the database context.
  */
 function DatabaseProvider({ children }: { children: React.ReactNode }) {
-  const [database, setDatabase] = useState({})
-  useEffect(() => {
-    setDatabase((window as any).database as DatabaseHandler)
-    return () => {
-      setDatabase({} as DatabaseHandler)
-    }
-  }, [])
+  const database = useCreateDatabaseContext()
 
   return (
     <DatabaseContext.Provider value={database as DatabaseHandler}>
-      {children}
+      <SettingsProvider>{children}</SettingsProvider>
     </DatabaseContext.Provider>
   )
 }

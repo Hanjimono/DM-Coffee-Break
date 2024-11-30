@@ -124,9 +124,9 @@ ipcMain.handle("media-get-songs", async (event, categoryId) => {
 })
 
 /**
- * Function to get uncategorized songs
+ * Function to get unassigned songs
  */
-ipcMain.handle("media-get-uncategorized-songs", async () => {
+ipcMain.handle("media-get-unassigned-songs", async () => {
   let songs = []
   let songsFromDb = await sequelize.models.Song.findAll({
     where: { categoryId: null }

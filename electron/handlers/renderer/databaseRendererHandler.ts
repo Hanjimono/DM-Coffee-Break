@@ -12,6 +12,7 @@ export const databaseRendererHandler: DatabaseHandler = {
   sync: async (lastVersion) => ipcRenderer.invoke("database-sync", lastVersion),
   getVersion: async () => ipcRenderer.invoke("database-getVersion"),
   settings: {
+    get: async () => ipcRenderer.invoke("database-settings-get"),
     songCard: songCardSettingsRendererHandler
   },
   media: mediaRendererHandler,

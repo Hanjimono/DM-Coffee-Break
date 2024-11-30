@@ -1,9 +1,9 @@
 // System
-import { useCallback, useContext, useState } from "react"
+import { useCallback, useState } from "react"
 import { cx } from "class-variance-authority"
 import { twMerge } from "tailwind-merge"
 // Components
-import { DatabaseContext } from "@/components/Containers/DatabaseProvider"
+import { useDatabase } from "@/components/Helpers/Hooks"
 // Ui
 import Brick from "@/ui/Layout/Brick"
 import Text from "@/ui/Presentation/Text"
@@ -18,7 +18,7 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
   const calculatedClassNames = twMerge(
     cx("media-category rounded-lg overflow-hidden", className)
   )
-  const database = useContext(DatabaseContext)
+  const database = useDatabase()
   const [opened, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [songs, setSongs] = useState([])

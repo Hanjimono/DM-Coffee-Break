@@ -1,7 +1,11 @@
 import { MediaCategory } from "@cross/types/media/category"
+import { SongInfo } from "../database/media"
 
 /**
  * Interface representing a handler for media-related operations.
+ */
+/**
+ * Interface for handling media-related operations.
  */
 export interface MediaHandler {
   /**
@@ -23,4 +27,31 @@ export interface MediaHandler {
    * @returns A promise that resolves to an array of media categories.
    */
   getCategories: () => Promise<MediaCategory[]>
+
+  /**
+   * Edits a song's information.
+   * @param song - The song information to edit.
+   * @returns A promise that resolves to a boolean indicating whether the edit operation was successful.
+   */
+  editSong: (song: SongInfo) => Promise<boolean>
+
+  /**
+   * Deletes a song by its ID.
+   * @param id - The ID of the song to delete.
+   * @returns A promise that resolves to a boolean indicating whether the delete operation was successful.
+   */
+  deleteSong: (id: number) => Promise<boolean>
+
+  /**
+   * Retrieves all songs in a specific category.
+   * @param categoryId - The ID of the category to retrieve songs from.
+   * @returns A promise that resolves to an array of song information.
+   */
+  getSongs: (categoryId: number) => Promise<SongInfo[]>
+
+  /**
+   * Retrieves all unassigned songs.
+   * @returns A promise that resolves to an array of unassigned song information.
+   */
+  getUnassignedSongs: () => Promise<SongInfo[]>
 }

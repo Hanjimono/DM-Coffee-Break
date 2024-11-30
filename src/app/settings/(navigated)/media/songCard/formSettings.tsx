@@ -1,5 +1,4 @@
 "use client"
-import { DatabaseContext } from "@/components/Containers/DatabaseProvider"
 import { useStore } from "@/store"
 import Radio from "@/ui/Form/Radio"
 // ui
@@ -12,16 +11,18 @@ import {
   AVAILABLE_SONG_CARD_SETTINGS,
   SONG_CARD_SETTINGS
 } from "@cross/types/database/settings/media"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import ShortFormSettings from "./shortFormSettings"
 import FullFormSettings from "./fullFormSettings"
 import { formateSettingsFormAfterChange } from "./utils"
+import { useDatabase, useSettings } from "@/components/Helpers/Hooks"
 
 export default function SongCardSettingsForm() {
+  const [dbSettings, updateDbSettings] = useSettings()
   const [currentSettings, setCurrentSettings] = useState<
     SONG_CARD_SETTINGS | undefined
-  >(undefined)
-  const database = useContext(DatabaseContext)
+  >(dbSettings.media.songCard)
+  const database = useDatabase()
   const errorSnack = useStore((state) => state.errorSnack)
   useEffect(() => {
     const fetchSettings = async () => {
@@ -52,7 +53,9 @@ export default function SongCardSettingsForm() {
         ...currentSettings,
         [key]: previousSetting
       })
+      return
     }
+    updateDbSettings()
   }
   const type = currentSettings?.["song-card-type"] || SONG_CARD_TYPES.SHORT
   return (

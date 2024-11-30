@@ -1,8 +1,8 @@
 "use client"
 // System
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 // Components
-import { DatabaseContext } from "@/components/Containers/DatabaseProvider"
+import { useDatabase } from "@/components/Helpers/Hooks"
 import MediaCategoryCard from "@/components/Media/CategoryCard"
 // ui
 import Text from "@/ui/Presentation/Text"
@@ -14,7 +14,7 @@ import { MediaCategory } from "@cross/types/media/category"
 
 export default function Library() {
   const [categoryList, setCategoryList] = useState<MediaCategory[]>([])
-  const database = useContext(DatabaseContext)
+  const database = useDatabase()
   const getCategories = useCallback(async () => {
     const categories = await database.media.getCategories()
     //TODO: get unsorted songs

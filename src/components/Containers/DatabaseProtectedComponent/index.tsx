@@ -1,12 +1,12 @@
 "use client"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 // Components
-import { DatabaseContext } from "@/components/Containers/DatabaseProvider"
 import LoadingScreen from "../LoadingScreen"
+import { useDatabase, useSettings } from "@/components/Helpers/Hooks"
 
 //TODO: move to constants or env
-export const CURRENT_DATABASE_VERSION = "0.0.2"
+export const CURRENT_DATABASE_VERSION = "0.0.4"
 
 /**
  * A component that ensures the database is authenticated and the version is valid before rendering its children.
@@ -21,7 +21,8 @@ export default function DatabaseProtectedComponent({
   children: React.ReactNode
 }) {
   const [loading, setLoading] = useState(true)
-  const { authenticate, checkVersion } = useContext(DatabaseContext)
+  const { authenticate, checkVersion } = useDatabase()
+  const [settings, updateSettings] = useSettings()
   const router = useRouter()
   useEffect(() => {
     if (!authenticate) return
@@ -34,12 +35,13 @@ export default function DatabaseProtectedComponent({
       if (!isValidVersion) {
         router.push("/settings/database")
       } else {
+        updateSettings()
         router.push("/home")
       }
       setLoading(false)
       return result
     }
     checkDatabase()
-  }, [authenticate, checkVersion, router])
+  }, [authenticate, checkVersion, updateSettings, router])
   return <LoadingScreen loaded={!loading}>{children}</LoadingScreen>
 }

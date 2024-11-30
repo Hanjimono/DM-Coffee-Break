@@ -1,13 +1,13 @@
 "use client"
 // System
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 // Store
 import { useStore } from "@/store"
 // Constants
 import { CURRENT_DATABASE_VERSION } from "@/components/Containers/DatabaseProtectedComponent"
 // Components
-import { DatabaseContext } from "@/components/Containers/DatabaseProvider"
+import { useDatabase, useSettings } from "@/components/Helpers/Hooks"
 // Ui
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
 import Input from "@/ui/Form/Input"
@@ -29,7 +29,8 @@ import Title from "@/ui/Presentation/Title"
  * - Displays success or error messages based on the result of the update operation.
  */
 export default function DatabaseSyncForm() {
-  const { getVersion, sync } = useContext(DatabaseContext)
+  const { getVersion, sync } = useDatabase()
+  const [settings, updateSettings] = useSettings()
   const [version, setVersion] = useState("0.0.0")
   const [loading, setLoading] = useState(false)
   const successSnack = useStore((state) => state.successSnack)
@@ -54,6 +55,7 @@ export default function DatabaseSyncForm() {
         }
         successSnack("Database updated successfully")
         setVersion(resultVersion)
+        updateSettings()
         setLoading(false)
         router.push("/settings/global/database")
       } catch (error) {
