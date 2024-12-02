@@ -24,15 +24,11 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
   const [opened, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [songs, setSongs] = useState<SongInfo[]>([])
-  console.log("🚀 -------------------------------------🚀")
-  console.log("🚀 ~ MediaCategoryCard ~ songs:", songs)
-  console.log("🚀 -------------------------------------🚀")
   const openSongList = useCallback(
     async (isOpen: boolean) => {
       setOpen(isOpen)
       if (isOpen) {
         setLoading(true)
-        await new Promise((resolve) => setTimeout(resolve, 1000))
         if (data.id) {
           const songs = await database.media.getSongs(data.id)
           setSongs(songs)
