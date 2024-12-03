@@ -2,18 +2,25 @@
 import { cx } from "class-variance-authority"
 import { motion } from "framer-motion"
 import { twMerge } from "tailwind-merge"
+import { useRef } from "react"
 // components
 import { useSettings } from "@/components/Helpers/Hooks"
+import CardTags from "./cardTags"
+import { useCardHoverActions } from "./hooks"
 // ui
 import Beam from "@/ui/Layout/Beam"
 import SmartImage from "@/ui/Presentation/SmartImage"
 import Text from "@/ui/Presentation/Text"
 import Button from "@/ui/Actions/Button"
+import PortalPopupAppearTransition from "@/ui/Skeleton/Transition/PortalPopupAppearTransition"
 // Styles and types
 import { SongCardProps } from "./types"
 import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 
 function BigSongCard({ info, className, isEdit }: SongCardProps) {
+  const card = useRef(null)
+  const [hovered, cardPosition, handleMouseEnter, handleMouseLeave] =
+    useCardHoverActions(card)
   const settings = useSettings()
   const calculatedClassNames = twMerge(
     cx(
@@ -40,11 +47,14 @@ function BigSongCard({ info, className, isEdit }: SongCardProps) {
         : info.artist
   return (
     <motion.div
+      ref={card}
       className={calculatedClassNames}
       initial={{ opacity: 0 }}
       animate={{ opacity: 0.9 }}
       exit={{ opacity: 0 }}
       whileHover={isEdit ? undefined : { scale: 1.01, opacity: 1 }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <Beam className="p-2" withoutGap>
         <Beam className="pb-1">
@@ -112,6 +122,15 @@ function BigSongCard({ info, className, isEdit }: SongCardProps) {
           {primary || info.title}
         </Text>
       </div>
+      <PortalPopupAppearTransition
+        isActive={hovered && !!info.tags && info.tags.length > 0}
+        autoReposition
+        positionDirection="right"
+        positionHorizontalOffset={10}
+        parentPositionSettings={cardPosition}
+      >
+        <CardTags classNames="h-16 w-64" tags={info.tags} />
+      </PortalPopupAppearTransition>
     </motion.div>
   )
 }

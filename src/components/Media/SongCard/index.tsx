@@ -17,9 +17,9 @@ function SongCard({ className, info, type, ...rest }: SongCardProps) {
       SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE
     ] as SongCardType
   }
-  if (type === SONG_CARD_TYPES.SHORT) {
-    return <ShortSongCard info={info} {...rest} />
+  if (type === SONG_CARD_TYPES.FULL) {
+    return <BigSongCard info={info} {...rest} />
   }
-  return <BigSongCard info={info} {...rest} />
+  return <ShortSongCard info={info} {...rest} />
 }
 export default SongCard
