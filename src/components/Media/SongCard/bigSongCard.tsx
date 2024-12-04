@@ -6,7 +6,7 @@ import { useRef } from "react"
 // components
 import { useSettings } from "@/components/Helpers/Hooks"
 import CardTags from "./cardTags"
-import { useCardHoverActions } from "./hooks"
+import { useCardButtonActions, useCardHoverActions } from "./hooks"
 // ui
 import Beam from "@/ui/Layout/Beam"
 import SmartImage from "@/ui/Presentation/SmartImage"
@@ -17,10 +17,11 @@ import PortalPopupAppearTransition from "@/ui/Skeleton/Transition/PortalPopupApp
 import { SongCardProps } from "./types"
 import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 
-function BigSongCard({ info, className, isEdit }: SongCardProps) {
+function BigSongCard({ info, className, isEdit, isHideTags }: SongCardProps) {
   const card = useRef(null)
   const [hovered, cardPosition, handleMouseEnter, handleMouseLeave] =
     useCardHoverActions(card)
+  const [handlePlay, handleEdit, handleDelete] = useCardButtonActions(info)
   const settings = useSettings()
   const calculatedClassNames = twMerge(
     cx(
@@ -80,6 +81,7 @@ function BigSongCard({ info, className, isEdit }: SongCardProps) {
               text
               secondary
               isNoPadding
+              onClick={handleEdit}
             />
             <Button
               className="size-5"
@@ -88,6 +90,7 @@ function BigSongCard({ info, className, isEdit }: SongCardProps) {
               text
               remove
               isNoPadding
+              onClick={handleDelete}
             />
           </div>
         )}
@@ -122,15 +125,17 @@ function BigSongCard({ info, className, isEdit }: SongCardProps) {
           {primary || info.title}
         </Text>
       </div>
-      <PortalPopupAppearTransition
-        isActive={hovered && !!info.tags && info.tags.length > 0}
-        autoReposition
-        positionDirection="right"
-        positionHorizontalOffset={10}
-        parentPositionSettings={cardPosition}
-      >
-        <CardTags classNames="h-16 w-64" tags={info.tags} />
-      </PortalPopupAppearTransition>
+      {!isHideTags && (
+        <PortalPopupAppearTransition
+          isActive={hovered && !!info.tags && info.tags.length > 0}
+          autoReposition
+          positionDirection="right"
+          positionHorizontalOffset={10}
+          parentPositionSettings={cardPosition}
+        >
+          <CardTags classNames="h-16 w-64" tags={info.tags} />
+        </PortalPopupAppearTransition>
+      )}
     </motion.div>
   )
 }

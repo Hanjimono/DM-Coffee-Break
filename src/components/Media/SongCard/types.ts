@@ -10,4 +10,5 @@ export interface SongCardProps {
   isShowEdit?: boolean
   onRemove?: () => void
   type?: SongCardType
+  isHideTags?: boolean
 }

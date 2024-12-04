@@ -1,4 +1,4 @@
-import { DataTypes, Model } from "sequelize"
+import { DataTypes, Model, Op } from "sequelize"
 import { sequelize } from "../connect"
 import { AVAILABLE_MEDIA_SOURCES } from "@cross/types/media/song"
 import { TagToSong } from "./tagToSong"
@@ -24,6 +24,7 @@ export class Song extends Model {
   async getInfo(): Promise<SongInfo> {
     const tags = await TagToSong.getTagsForSong(this.id)
     return {
+      id: this.id,
       title: this.title,
       artist: this.artist,
       duration: this.duration,
@@ -41,7 +42,7 @@ export class Song extends Model {
       where: {
         songId: this.id,
         tagId: {
-          [sequelize.Op.notIn]: tags
+          [Op.notIn]: tags
         }
       }
     })

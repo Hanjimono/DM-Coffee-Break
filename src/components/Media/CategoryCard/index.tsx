@@ -70,19 +70,20 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
                 <Loader size="lg" />
               </div>
             )}
-            {!loading && (
+            {!loading && songs.length > 0 && (
               <div className="flex wrap gap-same-level">
                 {songs.map((song: SongInfo) => (
                   <SongCard key={song.id} info={song} />
                 ))}
-                {songs.length == 0 && (
-                  <div className="w-full flex-1 h-full flex justify-center items-center text-center text-amber-800">
-                    <Text>
-                      No media files found. You can add media files by clicking
-                      the &quot;Add Song&quot; button above.
-                    </Text>
-                  </div>
-                )}
+              </div>
+            )}
+
+            {!loading && songs.length == 0 && (
+              <div className="w-full flex-1 h-full flex justify-center items-center text-center text-amber-800">
+                <Text>
+                  No media files found. You can add media files by clicking the
+                  &quot;Add Song&quot; button above.
+                </Text>
               </div>
             )}
           </div>

@@ -29,6 +29,13 @@ export interface MediaHandler {
   getCategories: () => Promise<MediaCategory[]>
 
   /**
+   * Retrieves a song by its ID.
+   * @param id - song ID
+   * @returns
+   */
+  getSong: (id: number) => Promise<SongInfo | undefined>
+
+  /**
    * Edits a song's information.
    * @param song - The song information to edit.
    * @returns A promise that resolves to a boolean indicating whether the edit operation was successful.

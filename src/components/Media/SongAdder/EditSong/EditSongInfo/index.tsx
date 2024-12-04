@@ -11,7 +11,7 @@ import Beam from "@/ui/Layout/Beam"
 import FormSubmit from "@/ui/Form/FormSubmit"
 import Button from "@/ui/Actions/Button"
 import Pillar from "@/ui/Layout/Pillar"
-import SongCard from "../../SongCard"
+import SongCard from "@/components/Media/SongCard"
 import * as yup from "yup"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -30,7 +30,7 @@ import { useStore } from "@/store"
 const formValues = {
   title: yup.string().required("Title is required"),
   artist: yup.string(),
-  categoryId: yup.number(),
+  categoryId: yup.number().nullable(),
   comment: yup.string()
 }
 
@@ -64,6 +64,7 @@ function EditSongInfo({
           throw new Error("Failed to save song info")
         }
       } catch (error) {
+        setLoading(false)
         errorSnack("Failed to save song info")
         return
       }

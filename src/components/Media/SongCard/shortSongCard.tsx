@@ -5,8 +5,9 @@ import { twMerge } from "tailwind-merge"
 import { motion } from "framer-motion"
 import { useRef } from "react"
 // Components
-import { useCardHoverActions } from "./hooks"
+import { useCardButtonActions, useCardHoverActions } from "./hooks"
 import CardTags from "./cardTags"
+import BigSongCard from "./bigSongCard"
 // Ui
 import Beam from "@/ui/Layout/Beam"
 import Button from "@/ui/Actions/Button"
@@ -22,10 +23,10 @@ import {
 // Styles and types
 import { SongCardProps } from "./types"
 import { useSettings } from "@/components/Helpers/Hooks"
-import BigSongCard from "./bigSongCard"
 
 function ShortSongCard({ className, info, isEdit }: SongCardProps) {
-  const card = useRef(null)
+  const card = useRef<HTMLDivElement>(null)
+  const [handlePlay, handleEdit, handleDelete] = useCardButtonActions(info)
   const [hovered, cardPosition, handleMouseEnter, handleMouseLeave] =
     useCardHoverActions(card)
   const settings = useSettings()
@@ -108,8 +109,8 @@ function ShortSongCard({ className, info, isEdit }: SongCardProps) {
                 "absolute right-1 top-1 flex opacity-0 group-hover:opacity-100 transition-opacity"
               }
             >
-              <Button icon="edit" secondary text />
-              <Button icon="delete" remove text />
+              <Button icon="edit" secondary text onClick={handleEdit} />
+              <Button icon="delete" remove text onClick={handleDelete} />
             </div>
           )}
         </div>
@@ -122,10 +123,11 @@ function ShortSongCard({ className, info, isEdit }: SongCardProps) {
           positionHorizontalOffset={10}
           parentPositionSettings={cardPosition}
         >
-          <BigSongCard info={info} />
+          <BigSongCard info={info} isEdit isHideTags />
         </PortalPopupAppearTransition>
       )}
       <PortalPopupAppearTransition
+        style={{ width: card.current?.clientWidth }}
         isActive={hovered && !!info.tags && info.tags.length > 0}
         autoReposition
         positionDirection="bottom"

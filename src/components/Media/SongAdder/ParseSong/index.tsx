@@ -3,7 +3,7 @@ import { useContext, useState } from "react"
 // Store
 import { useStore } from "@/store"
 // Components
-import EditSongInfo from "../EditSongInfo"
+import EditSongInfo from "@/components/Media/SongAdder/EditSong/EditSongInfo"
 import { SongParserContext } from "@/components/Containers/SongParserProvider"
 // Ui
 import Input from "@/ui/Form/Input"

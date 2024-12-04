@@ -4,6 +4,7 @@ import { MediaCategory } from "@cross/types/media/category"
 import { Song } from "../../database/models/song"
 import { MediaCategory as MediaCategoryModel } from "../../database/models/mediaCategory"
 import { SongInfo } from "@cross/types/database/media"
+import { TagToSong } from "../../database/models/tagToSong"
 
 /**
  * Function to get all media categories
@@ -78,7 +79,7 @@ ipcMain.handle("media-edit-song", async (event, song: SongInfo) => {
       })
       if (songFromDb) {
         await songFromDb.update(song)
-        if (tags) {
+        if (tags && tags.length > 0) {
           await songFromDb.setTags(tags)
         }
         return true
@@ -88,6 +89,9 @@ ipcMain.handle("media-edit-song", async (event, song: SongInfo) => {
     await Song.create({ ...song })
     return true
   } catch (error) {
+    console.log("🚀 ----------------------------------🚀")
+    console.log("🚀 ~ ipcMain.handle ~ error:", error)
+    console.log("🚀 ----------------------------------🚀")
     return false
   }
 })
@@ -101,6 +105,9 @@ ipcMain.handle("media-delete-song", async (event, id) => {
       where: { id }
     })
     if (song) {
+      await TagToSong.destroy({
+        where: { songId: id }
+      })
       await song.destroy()
       return true
     }
@@ -136,4 +143,17 @@ ipcMain.handle("media-get-unassigned-songs", async () => {
     songs.push(await song.getInfo())
   }
   return songs
+})
+
+/**
+ * Function to get a song by id
+ */
+ipcMain.handle("media-get-song", async (event, id) => {
+  let song = await Song.findOne({
+    where: { id }
+  })
+  if (song) {
+    return await song.getInfo()
+  }
+  return undefined
 })
