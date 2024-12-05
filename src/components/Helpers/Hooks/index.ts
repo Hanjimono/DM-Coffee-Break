@@ -1,6 +1,4 @@
-import { DEFAULT_USER_SETTINGS } from "@cross/constants/settings"
-import { UserSettings } from "@cross/types/database/settings"
-import { DatabaseHandler } from "@cross/types/handlers/database"
+//system
 import {
   useContext,
   useEffect,
@@ -8,6 +6,25 @@ import {
   createContext,
   useCallback
 } from "react"
+import * as yup from "yup"
+import {
+  DefaultValues,
+  FieldValues,
+  Path,
+  useForm,
+  UseFormReturn
+} from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+// store
+import { useStore } from "@/store"
+// constants
+import { DEFAULT_USER_SETTINGS } from "@cross/constants/settings"
+// types
+import {
+  AvailableSettingsCategories,
+  UserSettings
+} from "@cross/types/database/settings"
+import { DatabaseHandler } from "@cross/types/handlers/database"
 
 /**
  * Context for accessing the database handler.
@@ -107,4 +124,49 @@ export const useSettings = () => {
 export const useUpdateSettings = () => {
   const { updateSettings } = useContext(SettingsContext)
   return updateSettings
+}
+
+/**
+ * Custom hook to manage a settings form with on-the-fly saving.
+ * On every change settings are saved to the database. If the save fails, the previous value is restored.
+ *
+ * @param {DefaultValues<FormValues>} defaultValues - The default values for the form.
+ * @param {FormValues} [yupFormObject={}] - The Yup schema object for form validation.
+ * @param {AvailableSettingsCategories} [category] - The category of the settings.
+ * @returns {[UseFormReturn<FormValues>, (name: string, value: string) => void]} - Returns an array containing the form methods and a handleChange function.
+ *
+ * @example
+ * const [methods, handleChange] = useSettingsFormOnFly(defaultValues, yupFormObject);
+ */
+export const useSettingsFormOnFly = <FormValues extends FieldValues>(
+  defaultValues: FormValues,
+  yupFormObject: any,
+  category?: AvailableSettingsCategories
+): [UseFormReturn<FormValues>, (name: string, value: string) => void] => {
+  const database = useDatabase()
+  const updateSettings = useUpdateSettings()
+  const methods = useForm({
+    mode: "onChange",
+    resolver: yupResolver(yup.object(yupFormObject).shape({})) as any,
+    defaultValues: defaultValues as DefaultValues<FormValues>
+  })
+  const errorSnack = useStore((state) => state.errorSnack)
+  const [formHistory, setFormHistory] = useState(defaultValues)
+  const handleChange = useCallback(
+    async (name: string, value: string) => {
+      clearTimeout((window as any).setSettingTimeout)
+      ;(window as any).setSettingTimeout = setTimeout(async () => {
+        const saveResult = await database.settings.set(name, value, category)
+        if (!saveResult) {
+          errorSnack("Failed to save settings")
+          methods.setValue(name as Path<FormValues>, formHistory[name])
+          return
+        }
+        setFormHistory({ ...formHistory, [name]: value })
+        updateSettings()
+      }, 300)
+    },
+    [database, errorSnack, formHistory, methods, updateSettings, category]
+  )
+  return [methods, handleChange] as const
 }

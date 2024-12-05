@@ -14,3 +14,20 @@ export const SONG_CARD_SETTINGS_KEYS = {
   CARD_FULL_HIDE_SECONDARY: "card-full-hide-secondary",
   CARD_FULL_HIDE_TAGS: "card-full-hide-tags"
 } as const
+
+export const MEDIA_PLAYER_SETTINGS_TYPE_KEY = "media-player-type" as const
+
+export const MEDIA_PLAYER_SETTINGS_API_KEYS = {
+  PLAY_PREFIX: "media-player-api-play-prefix",
+  STOP_PREFIX: "media-player-api-stop-prefix",
+  CHANNEL_ID: "media-player-api-channel-id",
+  WEBHOOK_URL: "media-player-api-webhook-url"
+} as const
+
+export const MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS = {
+  PREFIX: "media-player-clipboard-prefix"
+} as const
+
+export const MEDIA_PLAYER_SETTINGS_BOT_KEYS = {
+  BOT_TOKEN: "media-player-bot-token"
+} as const

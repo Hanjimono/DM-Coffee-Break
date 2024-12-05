@@ -1,4 +1,5 @@
 import { UserSettings } from "@cross/types/database/settings"
+import { MEDIA_PLAYER_TYPES } from "./media"
 
 export const DEFAULT_USER_SETTINGS: UserSettings = {
   main: {
@@ -14,6 +15,21 @@ export const DEFAULT_USER_SETTINGS: UserSettings = {
       "card-short-primary": "title",
       "card-short-secondary": "comment",
       "song-card-type": "short"
+    },
+    player: {
+      type: MEDIA_PLAYER_TYPES.CLIPBOARD,
+      api: {
+        "channel-id": "",
+        "play-prefix": "play",
+        "stop-prefix": "stop",
+        "webhook-url": ""
+      },
+      clipboard: {
+        "media-player-clipboard-prefix": ""
+      },
+      bot: {
+        "bot-token": ""
+      }
     }
   }
 }

@@ -8,7 +8,15 @@ import { Song } from "../../database/models/song"
 import { SETTING_DATABASE_VERSION_KEY } from "@cross/constants/mainSettings"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { DEFAULT_USER_SETTINGS } from "@cross/constants/settings"
-import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
+import {
+  MEDIA_PLAYER_SETTINGS_API_KEYS,
+  MEDIA_PLAYER_SETTINGS_BOT_KEYS,
+  MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS,
+  MEDIA_PLAYER_SETTINGS_TYPE_KEY,
+  SONG_CARD_SETTINGS_KEYS
+} from "@cross/constants/settingsMedia"
+import { AVAILABLE_MEDIA_PLAYER_TYPES } from "@cross/types/database/settings/media"
+import { AvailableSettingsCategories } from "@cross/types/database/settings"
 
 /**
  * Function to check if the database is connected
@@ -87,24 +95,99 @@ ipcMain.handle("database-getVersion", async () => {
  */
 ipcMain.handle("database-settings-get", async () => {
   let settings = { ...DEFAULT_USER_SETTINGS }
-  try {
-    const currentVersion = await Settings.findOne({
-      where: { key: SETTING_DATABASE_VERSION_KEY }
+  async function getSingleSetting(key: string) {
+    return await Settings.findOne({
+      where: { key }
     })
+  }
+  async function getAllSettingsForKeysObjectList<
+    KeyObjectType extends Record<string, string>
+  >(keysObjectList: KeyObjectType, category: AvailableSettingsCategories) {
+    let resultSettings: Record<KeyObjectType[keyof KeyObjectType], string> =
+      {} as Record<KeyObjectType[keyof KeyObjectType], string>
+    for (const key of Object.values(keysObjectList) as Array<
+      KeyObjectType[keyof KeyObjectType]
+    >) {
+      const setting = await Settings.findOne({
+        where: { key, category: category }
+      })
+      if (setting) {
+        resultSettings[key] = setting.value
+      }
+    }
+    return resultSettings
+  }
+  try {
+    const currentVersion = await getSingleSetting(SETTING_DATABASE_VERSION_KEY)
     if (currentVersion) {
       settings.main.version = currentVersion.value as DatabaseVersion
     }
-    for (const key of Object.values(SONG_CARD_SETTINGS_KEYS) as string[]) {
-      const setting = await Settings.findOne({
-        where: { key, category: SETTINGS_CATEGORIES.MEDIA }
-      })
-      if (setting) {
-        settings.media.songCard[key as keyof typeof settings.media.songCard] =
-          setting.value
-      }
+    const songCardSettings = await getAllSettingsForKeysObjectList(
+      SONG_CARD_SETTINGS_KEYS,
+      SETTINGS_CATEGORIES.MEDIA
+    )
+    settings.media.songCard = {
+      ...settings.media.songCard,
+      ...songCardSettings
     }
+    const mediaPlayerType = await getSingleSetting(
+      MEDIA_PLAYER_SETTINGS_TYPE_KEY
+    )
+    if (mediaPlayerType) {
+      settings.media.player.type = parseInt(
+        mediaPlayerType.value
+      ) as AVAILABLE_MEDIA_PLAYER_TYPES
+    }
+    const clipboardSettings = await getAllSettingsForKeysObjectList(
+      MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS,
+      SETTINGS_CATEGORIES.MEDIA
+    )
+    settings.media.player.clipboard = {
+      ...settings.media.player.clipboard,
+      ...clipboardSettings
+    }
+    const apiSettings = await getAllSettingsForKeysObjectList(
+      MEDIA_PLAYER_SETTINGS_API_KEYS,
+      SETTINGS_CATEGORIES.MEDIA
+    )
+    settings.media.player.api = { ...settings.media.player.api, ...apiSettings }
+    const botSettings = await getAllSettingsForKeysObjectList(
+      MEDIA_PLAYER_SETTINGS_BOT_KEYS,
+      SETTINGS_CATEGORIES.MEDIA
+    )
+    settings.media.player.bot = { ...settings.media.player.bot, ...botSettings }
     return settings
   } catch (error) {
     return settings
   }
 })
+
+ipcMain.handle(
+  "database-settings-set",
+  async (
+    event,
+    key: string,
+    value: string,
+    category?: AvailableSettingsCategories
+  ) => {
+    try {
+      const setting = await Settings.findOne({
+        where: { key }
+      })
+      if (setting) {
+        setting.value = value
+        setting.category = category || setting.category
+        await setting.save()
+      } else {
+        await Settings.create({
+          key,
+          value,
+          category: category || SETTINGS_CATEGORIES.GENERAL
+        })
+      }
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+)

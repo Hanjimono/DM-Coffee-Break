@@ -17,6 +17,10 @@ const MENU = [
       {
         title: "Song Card",
         link: "/settings/media/songCard"
+      },
+      {
+        title: "Player",
+        link: "/settings/media/player"
       }
     ]
   }
