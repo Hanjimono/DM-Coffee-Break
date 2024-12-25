@@ -17,6 +17,10 @@ import {
 } from "@cross/constants/settingsMedia"
 import { AVAILABLE_MEDIA_PLAYER_TYPES } from "@cross/types/database/settings/media"
 import { AvailableSettingsCategories } from "@cross/types/database/settings"
+import { Umzug, SequelizeStorage } from "umzug"
+import path from "path"
+import { is } from "@electron-toolkit/utils"
+import { Sequelize } from "sequelize"
 
 /**
  * Function to check if the database is connected
@@ -56,8 +60,29 @@ ipcMain.handle(
  */
 ipcMain.handle("database-sync", async (event, lastVersion: DatabaseVersion) => {
   try {
-    // TODO: move to migrations
-    await sequelize.sync({ force: true })
+    const umzug = new Umzug({
+      migrations: {
+        glob: is.dev
+          ? "resources/migrations/*.js"
+          : path.resolve(process.resourcesPath).replaceAll("\\", "/") +
+            "/migrations/*.js",
+        resolve: ({ name, path, context }) => {
+          if (!path) {
+            throw new Error("Migration path is undefined")
+          }
+          const migration = require(path)
+          return {
+            name,
+            up: async () => migration.up(context, Sequelize),
+            down: async () => migration.down(context, Sequelize)
+          }
+        }
+      },
+      context: sequelize.getQueryInterface(),
+      storage: new SequelizeStorage({ sequelize }),
+      logger: console
+    })
+    await umzug.up()
     let currentVersion = await Settings.findOne({
       where: { key: SETTING_DATABASE_VERSION_KEY }
     })
@@ -72,6 +97,9 @@ ipcMain.handle("database-sync", async (event, lastVersion: DatabaseVersion) => {
     await currentVersion.save()
     return lastVersion
   } catch (error) {
+    console.log("🚀 ----------------------------------🚀")
+    console.log("🚀 ~ ipcMain.handle ~ error:", error)
+    console.log("🚀 ----------------------------------🚀")
     return "0.0.0"
   }
 })

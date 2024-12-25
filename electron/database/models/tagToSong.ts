@@ -39,6 +39,7 @@ TagToSong.init(
     }
   },
   {
-    sequelize
+    sequelize,
+    modelName: "tagToSong"
   }
 )

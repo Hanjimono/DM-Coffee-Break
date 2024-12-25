@@ -30,6 +30,7 @@ MediaCategory.init(
     }
   },
   {
-    sequelize
+    sequelize,
+    modelName: "mediaCategory"
   }
 )

@@ -95,6 +95,7 @@ Song.init(
     }
   },
   {
-    sequelize
+    sequelize,
+    modelName: "song"
   }
 )

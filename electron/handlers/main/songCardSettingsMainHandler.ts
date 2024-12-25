@@ -3,20 +3,21 @@ import { sequelize } from "../../database/connect"
 import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { Op } from "sequelize"
+import { Settings } from "../../database/models/settings"
 
 /**
  * Function to get all setting from the database related to the song card
  */
 ipcMain.handle("song-card-settings-get", async () => {
   let settings = {} as Record<string, string>
-  let settingsFromDb = await sequelize.models.Settings.findAll({
+  let settingsFromDb = (await sequelize.models.Settings.findAll({
     where: {
       category: SETTINGS_CATEGORIES.MEDIA,
       key: {
         [Op.in]: Object.values(SONG_CARD_SETTINGS_KEYS) as Array<string>
       }
     }
-  })
+  })) as Settings[]
   for (const setting of settingsFromDb) {
     settings[setting.key] = setting.value
   }
