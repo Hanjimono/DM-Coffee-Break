@@ -38,6 +38,7 @@ Settings.init(
   },
   {
     sequelize,
-    modelName: "settings"
+    modelName: "settings",
+    tableName: "settings"
   }
 )

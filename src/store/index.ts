@@ -7,7 +7,15 @@ import {
   SnackbarState
 } from "@/store/snackbar/snackbarSlice"
 
-export const useStore = create<ModalState & SnackbarState>()((...a) => ({
-  ...createModalStore(...a),
-  ...createSnackbarStore(...a)
-}))
+import {
+  createMusicPlayerStore,
+  MusicPlayerState
+} from "@/store/musicPlayer/musicPlayerSlice"
+
+export const useStore = create<ModalState & SnackbarState & MusicPlayerState>()(
+  (...a) => ({
+    ...createModalStore(...a),
+    ...createSnackbarStore(...a),
+    ...createMusicPlayerStore(...a)
+  })
+)

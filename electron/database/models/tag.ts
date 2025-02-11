@@ -31,6 +31,7 @@ Tag.init(
   },
   {
     sequelize,
-    modelName: "tag"
+    modelName: "tag",
+    tableName: "tag"
   }
 )

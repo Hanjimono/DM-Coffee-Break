@@ -40,6 +40,7 @@ TagToSong.init(
   },
   {
     sequelize,
-    modelName: "tagToSong"
+    modelName: "tagToSong",
+    tableName: "tagToSong"
   }
 )

@@ -114,6 +114,7 @@ function BigSongCard({ info, className, isEdit, isHideTags }: SongCardProps) {
             success
             icon="play_arrow"
             iconSize={64}
+            onClick={handlePlay}
           />
         )}
       </Beam>

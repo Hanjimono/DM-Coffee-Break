@@ -1,5 +1,6 @@
 import { DatabaseVersion } from "./version"
 import {
+  AVAILABLE_MEDIA_PLAYER_SETTINGS_API_KEYS,
   AVAILABLE_MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS,
   AVAILABLE_MEDIA_PLAYER_TYPES,
   AVAILABLE_SONG_CARD_SETTINGS
@@ -14,7 +15,7 @@ export interface UserSettings {
     songCard: Record<AVAILABLE_SONG_CARD_SETTINGS, string>
     player: {
       type: AVAILABLE_MEDIA_PLAYER_TYPES
-      api: {}
+      api: Record<AVAILABLE_MEDIA_PLAYER_SETTINGS_API_KEYS, string>
       clipboard: Record<AVAILABLE_MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS, string>
       bot: {}
     }

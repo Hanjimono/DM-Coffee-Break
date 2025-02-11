@@ -1,5 +1,5 @@
 import { DatabaseVersion } from "@cross/types/database/settings/version"
-import { SETTINGS_HANDLER } from "./settings"
+import { SettingsHandler } from "./settings"
 import { MediaHandler } from "./media"
 import { DictionaryHandler } from "./dictionary"
 import { TagHandler } from "./tag"
@@ -42,7 +42,7 @@ export interface DatabaseHandler {
   /**
    * Handles settings related operations in the database.
    */
-  settings: SETTINGS_HANDLER
+  settings: SettingsHandler
 
   /**
    * Handles media related operations in the database.

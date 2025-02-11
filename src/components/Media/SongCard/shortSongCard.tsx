@@ -87,6 +87,7 @@ function ShortSongCard({ className, info, isEdit }: SongCardProps) {
               }
               success
               icon="play_arrow"
+              onClick={handlePlay}
             />
           )}
         </div>

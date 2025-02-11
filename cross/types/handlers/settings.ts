@@ -7,7 +7,7 @@ import { SONG_CARD_SETTINGS_HANDLER } from "./songCardSettings"
 /**
  * Handler for settings operations with the database
  */
-export interface SETTINGS_HANDLER {
+export interface SettingsHandler {
   /**
    * Get all of the user settings from the database
    */

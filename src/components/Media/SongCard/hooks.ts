@@ -52,9 +52,12 @@ export const useCardButtonActions = (
   const confirm = useStore((state) => state.confirm)
   const errorSnack = useStore((state) => state.errorSnack)
   const successSnack = useStore((state) => state.successSnack)
+  const playSong = useStore((state) => state.playSong)
   const database = useDatabase()
   const router = useRouter()
-  const handlePlay = () => {}
+  const handlePlay = () => {
+    playSong(card)
+  }
   const handleEdit = () => {
     router.push(`/media/edit/${card.id}`)
   }
