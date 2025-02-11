@@ -28,7 +28,7 @@ export async function getDictionaryData(
   dictionaryName: AvailableDictionaries
 ): Promise<DictionaryData[]> {
   switch (dictionaryName) {
-    case "mediaCategories":
+    case "mediaCategory":
       return formatDictionaryData(await MediaCategory.findAll())
       break
     default:

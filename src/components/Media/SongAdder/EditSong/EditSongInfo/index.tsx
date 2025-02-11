@@ -83,7 +83,7 @@ function EditSongInfo({
           <Input label="Title" name="title" />
           <Input label="Artist" name="artist" />
           <Dictionary
-            dictionary="mediaCategories"
+            dictionary="mediaCategory"
             name="categoryId"
             label="Category"
           />

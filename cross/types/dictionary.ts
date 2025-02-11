@@ -1,6 +1,6 @@
 import { DictionaryHandler } from "./handlers/dictionary"
 
-export type AvailableDictionaries = "mediaCategories"
+export type AvailableDictionaries = "mediaCategory"
 
 export interface DictionaryData {
   title: string

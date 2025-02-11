@@ -31,6 +31,7 @@ MediaCategory.init(
   },
   {
     sequelize,
-    modelName: "mediaCategory"
+    modelName: "mediaCategory",
+    tableName: "mediaCategory"
   }
 )
