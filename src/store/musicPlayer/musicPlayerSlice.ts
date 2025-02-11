@@ -9,11 +9,18 @@ import {
   MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS
 } from "@cross/constants/settingsMedia"
 import { AVAILABLE_MEDIA_PLAYER_SETTINGS_API_KEYS } from "@cross/types/database/settings/media"
+import { MusicPlayerHandler } from "@cross/types/handlers/musicPlayer"
+import { SnackbarState } from "../snackbar/snackbarSlice"
 
 async function getUserSettings() {
-  if (typeof window === "undefined") return
+  if (typeof window === "undefined") return undefined
   const database = (window as any).database as DatabaseHandler
   return await database.settings.get()
+}
+
+function getMusicPlayer() {
+  if (typeof window === "undefined") return undefined
+  return (window as any).musicPlayer as MusicPlayerHandler
 }
 
 /**
@@ -61,10 +68,12 @@ export interface MusicPlayerState {
 /**
  * Store for managing the state of the music player system.
  */
-export const createMusicPlayerStore: StateCreator<MusicPlayerState> = (
-  set,
-  get
-) => ({
+export const createMusicPlayerStore: StateCreator<
+  MusicPlayerState & SnackbarState,
+  [],
+  [],
+  MusicPlayerState
+> = (set, get) => ({
   currentSong: null,
   playSong: async (song) => {
     const settings = await getUserSettings()
@@ -73,6 +82,16 @@ export const createMusicPlayerStore: StateCreator<MusicPlayerState> = (
       const { media } = settings
       const playerType = media.player.type
       switch (playerType) {
+        case MEDIA_PLAYER_TYPES.BOT:
+          // In this case, we need to send a play command to the bot
+          const musicPlayer = getMusicPlayer()
+          if (!musicPlayer) return
+          const response = await musicPlayer.getStatus()
+          if (response.error) {
+            get().errorSnack(response.error.message)
+            console.log("details:", response.error.details)
+            return
+          }
         case MEDIA_PLAYER_TYPES.API:
           // In this case, we need to send song url with command via Discord API
           if (
@@ -85,6 +104,7 @@ export const createMusicPlayerStore: StateCreator<MusicPlayerState> = (
           sendCommandToDiscordChannel(media.player.api, song.url)
           // Set the song as the current song so we can send a stop command later
           get().setSong(song)
+          get().successSnack("Message sent to Discord channel!")
           break
         case MEDIA_PLAYER_TYPES.CLIPBOARD:
         default:
@@ -97,6 +117,7 @@ export const createMusicPlayerStore: StateCreator<MusicPlayerState> = (
               song.url
           )
           get().setSong(null)
+          get().successSnack("Song URL copied to clipboard!")
           break
       }
     } catch (error) {}

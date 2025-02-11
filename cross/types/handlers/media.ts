@@ -2,9 +2,6 @@ import { MediaCategory } from "@cross/types/media/category"
 import { SongInfo } from "../database/media"
 
 /**
- * Interface representing a handler for media-related operations.
- */
-/**
  * Interface for handling media-related operations.
  */
 export interface MediaHandler {
