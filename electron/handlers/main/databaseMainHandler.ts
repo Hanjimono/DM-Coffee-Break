@@ -118,10 +118,7 @@ ipcMain.handle("database-getVersion", async () => {
   }
 })
 
-/**
- * Function to get the user settings from the database
- */
-ipcMain.handle("database-settings-get", async () => {
+export async function getUserSettingsFromDb() {
   let settings = { ...DEFAULT_USER_SETTINGS }
   async function getSingleSetting(key: string) {
     return await Settings.findOne({
@@ -188,6 +185,13 @@ ipcMain.handle("database-settings-get", async () => {
   } catch (error) {
     return settings
   }
+}
+
+/**
+ * Function to get the user settings from the database
+ */
+ipcMain.handle("database-settings-get", async () => {
+  return await getUserSettingsFromDb()
 })
 
 ipcMain.handle(

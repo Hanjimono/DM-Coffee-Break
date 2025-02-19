@@ -33,16 +33,24 @@ export default function BotPlayerSettings() {
         DM Coffee Break Bot settings
       </Title>
       <Text>You can use this application as music bot.</Text>
+      <Note>
+        Do not forget that you need to create a bot in Discord Developer Portal
+        and invite it to your server.
+      </Note>
       <Form methods={methods} onChange={handleChange}>
         <Input
           label="Token for discord bot"
           name={MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_TOKEN}
         />
+        <Input
+          label="Server Id"
+          name={MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_GUILD_ID}
+        />
+        <Input
+          label="Default voice channel id"
+          name={MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_CHANNEL_ID}
+        />
       </Form>
-      <Note>
-        Do not forget that you need to create a bot in Discord Developer Portal
-        and invite it to your server.
-      </Note>
     </Room>
   )
 }

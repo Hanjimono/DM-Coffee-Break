@@ -29,5 +29,7 @@ export const MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS = {
 } as const
 
 export const MEDIA_PLAYER_SETTINGS_BOT_KEYS = {
-  BOT_TOKEN: "media-player-bot-token"
+  BOT_TOKEN: "media-player-bot-token",
+  BOT_CHANNEL_ID: "media-player-bot-channel-id",
+  BOT_GUILD_ID: "media-player-bot-guild-id"
 } as const

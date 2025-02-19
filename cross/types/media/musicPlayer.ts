@@ -7,6 +7,8 @@ export type MusicPlayerAvailableStatus =
 export interface MusicPlayerResponse {
   status: MusicPlayerAvailableStatus
   song?: SongInfo
+  currentSongIndex?: number
+  queue?: SongInfo[]
   error?: {
     message: string
     details?: string

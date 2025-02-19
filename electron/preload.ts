@@ -16,3 +16,5 @@ contextBridge.exposeInMainWorld("database", databaseRendererHandler)
 contextBridge.exposeInMainWorld("songParser", songParserRendererHandler)
 
 contextBridge.exposeInMainWorld("musicPlayer", musicPlayerRendererHandler)
+
+import "./discordMusicBotObject"

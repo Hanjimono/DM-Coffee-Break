@@ -1,11 +1,14 @@
 // System
 import clsx from "clsx"
+// Components
+import PlayerControl from "@/components/Media/PlayerControl"
+import SideMenu from "@/components/Navigation/SideMenu"
+import PlayerLoader from "@/components/Media/PlayerLoader"
 // Ui
 import Frame from "@/ui/Layout/Frame"
 import Beam from "@/ui/Layout/Beam"
 // Styles and types
 import { MainContentWrapperProps } from "./types"
-import SideMenu from "@/components/Navigation/SideMenu"
 
 /**
  * Wrapper for main content. It usually used in layouts to wrap the main content of the page.
@@ -29,7 +32,11 @@ function MainContentWrapper({
   return (
     <Beam withoutWrap whole withoutGap>
       <SideMenu />
-      <Frame className="main-content">{children}</Frame>
+      <Frame className="main-content relative">
+        {children}
+        <PlayerControl />
+      </Frame>
+      <PlayerLoader />
     </Beam>
   )
 }
