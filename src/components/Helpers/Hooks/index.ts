@@ -91,7 +91,7 @@ export const useCreateSettingsContext: () => [
   () => void
 ] = () => {
   const [settings, setSettings] = useState<UserSettings>(DEFAULT_USER_SETTINGS)
-  const database = useDatabase()
+  const database = (window as any).database as DatabaseHandler
   const updateSettings = useCallback(async () => {
     const settings = await database.settings.get()
     if (settings) {
