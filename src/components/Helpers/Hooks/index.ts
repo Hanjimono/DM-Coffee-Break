@@ -152,7 +152,15 @@ export const useSettingsFormOnFly = <FormValues extends FieldValues>(
   defaultValues: FormValues,
   yupFormObject: any,
   category?: AvailableSettingsCategories
-): [UseFormReturn<FormValues>, (name: string, value: string) => void] => {
+): [
+  UseFormReturn<FormValues>,
+  (
+    name: string,
+    value: string,
+    withoutTimeout?: boolean,
+    isCustomCall?: boolean
+  ) => void
+] => {
   const database = useDatabase()
   const updateSettings = useUpdateSettings()
   const methods = useForm({
@@ -162,21 +170,43 @@ export const useSettingsFormOnFly = <FormValues extends FieldValues>(
   })
   const errorSnack = useStore((state) => state.errorSnack)
   const [formHistory, setFormHistory] = useState(defaultValues)
-  const handleChange = useCallback(
-    async (name: string, value: string) => {
-      clearTimeout((window as any).setSettingTimeout)
-      ;(window as any).setSettingTimeout = setTimeout(async () => {
-        const saveResult = await database.settings.set(name, value, category)
-        if (!saveResult) {
-          errorSnack("Failed to save settings")
-          methods.setValue(name as Path<FormValues>, formHistory[name])
-          return
-        }
-        setFormHistory({ ...formHistory, [name]: value })
-        updateSettings()
-      }, 300)
+  const handleChangeWithoutTimeout = useCallback(
+    async (name: string, value: string, isCustomCall?: boolean) => {
+      if (isCustomCall) {
+        methods.setValue(name as Path<FormValues>, value as any)
+      }
+      const saveResult = await database.settings.set(name, value, category)
+      if (!saveResult) {
+        errorSnack("Failed to save settings")
+        methods.setValue(name as Path<FormValues>, formHistory[name])
+        return
+      }
+      setFormHistory({ ...formHistory, [name]: value })
+      updateSettings()
     },
     [database, errorSnack, formHistory, methods, updateSettings, category]
+  )
+  const handleChange = useCallback(
+    async (
+      name: string,
+      value: string,
+      withoutTimeout?: boolean,
+      isCustomCall?: boolean
+    ) => {
+      if (withoutTimeout) {
+        handleChangeWithoutTimeout(name, value, isCustomCall)
+      } else {
+        clearTimeout((window as any).setSettingTimeout)
+        ;(window as any).setSettingTimeout = setTimeout(
+          handleChangeWithoutTimeout,
+          300,
+          name,
+          value,
+          isCustomCall
+        )
+      }
+    },
+    [handleChangeWithoutTimeout]
   )
   return [methods, handleChange] as const
 }

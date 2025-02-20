@@ -1,10 +1,10 @@
 "use client"
-import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
 import * as yup from "yup"
 // component
 import ClipboardPlayerSettings from "./clipboardPlayerSettings"
 import ApiPlayerSettings from "./apiPlayerSettings"
 import BotPlayerSettings from "./botPlayerSettings"
+import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
 // ui
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
 import Divider from "@/ui/Presentation/Divider"
