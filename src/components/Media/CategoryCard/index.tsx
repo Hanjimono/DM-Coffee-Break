@@ -63,7 +63,9 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
         )}
         {opened && (
           <div
-            className={"p-4 min-h-36 max-h-96 flex flex-col overflow-y-auto"}
+            className={
+              "px-12 py-8 min-h-36 max-h-96 flex flex-col overflow-y-auto overflow-x-hidden w-full"
+            }
           >
             {loading && (
               <div className="w-full flex-1 h-full flex justify-center items-center">
@@ -71,7 +73,7 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
               </div>
             )}
             {!loading && songs.length > 0 && (
-              <div className="flex wrap gap-same-level">
+              <div className="flex flex-wrap gap-same-level w-full">
                 {songs.map((song: SongInfo) => (
                   <SongCard key={song.id} info={song} />
                 ))}

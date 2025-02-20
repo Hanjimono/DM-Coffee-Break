@@ -155,7 +155,6 @@ export class MusicQueue {
           if (this.songs.length) {
             // Set status to switching to correctly handle the queue
             this.status = MUSIC_PLAYER_STATUS.SWITCHING
-            console.log("stateChange")
             this.processQueue()
           }
         }
