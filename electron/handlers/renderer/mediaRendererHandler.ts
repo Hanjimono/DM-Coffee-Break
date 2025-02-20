@@ -8,7 +8,8 @@ export const mediaRendererHandler: MediaHandler = {
   getSong: async (id) => ipcRenderer.invoke("media-get-song", id),
   editSong: async (data) => ipcRenderer.invoke("media-edit-song", data),
   deleteSong: async (id) => ipcRenderer.invoke("media-delete-song", id),
-  getSongs: async () => ipcRenderer.invoke("media-get-songs"),
+  getSongs: async (categoryId) =>
+    ipcRenderer.invoke("media-get-songs", categoryId),
   getUnassignedSongs: async () =>
     ipcRenderer.invoke("media-get-unassigned-songs")
 }
