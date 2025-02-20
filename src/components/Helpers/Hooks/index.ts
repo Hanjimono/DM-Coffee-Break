@@ -91,13 +91,23 @@ export const useCreateSettingsContext: () => [
   () => void
 ] = () => {
   const [settings, setSettings] = useState<UserSettings>(DEFAULT_USER_SETTINGS)
-  const database = (window as any).database as DatabaseHandler
+  const [database, setDatabase] = useState<DatabaseHandler | undefined>(
+    undefined
+  )
   const updateSettings = useCallback(async () => {
-    const settings = await database.settings.get()
-    if (settings) {
-      setSettings(settings)
+    if (database && database.settings) {
+      const settings = await database.settings.get()
+      if (settings) {
+        setSettings(settings)
+      }
     }
   }, [database])
+  useEffect(() => {
+    setDatabase((window as any).database as DatabaseHandler)
+    return () => {
+      setDatabase({} as DatabaseHandler)
+    }
+  }, [])
   useEffect(() => {
     if (!!database) {
       updateSettings()

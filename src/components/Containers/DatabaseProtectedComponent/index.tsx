@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 // Components
 import LoadingScreen from "../LoadingScreen"
 import { useDatabase, useUpdateSettings } from "@/components/Helpers/Hooks"
@@ -23,6 +23,7 @@ export default function DatabaseProtectedComponent({
   const [loading, setLoading] = useState(true)
   const { authenticate, checkVersion } = useDatabase()
   const updateSettings = useUpdateSettings()
+  const pathname = usePathname()
   const router = useRouter()
   useEffect(() => {
     if (!authenticate) return
@@ -36,12 +37,14 @@ export default function DatabaseProtectedComponent({
         router.push("/settings/database")
       } else {
         updateSettings()
-        router.push("/home")
+        if (pathname === "/") {
+          router.push("/home")
+        }
       }
       setLoading(false)
       return result
     }
     checkDatabase()
-  }, [authenticate, checkVersion, updateSettings, router])
+  }, [authenticate, checkVersion, updateSettings, router, pathname])
   return <LoadingScreen loaded={!loading}>{children}</LoadingScreen>
 }
