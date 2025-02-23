@@ -13,20 +13,24 @@ export default function PlayerControl() {
   const stop = useStore((state) => state.stopSong)
   if (status === MUSIC_PLAYER_STATUS.EMPTY || !currentSong) return null
   return (
-    <div className="absolute bottom-0 inset-x-0 flex items-center justify-center">
-      <div className="bg-block-500 shadow-lg p-4 rounded-md w-72 overflow-hidden">
+    <div className="fixed h-0 bottom-0 inset-x-0 flex items-center justify-center">
+      <div className="absolute bottom-full bg-block-500 shadow-lg p-4 rounded-md w-72 overflow-hidden">
         <div className="flex items-center">
           <div className="bg-block-200 w-12 h-12 rounded-md mr-2">
-            <SmartImage
-              className="max-w-full"
-              src={currentSong.thumbnail}
-              alt={currentSong.title}
-            />
+            {currentSong && (
+              <SmartImage
+                className="max-w-full"
+                src={currentSong.thumbnail}
+                alt={currentSong.title}
+              />
+            )}
           </div>
           <div className="flex-1 flex flex-col overflow-hidden">
-            <Text type="fit-line">
-              {currentSong.comment || currentSong.title}
-            </Text>
+            {currentSong && (
+              <Text type="fit-line">
+                {currentSong.comment || currentSong.title}
+              </Text>
+            )}
             <div className="flex mt-2">
               <Button className="mr-2" icon="play_arrow" onClick={resume} />
               <Button className="mr-2" icon="pause" onClick={pause} />
