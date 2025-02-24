@@ -282,6 +282,20 @@ export class MusicQueue {
     return response
   }
 
+  /**
+   * Retrieves the current status of the connection and player.
+   *
+   * @returns An object containing the status of the connection and player.
+   * @property {string} connection - The current status of the connection.
+   * @property {string} player - The current status of the player.
+   */
+  public getConnectionStatus() {
+    return {
+      connection: this.connection.state.status,
+      player: this.player.state.status
+    }
+  }
+
   public disconnect() {
     this.connection.destroy()
     this.status = MUSIC_PLAYER_STATUS.EMPTY

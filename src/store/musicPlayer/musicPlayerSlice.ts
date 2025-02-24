@@ -115,9 +115,6 @@ export const createMusicPlayerStore: StateCreator<
           // In this case, we need to send a play command to the bot
           const musicPlayer = getMusicPlayer()
           const response = await musicPlayer.play(song)
-          console.log("🚀 -----------------------------------🚀")
-          console.log("🚀 ~ playSong: ~ response:", response)
-          console.log("🚀 -----------------------------------🚀")
           get().setStatus(response, "The song is now playing!")
           break
         case MEDIA_PLAYER_TYPES.API:
@@ -240,7 +237,10 @@ export const createMusicPlayerStore: StateCreator<
       get().handleMusicBotError(response)
       return
     }
-    if (response.status !== MUSIC_PLAYER_STATUS.STOPPED) {
+    if (
+      response.status !== MUSIC_PLAYER_STATUS.STOPPED &&
+      response.status !== MUSIC_PLAYER_STATUS.EMPTY
+    ) {
       ;(window as any).musicTimer = setTimeout(get().getStatus, 1000)
     }
     set({

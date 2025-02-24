@@ -6,14 +6,23 @@ import {
 } from "@cross/types/media/musicPlayer"
 import { Client, GatewayIntentBits, Guild } from "discord.js"
 import { MusicQueue } from "./musicQueue"
-import { getVoiceConnection, joinVoiceChannel } from "@discordjs/voice"
+import {
+  AudioPlayerStatus,
+  getVoiceConnection,
+  joinVoiceChannel,
+  VoiceConnectionStatus
+} from "@discordjs/voice"
 
+const MAX_CONNECTION_ESTABLISHMENT_ATTEMPTS = 3
+
+const SOCKET_CONNECTION_ERROR = "TypeError"
 export class DiscordMusicBot {
   protected client?: Client
   public status?: MusicPlayerAvailableStatus
   public chanelId: string | null = null
   public guildId: string | null = null
   private queue?: MusicQueue
+  private connectionEstablishedCount: number = 0
 
   constructor() {}
 
@@ -99,18 +108,69 @@ export class DiscordMusicBot {
     }
   }
 
-  public async playSong(song: SongInfo) {
-    try {
-      await this.prepareQueue()
-      if (this.queue) {
-        await this.queue.play([song])
-      }
-      return this.getStatus()
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unexpected error."
-      return this.getStatus(errorMessage)
+  public async tryToPlayANewSong(song: SongInfo): Promise<MusicPlayerResponse> {
+    this.connectionEstablishedCount++
+    if (
+      this.connectionEstablishedCount > MAX_CONNECTION_ESTABLISHMENT_ATTEMPTS
+    ) {
+      this.connectionEstablishedCount = 0
+      return this.getStatus("Failed to establish connection.")
     }
+    try {
+      const status = await this.playSong(song)
+      if (status.status !== MUSIC_PLAYER_STATUS.PLAYING) {
+        await this.stopSong()
+        return this.tryToPlayANewSong(song)
+      }
+      let connectionStatus = this.getQueueConnectionStatus()
+      if (
+        !connectionStatus ||
+        connectionStatus.connection === VoiceConnectionStatus.Disconnected
+      ) {
+        await this.stopSong()
+        return this.tryToPlayANewSong(song)
+      }
+      if (connectionStatus.player === AudioPlayerStatus.Buffering) {
+        await new Promise((resolve) => setTimeout(resolve, 500))
+      }
+    } catch (error) {
+      if (
+        this.connectionEstablishedCount ===
+        MAX_CONNECTION_ESTABLISHMENT_ATTEMPTS
+      ) {
+        this.connectionEstablishedCount = 0
+        const errorMessage =
+          error instanceof Error ? error.message : "Unexpected error."
+        if (error instanceof Error && error.name === SOCKET_CONNECTION_ERROR) {
+          console.log(
+            "🚀 -----------------------------------------------------------------🚀"
+          )
+          console.log(
+            "🚀 ~ DiscordMusicBot ~ tryToPlayANewSong ~ error.name:",
+            error.name
+          )
+          console.log(
+            "🚀 -----------------------------------------------------------------🚀"
+          )
+          await this.stopSong()
+          await new Promise((resolve) => setTimeout(resolve, 1000))
+          return this.tryToPlayANewSong(song)
+        }
+        return this.getStatus(errorMessage)
+      }
+      await this.stopSong()
+      return this.tryToPlayANewSong(song)
+    }
+    this.connectionEstablishedCount = 0
+    return this.getStatus()
+  }
+
+  public async playSong(song: SongInfo) {
+    await this.prepareQueue()
+    if (this.queue) {
+      await this.queue.play([song])
+    }
+    return this.getStatus()
   }
 
   public async pauseSong() {
@@ -188,6 +248,13 @@ export class DiscordMusicBot {
       }
     }
     return this.queue.getQueueStatus()
+  }
+
+  private getQueueConnectionStatus() {
+    if (this.queue) {
+      return this.queue.getConnectionStatus()
+    }
+    return undefined
   }
 
   private handleDiscordClientCrash(

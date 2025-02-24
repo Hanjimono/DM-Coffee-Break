@@ -2,6 +2,7 @@ import { is } from "@electron-toolkit/utils"
 import { app, BrowserWindow, ipcMain } from "electron"
 import { getPort } from "get-port-please"
 import { startServer } from "next/dist/server/lib/start-server"
+import { discordMusicBot } from "./discordMusicBotObject"
 import path, { join } from "path"
 
 let mainWindow: BrowserWindow
@@ -98,6 +99,9 @@ app.whenReady().then(() => {
 })
 
 app.on("window-all-closed", () => {
+  if (discordMusicBot) {
+    discordMusicBot.stopSong()
+  }
   if (process.platform !== "darwin") app.quit()
 })
 

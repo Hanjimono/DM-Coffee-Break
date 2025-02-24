@@ -32,7 +32,7 @@ ipcMain.handle("music-player-get-status", async () => {
 
 ipcMain.handle("music-player-play", async (event, song: SongInfo) => {
   const bot = await prepareDiscordMusicBot()
-  return bot.playSong(song)
+  return bot.tryToPlayANewSong(song)
 })
 
 ipcMain.handle("music-player-resume", async () => {
