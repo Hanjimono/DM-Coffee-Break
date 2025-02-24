@@ -12,8 +12,8 @@ import Frame from "@/ui/Layout/Frame"
 import "./global.scss"
 
 export const metadata = {
-  title: "ui-boilerplate",
-  description: "Boilerplate for Next.js development with ui-kit"
+  title: "DM Coffee Break",
+  description: "A Discord bot that plays music in voice channels."
 }
 
 export default function RootLayout({
