@@ -6,3 +6,10 @@ export const MUSIC_PLAYER_STATUS = {
   ERROR: 3,
   SWITCHING: 4
 } as const
+
+export const MUSIC_PLAYER_EMPTY_RESPONSE = {
+  status: MUSIC_PLAYER_STATUS.EMPTY,
+  song: null,
+  queue: [],
+  currentSongIndex: undefined
+} as const

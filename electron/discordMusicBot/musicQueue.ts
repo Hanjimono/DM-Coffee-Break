@@ -1,9 +1,4 @@
-import { MUSIC_PLAYER_STATUS } from "@cross/constants/musicPlayer"
-import { SongInfo } from "@cross/types/database/media"
-import {
-  MusicPlayerAvailableStatus,
-  MusicPlayerResponse
-} from "@cross/types/media/musicPlayer"
+// system
 import {
   AudioPlayer,
   AudioPlayerState,
@@ -18,8 +13,16 @@ import {
   VoiceConnectionState,
   VoiceConnectionStatus
 } from "@discordjs/voice"
-import { MEDIA_SOURCES } from "@cross/constants/media"
 import { getFreeClientID, setToken, stream } from "play-dl"
+// constants
+import { MEDIA_SOURCES } from "@cross/constants/media"
+import { MUSIC_PLAYER_STATUS } from "@cross/constants/musicPlayer"
+// types
+import { SongInfo } from "@cross/types/database/media"
+import {
+  MusicPlayerAvailableStatus,
+  MusicPlayerResponse
+} from "@cross/types/media/musicPlayer"
 
 export interface QueueOptions {
   connection: VoiceConnection
@@ -297,6 +300,8 @@ export class MusicQueue {
   }
 
   public disconnect() {
+    if (this.timeoutBeforeConnectionDestroy)
+      clearTimeout(this.timeoutBeforeConnectionDestroy)
     this.connection.destroy()
     this.status = MUSIC_PLAYER_STATUS.EMPTY
   }

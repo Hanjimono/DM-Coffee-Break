@@ -3,12 +3,16 @@ import { app, BrowserWindow, ipcMain } from "electron"
 import { getPort } from "get-port-please"
 import { startServer } from "next/dist/server/lib/start-server"
 import { discordMusicBot } from "./discordMusicBotObject"
+import log from "electron-log/main"
 import path, { join } from "path"
 
 let mainWindow: BrowserWindow
 let splash: BrowserWindow
 
 const createWindow = () => {
+  log.initialize()
+
+  log.info("Starting application")
   mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
@@ -102,6 +106,7 @@ app.on("window-all-closed", () => {
   if (discordMusicBot) {
     discordMusicBot.stopSong()
   }
+  log.info("Closing application")
   if (process.platform !== "darwin") app.quit()
 })
 

@@ -2866,6 +2866,7 @@ __metadata:
     discord.js: "npm:^14.18.0"
     electron: "npm:^33.0.2"
     electron-builder: "npm:^25.1.8"
+    electron-log: "npm:^5.3.0"
     eslint: "npm:^8"
     eslint-config-next: "npm:^15.0.0-rc.0"
     eslint-config-prettier: "npm:^9.1.0"
@@ -3022,6 +3023,13 @@ __metadata:
     electron-builder: cli.js
     install-app-deps: install-app-deps.js
   checksum: 10c0/9602a19f8c647fb75b07e44dc856012d2b1fe1afcb257ffd24cf17e07d7ae3b51405cf31da10403965ddcc7b194d60aca6bc5d7890e367b1be2ec95219edcbe8
+  languageName: node
+  linkType: hard
+
+"electron-log@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "electron-log@npm:5.3.0"
+  checksum: 10c0/a9a438b4b4f178e7eb25ca7c2fbab43c0b8264ff54e6bfbc88ae2c568f9e943b7b45d0da3d0bde31e5264f7360984a5c161173f6041653ee22a3cdd93373e54d
   languageName: node
   linkType: hard
 
