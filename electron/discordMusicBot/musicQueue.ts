@@ -42,7 +42,7 @@ export class MusicQueue {
   /** Last error message */
   private error?: string
   /** Index of the current song in the queue */
-  private currentSongIdx: number | null = null
+  private currentSongIdx?: number
   /** Semaphore to prevent multiple ready events */
   private connectionLock = false
   /** Semaphore to prevent multiple queue processing at the same time */
@@ -193,7 +193,7 @@ export class MusicQueue {
     this.isLooping = true
     this.audioResource?.playStream.destroy()
     this.audioResource = undefined
-    this.currentSongIdx = null
+    this.currentSongIdx = undefined
     this.songs = []
 
     this.player.stop()
@@ -271,11 +271,8 @@ export class MusicQueue {
   public getQueueStatus(): MusicPlayerResponse {
     let response: MusicPlayerResponse = {
       status: this.status,
-      song:
-        this.currentSongIdx !== null
-          ? this.songs[this.currentSongIdx]
-          : undefined,
-      currentSongIndex: this.currentSongIdx || undefined,
+      song: !!this.currentSongIdx ? this.songs[this.currentSongIdx] : undefined,
+      currentSongIndex: this.currentSongIdx,
       queue: this.songs || undefined,
       error: this.error ? { message: this.error } : undefined
     }
@@ -414,13 +411,13 @@ export class MusicQueue {
   private getNextSongFromQueue(): SongInfo | undefined {
     if (!this.songs.length) return undefined
     if (
-      this.currentSongIdx !== null &&
+      !!this.currentSongIdx &&
       this.status === MUSIC_PLAYER_STATUS.PAUSED &&
       this.songs[this.currentSongIdx]
     )
       return this.songs[this.currentSongIdx]
     // Queue always starts from the first song
-    if (this.currentSongIdx === null) {
+    if (!this.currentSongIdx) {
       this.currentSongIdx = 0
       return this.songs[this.currentSongIdx]
     }
@@ -430,7 +427,7 @@ export class MusicQueue {
       return this.songs[this.currentSongIdx]
     }
     // If the end of the queue is reached, reset the index
-    this.currentSongIdx = null
+    this.currentSongIdx = undefined
     if (this.isLooping) {
       // If the queue is looping, start from the beginning
       return this.getNextSongFromQueue()
