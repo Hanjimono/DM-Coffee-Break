@@ -110,6 +110,12 @@ export default function ShortFormSettings() {
                 <Checkbox
                   name={SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY}
                   label="Hide secondary text"
+                  checked={
+                    currentSettings &&
+                    currentSettings[
+                      SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY
+                    ].toString() === "true"
+                  }
                 />
               </FormElementWrapper>
             </Room>
@@ -118,7 +124,7 @@ export default function ShortFormSettings() {
                 !currentSettings ||
                 currentSettings[
                   SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY
-                ] !== "true"
+                ].toString() !== "true"
               }
             >
               <FormElementWrapper>

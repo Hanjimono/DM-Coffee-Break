@@ -120,7 +120,7 @@ export const useSettingsFormOnFly = <FormValues extends FieldValues>(
   UseFormReturn<FormValues>,
   (
     name: string,
-    value: string,
+    value: any,
     withoutTimeout?: boolean,
     isCustomCall?: boolean
   ) => void
@@ -135,11 +135,17 @@ export const useSettingsFormOnFly = <FormValues extends FieldValues>(
   const errorSnack = useStore((state) => state.errorSnack)
   const [formHistory, setFormHistory] = useState(defaultValues)
   const handleChangeWithoutTimeout = useCallback(
-    async (name: string, value: string, isCustomCall?: boolean) => {
+    async (name: string, value: any, isCustomCall?: boolean) => {
       if (isCustomCall) {
-        methods.setValue(name as Path<FormValues>, value as any)
+        methods.setValue(name as Path<FormValues>, value)
       }
-      const saveResult = await database.settings.set(name, value, category)
+      const formattedValue =
+        typeof value !== "string" ? value.toString() : value
+      const saveResult = await database.settings.set(
+        name,
+        formattedValue,
+        category
+      )
       if (!saveResult) {
         errorSnack("Failed to save settings")
         methods.setValue(name as Path<FormValues>, formHistory[name])
@@ -153,7 +159,7 @@ export const useSettingsFormOnFly = <FormValues extends FieldValues>(
   const handleChange = useCallback(
     async (
       name: string,
-      value: string,
+      value: any,
       withoutTimeout?: boolean,
       isCustomCall?: boolean
     ) => {
