@@ -16,12 +16,7 @@ import {
   MusicPlayerResponse
 } from "@cross/types/media/musicPlayer"
 import { MUSIC_PLAYER_STATUS } from "@cross/constants/musicPlayer"
-
-async function getUserSettings() {
-  if (typeof window === "undefined") return undefined
-  const database = (window as any).database as DatabaseHandler
-  return await database.settings.get()
-}
+import { GlobalState } from "../global/globalSlice"
 
 function getMusicPlayer() {
   return (window as any).musicPlayer as MusicPlayerHandler
@@ -89,7 +84,7 @@ export interface MusicPlayerState {
  * Store for managing the state of the music player system.
  */
 export const createMusicPlayerStore: StateCreator<
-  MusicPlayerState & SnackbarState,
+  MusicPlayerState & SnackbarState & GlobalState,
   [],
   [],
   MusicPlayerState
@@ -99,8 +94,7 @@ export const createMusicPlayerStore: StateCreator<
   currentQueue: [],
   musicPlayerStatus: MUSIC_PLAYER_STATUS.STOPPED,
   playSong: async (song) => {
-    const settings = await getUserSettings()
-    if (!settings) return
+    const settings = get().globalSettings
     try {
       const { media } = settings
       const playerType = media.player.type
@@ -153,8 +147,7 @@ export const createMusicPlayerStore: StateCreator<
     }
   },
   stopSong: async () => {
-    const settings = await getUserSettings()
-    if (!settings) return
+    const settings = get().globalSettings
     try {
       const { media } = settings
       const playerType = media.player.type
@@ -177,8 +170,7 @@ export const createMusicPlayerStore: StateCreator<
     }
   },
   pauseSong: async () => {
-    const settings = await getUserSettings()
-    if (!settings) return
+    const settings = get().globalSettings
     try {
       const { media } = settings
       const playerType = media.player.type
@@ -201,8 +193,7 @@ export const createMusicPlayerStore: StateCreator<
     }
   },
   resumeSong: async () => {
-    const settings = await getUserSettings()
-    if (!settings) return
+    const settings = get().globalSettings
     try {
       const { media } = settings
       const playerType = media.player.type

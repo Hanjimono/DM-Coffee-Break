@@ -271,7 +271,10 @@ export class MusicQueue {
   public getQueueStatus(): MusicPlayerResponse {
     let response: MusicPlayerResponse = {
       status: this.status,
-      song: !!this.currentSongIdx ? this.songs[this.currentSongIdx] : undefined,
+      song:
+        this.currentSongIdx !== undefined
+          ? this.songs[this.currentSongIdx]
+          : undefined,
       currentSongIndex: this.currentSongIdx,
       queue: this.songs || undefined,
       error: this.error ? { message: this.error } : undefined

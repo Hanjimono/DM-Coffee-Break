@@ -43,7 +43,7 @@ export const DatabaseContext = createContext({} as DatabaseHandler)
  * @constant
  * @type {React.Context<{ settings: typeof DEFAULT_USER_SETTINGS, updateSettings: () => void }>}
  */
-export const SettingsContext = createContext({
+export const Store = createContext({
   settings: DEFAULT_USER_SETTINGS,
   updateSettings: () => {}
 })
@@ -81,58 +81,22 @@ export const useDatabase = () => {
 }
 
 /**
- * Custom hook that creates a settings context.
+ * Custom hook to access the settings from the Store.
  *
- * This hook initializes the user settings state with default values and provides
- * a function to update the settings from the database.
- */
-export const useCreateSettingsContext: () => [
-  UserSettings,
-  () => void
-] = () => {
-  const [settings, setSettings] = useState<UserSettings>(DEFAULT_USER_SETTINGS)
-  const [database, setDatabase] = useState<DatabaseHandler | undefined>(
-    undefined
-  )
-  const updateSettings = useCallback(async () => {
-    if (database && database.settings) {
-      const settings = await database.settings.get()
-      if (settings) {
-        setSettings(settings)
-      }
-    }
-  }, [database])
-  useEffect(() => {
-    setDatabase((window as any).database as DatabaseHandler)
-    return () => {
-      setDatabase({} as DatabaseHandler)
-    }
-  }, [])
-  useEffect(() => {
-    if (!!database) {
-      updateSettings()
-    }
-  }, [database, updateSettings])
-  return [settings, updateSettings]
-}
-
-/**
- * Custom hook to access the settings from the SettingsContext.
- *
- * @returns {object} The current settings from the SettingsContext.
+ * @returns {object} The current settings from the Store.
  */
 export const useSettings = () => {
-  const { settings } = useContext(SettingsContext)
+  const settings = useStore((state) => state.globalSettings)
   return settings
 }
 
 /**
- * Custom hook to retrieve the `updateSettings` function from the `SettingsContext`.
+ * Custom hook to retrieve the `updateSettings` function from the Store
  *
- * @returns {Function} The `updateSettings` function from the `SettingsContext`.
+ * @returns {Function} The `updateSettings` function from the Store
  */
 export const useUpdateSettings = () => {
-  const { updateSettings } = useContext(SettingsContext)
+  const updateSettings = useStore((state) => state.updateSettings)
   return updateSettings
 }
 

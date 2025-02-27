@@ -6,7 +6,6 @@ import {
 } from "@/components/Helpers/Hooks"
 // System
 import { DatabaseHandler } from "@cross/types/handlers/database"
-import SettingsProvider from "../SettingsProvider"
 
 /**
  * Provides a context for accessing the database throughout the application.
@@ -18,7 +17,7 @@ function DatabaseProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <DatabaseContext.Provider value={database as DatabaseHandler}>
-      <SettingsProvider>{children}</SettingsProvider>
+      {children}
     </DatabaseContext.Provider>
   )
 }
