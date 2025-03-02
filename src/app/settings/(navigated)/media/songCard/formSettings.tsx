@@ -78,8 +78,8 @@ export default function SongCardSettingsForm() {
       </Room>
       <HiddenRoom
         isShown={
-          currentSettings[SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE] !==
-          SONG_CARD_TYPES.FULL
+          currentSettings[SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE] ===
+          SONG_CARD_TYPES.SHORT
         }
         bottomGap="same-level"
       >
@@ -87,10 +87,19 @@ export default function SongCardSettingsForm() {
       </HiddenRoom>
       <HiddenRoom
         isShown={
-          currentSettings[SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE] !==
-          SONG_CARD_TYPES.SHORT
+          currentSettings[SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE] ===
+          SONG_CARD_TYPES.FULL
         }
       >
+        <FullFormSettings />
+      </HiddenRoom>
+      <HiddenRoom
+        isShown={
+          currentSettings[SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE] ===
+          SONG_CARD_TYPES.TOOLTIP
+        }
+      >
+        <ShortFormSettings />
         <FullFormSettings />
       </HiddenRoom>
     </>

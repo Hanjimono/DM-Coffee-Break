@@ -126,6 +126,7 @@ export default function ShortFormSettings() {
                   SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY
                 ].toString() !== "true"
               }
+              mode="wait"
             >
               <FormElementWrapper>
                 <Select
