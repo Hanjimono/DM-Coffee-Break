@@ -120,7 +120,7 @@ function BigSongCard({ info, className, isEdit, isHideTags }: SongCardProps) {
       </Beam>
       <div className="p-2 flex flex-1 max-h-[5.5rem] w-full overflow-hidden">
         <Text
-          className="w-full overflow-ellipsis inline-block line-clamp-3 font-bold"
+          className="w-full text-ellipsis inline-block line-clamp-3 font-bold"
           bold
         >
           {primary || info.title}
