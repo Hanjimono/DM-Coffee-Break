@@ -1,7 +1,7 @@
 // components
 import Initializer from "@/components/Helpers/Initializer"
 import DatabaseProvider from "@/components/Containers/DatabaseProvider"
-import DatabaseProtectedComponent from "@/components/Containers/DatabaseProtectedComponent"
+import DatabaseProtectedComponent from "@/components/Containers/Protectors/DatabaseProtectedComponent"
 // constants
 import { openSans } from "@/constants/fonts"
 // ui

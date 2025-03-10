@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 // Store
 import { useStore } from "@/store"
 // Constants
-import { CURRENT_DATABASE_VERSION } from "@/components/Containers/DatabaseProtectedComponent"
+import { CURRENT_DATABASE_VERSION } from "@/components/Containers/Protectors/DatabaseProtectedComponent"
 // Components
 import { useDatabase, useUpdateSettings } from "@/components/Helpers/Hooks"
 // Ui

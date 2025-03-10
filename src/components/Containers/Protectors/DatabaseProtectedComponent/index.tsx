@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 // Components
-import LoadingScreen from "../LoadingScreen"
+import LoadingScreen from "@/components/Containers/LoadingScreen"
 import { useDatabase, useUpdateSettings } from "@/components/Helpers/Hooks"
 
 //TODO: move to constants or env
