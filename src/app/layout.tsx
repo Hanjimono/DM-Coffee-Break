@@ -9,7 +9,7 @@ import Foundation from "@/ui/Layout/Foundation"
 import Beam from "@/ui/Layout/Beam"
 import Frame from "@/ui/Layout/Frame"
 // types and styles
-import "./global.scss"
+import "./global.css"
 
 export const metadata = {
   title: "DM Coffee Break",
