@@ -446,6 +446,9 @@ export class MusicQueue {
   private async createVoiceResourceFromSong(
     song: SongInfo
   ): Promise<AudioResource | undefined> {
+    if (song.source === MEDIA_SOURCES.PC) {
+      return createAudioResource(song.url)
+    }
     if (song.source === MEDIA_SOURCES.SOUNDCLOUD) {
       if (!this.soundCloudClientId) {
         this.soundCloudClientId = await getFreeClientID()
