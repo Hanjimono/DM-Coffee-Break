@@ -1,4 +1,4 @@
-import { AVAILABLE_MEDIA_SOURCES } from "../media/song"
+import { AvailableMediaSources } from "../media/song"
 
 /**
  * Formatted for operating in application song data
@@ -15,7 +15,7 @@ export interface SongInfo {
   comment?: string
   /** List of tag ids */
   tags?: number[]
-  source: AVAILABLE_MEDIA_SOURCES
+  source: AvailableMediaSources
   /** Id of category saved in the database */
   categoryId?: number
 }

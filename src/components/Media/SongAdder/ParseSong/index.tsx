@@ -5,6 +5,7 @@ import { useStore } from "@/store"
 // Components
 import EditSongInfo from "@/components/Media/SongAdder/EditSong/EditSongInfo"
 import { SongParserContext } from "@/components/Containers/SongParserProvider"
+import SelectFile from "@/components/Media/SelectFile"
 // Ui
 import Input from "@/ui/Form/Input"
 import Beam from "@/ui/Layout/Beam"
@@ -13,23 +14,24 @@ import Note from "@/ui/Presentation/Note"
 import Title from "@/ui/Presentation/Title"
 import Pillar from "@/ui/Layout/Pillar"
 // Styles and types
-import { ParsedSongInfo } from "@cross/types/media/song"
-import { cx } from "class-variance-authority"
+import { AvailableMediaSources, ParsedSongInfo } from "@cross/types/media/song"
+import { ParseSongProps, SelectSongProps } from "./types"
+import { MEDIA_SOURCES, MEDIA_TYPES } from "@cross/constants/media"
 
-export default function ParseSong() {
+export default function ParseSong({ type }: ParseSongProps) {
   const errorSnack = useStore((state) => state.errorSnack)
   const successSnack = useStore((state) => state.successSnack)
   const [link, setLink] = useState("")
   const [parsingInProcess, setParsingInProcess] = useState(false)
   const [parsedInfo, setParsedInfo] = useState<ParsedSongInfo | null>(null)
   const songParser = useContext(SongParserContext)
-  const parseSong = async (url: string) => {
+  const parseSong = async (url: string, source?: AvailableMediaSources) => {
     if (!url) {
       return
     }
     setParsingInProcess(true)
     try {
-      const info = await songParser.parseSongInfo({ url })
+      const info = await songParser.parseSongInfo({ url, source })
       setParsedInfo(info)
       successSnack("Song parsed successfully")
     } catch (error: any) {
@@ -42,21 +44,14 @@ export default function ParseSong() {
     }
     setParsingInProcess(false)
   }
-  const handleLinkChange = (name: string, value: string) => {
-    setLink(value)
-    ;(window as any).clearTimeout((window as any).parseSongTimeout)
-    ;(window as any).parseSongTimeout = window.setTimeout(() => {
-      parseSong(value)
-    }, 600)
-  }
   const handleCancelClick = () => {
     setParsedInfo(null)
     setLink("")
   }
   return (
     <Beam withoutGap>
-      <Title>Parse song from Web</Title>
-      {!parsedInfo && (
+      <Title>Add new song</Title>
+      {!parsedInfo && type == MEDIA_TYPES.PARSED && (
         <Note className="w-full" bottomGap="same-level" type="info">
           Copy link to song from popular service, such as youtube, soundcloud or
           spotify and paste it to the input below to automatically parse song
@@ -66,14 +61,24 @@ export default function ParseSong() {
       <Brick className="px-12 py-8" whole bottomGap="other-level-large">
         <Beam className="pt-4" bottomGap="same-level">
           <Pillar sm={12}>
-            <Input
-              name="link"
-              label="Song link"
-              value={link}
-              onChange={handleLinkChange}
-              loading={parsingInProcess}
-              disabled={parsingInProcess || !!parsedInfo}
-            />
+            {type == MEDIA_TYPES.PARSED && (
+              <SelectWebSong
+                url={link}
+                onUrlChange={setLink}
+                parseSong={parseSong}
+                loading={parsingInProcess}
+                disabled={parsingInProcess || !!parsedInfo}
+              />
+            )}
+            {type == MEDIA_TYPES.UPLOAD && (
+              <SelectLocalSong
+                url={link}
+                onUrlChange={setLink}
+                parseSong={parseSong}
+                loading={parsingInProcess}
+                disabled={parsingInProcess || !!parsedInfo}
+              />
+            )}
           </Pillar>
         </Beam>
         {parsedInfo && (
@@ -91,5 +96,51 @@ export default function ParseSong() {
         )}
       </Brick>
     </Beam>
+  )
+}
+
+function SelectLocalSong({
+  url,
+  onUrlChange,
+  parseSong,
+  disabled
+}: SelectSongProps) {
+  const handleFileChange = (file?: string) => {
+    onUrlChange(file || "")
+    if (!!file) parseSong(file, MEDIA_SOURCES.PC)
+  }
+  return (
+    <SelectFile
+      name="song"
+      file={url}
+      onFileChange={handleFileChange}
+      disabled={disabled}
+    />
+  )
+}
+
+function SelectWebSong({
+  url,
+  onUrlChange,
+  parseSong,
+  loading,
+  disabled
+}: SelectSongProps) {
+  const handleLinkChange = (name: string, value: string) => {
+    onUrlChange(value)
+    ;(window as any).clearTimeout((window as any).parseSongTimeout)
+    ;(window as any).parseSongTimeout = window.setTimeout(() => {
+      parseSong(value)
+    }, 600)
+  }
+  return (
+    <Input
+      name="link"
+      label="Song link"
+      value={url}
+      onChange={handleLinkChange}
+      loading={loading}
+      disabled={disabled}
+    />
   )
 }

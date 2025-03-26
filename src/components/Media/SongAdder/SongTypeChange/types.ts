@@ -1,5 +1,5 @@
-import { AVAILABLE_MEDIA_TYPE } from "@cross/types/media/song"
+import { AvailableMediaTypes } from "@cross/types/media/song"
 
 export interface SongTypeChangeProps {
-  onChange: (type: AVAILABLE_MEDIA_TYPE) => void
+  onChange: (type: AvailableMediaTypes) => void
 }

@@ -9,11 +9,13 @@ import ParseSong from "./ParseSong"
 // Ui
 import Beam from "@/ui/Layout/Beam"
 import Button from "@/ui/Actions/Button"
+// Types
+import { AvailableMediaTypes } from "@cross/types/media/song"
 
 export default function SongAdder() {
-  const [songType, setSongType] = useState<
-    (typeof MEDIA_TYPES)[keyof typeof MEDIA_TYPES] | undefined
-  >(undefined)
+  const [songType, setSongType] = useState<AvailableMediaTypes | undefined>(
+    undefined
+  )
   return (
     <SongParserProvider>
       {!songType && <SongTypeChange onChange={setSongType} />}
@@ -30,7 +32,7 @@ export default function SongAdder() {
           </Button>
         </Beam>
       )}
-      {songType == MEDIA_TYPES.PARSED && <ParseSong />}
+      {!!songType && <ParseSong type={songType} />}
     </SongParserProvider>
   )
 }

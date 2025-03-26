@@ -1,6 +1,6 @@
 import { DataTypes, Model, Op } from "sequelize"
 import { sequelize } from "../connect"
-import { AVAILABLE_MEDIA_SOURCES } from "@cross/types/media/song"
+import { AvailableMediaSources } from "@cross/types/media/song"
 import { TagToSong } from "./tagToSong"
 import { SongInfo } from "@cross/types/database/media"
 
@@ -31,7 +31,7 @@ export class Song extends Model {
       thumbnail: this.thumbnail,
       url: this.url,
       comment: this.comment,
-      source: this.source as AVAILABLE_MEDIA_SOURCES,
+      source: this.source as AvailableMediaSources,
       categoryId: this.categoryId,
       tags: tags
     }

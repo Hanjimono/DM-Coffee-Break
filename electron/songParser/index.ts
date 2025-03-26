@@ -1,11 +1,11 @@
 import { MEDIA_SOURCES } from "@cross/constants/media"
-import {
-  AVAILABLE_MEDIA_SOURCES,
-  SongToParseData
-} from "@cross/types/media/song"
+import { AvailableMediaSources, SongToParseData } from "@cross/types/media/song"
 import soundCloudDownloader from "soundcloud-downloader"
+import { readFile } from "fs/promises"
+import { extname, basename } from "path"
+import { parseBuffer } from "music-metadata"
 
-const SOURCES_PATTERNS = new Map<AVAILABLE_MEDIA_SOURCES, RegExp>([
+const SOURCES_PATTERNS = new Map<AvailableMediaSources, RegExp>([
   [MEDIA_SOURCES.SOUNDCLOUD, /^https?:\/\/(soundcloud\.com)\/(.*)$/],
   [MEDIA_SOURCES.YOUTUBE, /^https?:\/\/(youtube\.com|youtu\.be)\/(.*)$/],
   [MEDIA_SOURCES.SPOTIFY, /^https?:\/\/(open\.spotify\.com)\/(.*)$/]
@@ -17,7 +17,7 @@ const SOURCES_PATTERNS = new Map<AVAILABLE_MEDIA_SOURCES, RegExp>([
  * @param url - The URL to be checked against known media source patterns.
  * @returns The media source that matches the URL pattern, or `MEDIA_SOURCES.UNSUPPORTED` if no match is found.
  */
-export function getSourceFromUrl(url: string): AVAILABLE_MEDIA_SOURCES {
+export function getSourceFromUrl(url: string): AvailableMediaSources {
   for (const [source, pattern] of SOURCES_PATTERNS) {
     if (pattern.test(url)) return source
   }
@@ -43,6 +43,21 @@ async function parseSoundCloud(url: string) {
   }
 }
 
+export async function parseLocalFile(url: string) {
+  const fileBuffer = await readFile(url)
+  const metadata = await parseBuffer(fileBuffer, extname(url), {
+    duration: true
+  })
+  return {
+    title: metadata.common.title || basename(url, extname(url)),
+    artist: metadata.common.artist || "Unknown Artist",
+    duration: Math.trunc(metadata.format.duration || 0),
+    thumbnail: "",
+    url,
+    source: MEDIA_SOURCES.PC
+  }
+}
+
 /**
  * Parses song information based on the provided data.
  *
@@ -54,6 +69,8 @@ async function parseSoundCloud(url: string) {
 export async function parseSongInfo(data: SongToParseData) {
   let source = data.source || getSourceFromUrl(data.url)
   switch (source) {
+    case MEDIA_SOURCES.PC:
+      return await parseLocalFile(data.url)
     case MEDIA_SOURCES.SOUNDCLOUD:
       return await parseSoundCloud(data.url)
     default:

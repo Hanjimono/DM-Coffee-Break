@@ -25,6 +25,7 @@ import {
   UserSettings
 } from "@cross/types/database/settings"
 import { DatabaseHandler } from "@cross/types/handlers/database"
+import { FilesHandler } from "@cross/types/handlers/files"
 
 /**
  * Context for accessing the database handler.
@@ -179,4 +180,9 @@ export const useSettingsFormOnFly = <FormValues extends FieldValues>(
     [handleChangeWithoutTimeout]
   )
   return [methods, handleChange] as const
+}
+
+export const useFileHandler = () => {
+  const filesHandler = (window as any).filesHandler as FilesHandler
+  return filesHandler
 }
