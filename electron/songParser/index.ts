@@ -43,6 +43,13 @@ async function parseSoundCloud(url: string) {
   }
 }
 
+export async function parseYoutube(url: string) {}
+
+/**
+ * Parses information from a local file.
+ * @param url - The URL of the local file to parse.
+ * @returns
+ */
 export async function parseLocalFile(url: string) {
   const fileBuffer = await readFile(url)
   const metadata = await parseBuffer(fileBuffer, extname(url), {

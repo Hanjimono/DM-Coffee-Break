@@ -5,9 +5,19 @@ import { IconType } from "@/ui/Presentation/Icon/types"
 
 const MenuItems = [
   {
-    icon: "home",
+    icon: "/public/images/logo_icon.png",
     link: "/home",
-    iconType: "md" as IconType
+    iconType: "custom" as IconType
+  },
+  {
+    icon: "/public/images/media_icon.png",
+    link: "/media",
+    iconType: "custom" as IconType
+  },
+  {
+    icon: "/public/images/game_icon.png",
+    link: "/games",
+    iconType: "custom" as IconType
   }
 ]
 
@@ -28,7 +38,7 @@ const EndItems = [
 export default function SideMenu() {
   return (
     <ActionPanel
-      className={"rounded-none"}
+      className={"rounded-none z-10"}
       items={MenuItems}
       endItems={EndItems}
       orientation="vertical"

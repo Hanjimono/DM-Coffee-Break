@@ -9,6 +9,7 @@ import Frame from "@/ui/Layout/Frame"
 import Beam from "@/ui/Layout/Beam"
 // Styles and types
 import { MainContentWrapperProps } from "./types"
+import SmartImage from "@/ui/Presentation/SmartImage"
 
 /**
  * Wrapper for main content. It usually used in layouts to wrap the main content of the page.
@@ -30,13 +31,20 @@ function MainContentWrapper({
   if (hideMenu)
     return <Frame className={calculatedClassNames}>{children}</Frame>
   return (
-    <Beam withoutWrap whole withoutGap>
+    <Beam withoutWrap whole withoutGap className="relative">
       <SideMenu />
-      <Frame className="main-content relative">
+      <Frame className="main-content relative z-10">
         {children}
         <PlayerControl />
       </Frame>
       <PlayerLoader />
+      <div className="absolute top-0 left-0 right-0 bottom-0 z-0">
+        <SmartImage
+          className="w-full h-full"
+          alt="background"
+          src="/public/images/main_bg.png"
+        />
+      </div>
     </Beam>
   )
 }

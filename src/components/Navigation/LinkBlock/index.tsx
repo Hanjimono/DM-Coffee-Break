@@ -36,7 +36,7 @@ function LinkBlock({
 }: LinkBlockProps) {
   const calculatedClassNames = twMerge(
     cx(
-      "link-block flex flex-col rounded-lg overflow-hidden min-w-48 max-w-48",
+      "relative link-block flex flex-col rounded-4xl overflow-hidden min-w-48 max-w-48",
       !!big && "min-w-72 max-w-72",
       className
     )
@@ -52,14 +52,17 @@ function LinkBlock({
         <Brick className={calculatedClassNames} noPadding>
           <div className={"w-full"}>
             {image && (
-              <SmartImage
-                className="max-w-full"
-                src={image}
-                alt={title || ""}
-              />
+              <div className="relative max-w-full">
+                <SmartImage
+                  className="max-w-full"
+                  src={image}
+                  alt={title || ""}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gradient-from-link/80 to-gradient-to-link/0"></div>
+              </div>
             )}
           </div>
-          <div className={"p-4"}>
+          <div className={"absolute bottom-10 left-10"}>
             <Title size={big ? 4 : 6} bottomGap="almost-same">
               {title}
             </Title>
