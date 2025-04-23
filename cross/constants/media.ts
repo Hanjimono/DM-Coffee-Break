@@ -66,3 +66,5 @@ export const MEDIA_PLAYER_TYPES = {
   CLIPBOARD: 2,
   BOT: 3
 } as const
+
+export const MEDIA_CATEGORY_DEFAULT_SONGS_COUNT = 3

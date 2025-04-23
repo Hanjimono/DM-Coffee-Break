@@ -14,15 +14,20 @@ export default function MediaPageContent() {
   return (
     <WallDecorated>
       <Room noGap>
-        <Title size={5} bottomGap="close">
+        <Title size={3} bottomGap="close">
           Media Library
         </Title>
-        <Beam>
-          <Button icon="folder" onClick={() => openModal("categoryEdit")}>
-            Add category
-          </Button>
-          <Button icon="add" link="/media/new">
+        <Beam contentJustify="center">
+          <Button className="text-text" icon="add" link="/media/new" text>
             Add Song
+          </Button>
+          <Button
+            className="text-text"
+            icon="folder"
+            onClick={() => openModal("categoryEdit")}
+            text
+          >
+            Add category
           </Button>
         </Beam>
       </Room>

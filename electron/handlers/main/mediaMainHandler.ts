@@ -5,6 +5,10 @@ import { Song } from "../../database/models/song"
 import { MediaCategory as MediaCategoryModel } from "../../database/models/mediaCategory"
 import { SongInfo } from "@cross/types/database/media"
 import { TagToSong } from "../../database/models/tagToSong"
+import {
+  MEDIA_CATEGORY_DEFAULT_SONGS_COUNT,
+  UNSORTED_CATEGORY
+} from "@cross/constants/media"
 
 /**
  * Function to get all media categories
@@ -13,10 +17,41 @@ ipcMain.handle("media-get-categories", async () => {
   let categories = []
   let categoriesFromDb = await MediaCategoryModel.findAll()
   for (const category of categoriesFromDb) {
+    const songs = await Song.findAll({
+      where: { categoryId: category.id },
+      limit: MEDIA_CATEGORY_DEFAULT_SONGS_COUNT
+    })
+    const formattedSongs = []
+    for (const song of songs) {
+      formattedSongs.push(await song.getInfo())
+    }
+    const songsCount = await Song.count({
+      where: { categoryId: category.id }
+    })
     categories.push({
       id: category.id,
       title: category.title,
-      hex: category.hex
+      hex: category.hex,
+      songs: songs,
+      songsCount: songsCount
+    })
+  }
+  const unsortedSongs = await Song.findAll({
+    where: { categoryId: null },
+    limit: MEDIA_CATEGORY_DEFAULT_SONGS_COUNT
+  })
+  const formattedUnsortedSongs = []
+  for (const song of unsortedSongs) {
+    formattedUnsortedSongs.push(await song.getInfo())
+  }
+  const unsortedSongsCount = await Song.count({
+    where: { categoryId: null }
+  })
+  if (unsortedSongsCount > 0) {
+    categories.push({
+      ...UNSORTED_CATEGORY,
+      songs: formattedUnsortedSongs,
+      songsCount: unsortedSongsCount
     })
   }
   return categories

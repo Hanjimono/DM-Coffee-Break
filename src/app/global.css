@@ -71,7 +71,7 @@
   --color-block-100: #6f5c4a;
   --color-block-200: #5e503f;
   --color-block-300: #512a2f;
-  --color-block-400: #3b1f1d;
+  --color-block-400: #461f24;
   --color-block-500: #2f080d;
   --color-block-600: #2a1c18;
   --color-block-700: #241b17;
@@ -90,6 +90,7 @@
   --color-mask: #212d42;
 
   --color-title: #edc3b5;
+  --color-text: #f4e3e3;
 
   --z-index-under-mask: 100;
 

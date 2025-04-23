@@ -6,5 +6,5 @@ export default function MediaLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <MainContentWrapper>{children}</MainContentWrapper>
+  return <MainContentWrapper bgImageType="none">{children}</MainContentWrapper>
 }

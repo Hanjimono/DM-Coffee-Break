@@ -3,7 +3,7 @@ import Initializer from "@/components/Helpers/Initializer"
 import DatabaseProvider from "@/components/Containers/DatabaseProvider"
 import DatabaseProtectedComponent from "@/components/Containers/Protectors/DatabaseProtectedComponent"
 // constants
-import { openSans } from "@/constants/fonts"
+import { mainFont } from "@/constants/fonts"
 // ui
 import Foundation from "@/ui/Layout/Foundation"
 import Beam from "@/ui/Layout/Beam"
@@ -34,7 +34,7 @@ export default function RootLayout({
           integrity="sha512-B46MVOJpI6RBsdcU307elYeStF2JKT87SsHZfRSkjVi4/iZ3912zXi45X5/CBr/GbCyLx6M1GQtTKYRd52Jxgw=="
         />
       </head>
-      <body className={openSans.className}>
+      <body className={mainFont.className}>
         <Foundation>
           <DatabaseProvider>
             <DatabaseProtectedComponent>{children}</DatabaseProtectedComponent>

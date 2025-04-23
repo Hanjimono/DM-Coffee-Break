@@ -19,13 +19,15 @@ import SmartImage from "@/ui/Presentation/SmartImage"
  * @param {React.ReactNode} props.children - The content to be wrapped.
  * @param {string} [props.className] - Additional class names to apply to the wrapper.
  * @param {boolean} props.hideMenu - Flag to determine whether to hide the navigation menu.
+ * @param {string} [props.bgImageType] - Type of background image to be used.
  *
  * @returns {JSX.Element} The rendered component.
  */
 function MainContentWrapper({
   children,
   className,
-  hideMenu
+  hideMenu,
+  bgImageType
 }: MainContentWrapperProps) {
   const calculatedClassNames = clsx("main-content", className)
   if (hideMenu)
@@ -38,13 +40,15 @@ function MainContentWrapper({
         <PlayerControl />
       </Frame>
       <PlayerLoader />
-      <div className="absolute top-0 left-0 right-0 bottom-0 z-0">
-        <SmartImage
-          className="w-full h-full"
-          alt="background"
-          src="/public/images/main_bg.png"
-        />
-      </div>
+      {bgImageType !== "none" && (
+        <div className="absolute top-0 left-0 right-0 bottom-0 z-0">
+          <SmartImage
+            className="w-full h-full"
+            alt="background"
+            src="/public/images/main_bg.png"
+          />
+        </div>
+      )}
     </Beam>
   )
 }

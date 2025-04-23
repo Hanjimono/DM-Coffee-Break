@@ -12,13 +12,17 @@ import { UNSORTED_CATEGORY } from "@cross/constants/media"
 // Styles and types
 import { MediaCategory } from "@cross/types/media/category"
 
+/**
+ * The `Library` component is responsible for displaying a media library interface.
+ * It fetches media categories from the database and displays them as a list of
+ * `MediaCategoryCard` components. If no media categories are found, it shows a
+ * message prompting the user to add media files.
+ */
 export default function Library() {
   const [categoryList, setCategoryList] = useState<MediaCategory[]>([])
   const database = useDatabase()
   const getCategories = useCallback(async () => {
     const categories = await database.media.getCategories()
-    //TODO: get unsorted songs
-    categories.push(UNSORTED_CATEGORY)
     setCategoryList(categories)
   }, [database])
   useEffect(() => {
@@ -30,7 +34,7 @@ export default function Library() {
       {categoryList.length == 0 && (
         <div
           className={
-            "flex-1 w-full h-full flex justify-center items-center text-center text-amber-800"
+            "flex-1 w-full h-full flex justify-center items-center text-center"
           }
         >
           <Text>

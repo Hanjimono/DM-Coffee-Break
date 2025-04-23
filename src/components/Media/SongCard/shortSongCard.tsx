@@ -32,7 +32,7 @@ function ShortSongCard({ className, info, isEdit }: SongCardProps) {
   const settings = useSettings()
   const calculatedClassNames = twMerge(
     cx(
-      "song-card group/main relative flex overflow-hidden box-border max-h-12 min-h-12 max-w-72 min-w-72 bg-menu rounded-xl",
+      "song-card group/main relative flex overflow-hidden box-border max-h-12 min-h-12 max-w-72 min-w-72 bg-block-500 rounded-xl",
       className
     )
   )
