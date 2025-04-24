@@ -4,7 +4,7 @@ import { cx } from "class-variance-authority"
 import { twMerge } from "tailwind-merge"
 // Components
 import { useDatabase } from "@/components/Helpers/Hooks"
-import SongCard from "../SongCard"
+import ActiveSongCard from "@/components/Media/SongCard/ActiveSong"
 // Ui
 import Brick from "@/ui/Layout/Brick"
 import Text from "@/ui/Presentation/Text"
@@ -132,7 +132,11 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
                 {!isLoading && songs.length > 0 && (
                   <div className="flex flex-col py-3 pt-4 w-full gap-almost-same">
                     {songs.map((song) => (
-                      <SongCard key={song.id} className="mb-2" info={song} />
+                      <ActiveSongCard
+                        key={song.id}
+                        className="mb-2"
+                        info={song}
+                      />
                     ))}
                   </div>
                 )}
