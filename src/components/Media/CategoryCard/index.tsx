@@ -65,7 +65,7 @@ function MediaCategoryCard({ className, data }: MediaCategoryCardProps) {
   )
   return (
     <div onClick={(e) => openSongList(e, !isOpened)}>
-      <Brick className={calculatedClassNames} noPadding durability={4}>
+      <Brick className={calculatedClassNames} noPadding durability={6}>
         <Beam withoutGap withoutWrap>
           <div className="bookmark-part min-w-9 min-h-full relative">
             <div

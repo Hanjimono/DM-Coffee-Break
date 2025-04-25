@@ -7,6 +7,7 @@ import SongView from "@/components/Media/SongCard/SongView"
 import { MUSIC_PLAYER_STATUS } from "@cross/constants/musicPlayer"
 // ui
 import Button from "@/ui/Actions/Button"
+import Brick from "@/ui/Layout/Brick"
 
 /**
  * A music player control interface.
@@ -23,7 +24,12 @@ export default function PlayerControl() {
   const stop = useStore((state) => state.stopSong)
   if (status === MUSIC_PLAYER_STATUS.EMPTY || !currentSong) return null
   return (
-    <div className="w-full h-16 flex items-center justify-center bg-block-800 px-16">
+    <Brick
+      className="w-full h-16 flex items-center justify-center px-16"
+      noPadding
+      durability={8}
+      square
+    >
       <div className="flex-1">
         <SongView
           className="px-0"
@@ -39,6 +45,6 @@ export default function PlayerControl() {
         text
         onClick={stop}
       />
-    </div>
+    </Brick>
   )
 }

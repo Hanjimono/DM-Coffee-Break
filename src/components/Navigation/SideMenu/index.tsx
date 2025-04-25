@@ -38,7 +38,7 @@ const EndItems = [
 export default function SideMenu() {
   return (
     <ActionPanel
-      className={"rounded-none z-10"}
+      className={"rounded-none z-10 bg-block-600"}
       items={MenuItems}
       endItems={EndItems}
       orientation="vertical"

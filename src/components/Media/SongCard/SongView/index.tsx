@@ -42,7 +42,7 @@ function SongView({
   const calculatedClassNames = cx(
     twMerge(
       "song-view group/main flex flex-col px-6 py-3",
-      !isOnlyBaseInfo && "cursor-pointer hover:bg-block-700",
+      !isOnlyBaseInfo && "cursor-pointer hover:bg-block-800",
       isTransparent && "bg-transparent",
       className
     )
@@ -54,7 +54,12 @@ function SongView({
     info.comment
   )
   return (
-    <Brick className={calculatedClassNames} noPadding onClick={toggleDetails}>
+    <Brick
+      className={calculatedClassNames}
+      noPadding
+      onClick={toggleDetails}
+      durability={7}
+    >
       <div className="song-title flex w-full items-center">
         <SongThumbnailView
           alt={info.title}
