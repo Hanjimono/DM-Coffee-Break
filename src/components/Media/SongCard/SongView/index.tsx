@@ -35,15 +35,19 @@ function SongView({
   info,
   onPlay,
   onDelete,
-  onEdit
+  onEdit,
+  isOnlyBaseInfo = false,
+  isTransparent = false
 }: SongViewProps) {
   const calculatedClassNames = cx(
     twMerge(
-      "song-view group/main flex flex-col px-6 py-3 hover:bg-block-700",
+      "song-view group/main flex flex-col px-6 py-3",
+      !isOnlyBaseInfo && "cursor-pointer hover:bg-block-700",
+      isTransparent && "bg-transparent",
       className
     )
   )
-  const [isOpenDetails, toggleDetails] = useToggleDetails()
+  const [isOpenDetails, toggleDetails] = useToggleDetails(isOnlyBaseInfo)
   const [primaryText, secondaryText, isShowTitleInDetails] = useSongTexts(
     info.title,
     info.artist,
@@ -65,32 +69,36 @@ function SongView({
             {secondaryText}
           </Text>
         </div>
-        <SongActionsView
-          duration={32}
-          className="pr-12"
-          onDelete={onDelete}
-          onEdit={onEdit}
-        />
-        <div className="song-details-icon">
-          {!isOpenDetails && (
-            <Icon
-              type="custom"
-              alt="arrow_down"
-              customIconLink="/public/images/arrow_down.png"
-              height={5}
-              width={10}
-            />
-          )}
-          {isOpenDetails && (
-            <Icon
-              type="custom"
-              alt="arrow_up"
-              customIconLink="/public/images/arrow_up.png"
-              height={5}
-              width={10}
-            />
-          )}
-        </div>
+        {!isOnlyBaseInfo && (
+          <SongActionsView
+            duration={32}
+            className="pr-12"
+            onDelete={onDelete}
+            onEdit={onEdit}
+          />
+        )}
+        {!isOnlyBaseInfo && (
+          <div className="song-details-icon">
+            {!isOpenDetails && (
+              <Icon
+                type="custom"
+                alt="arrow_down"
+                customIconLink="/public/images/arrow_down.png"
+                height={5}
+                width={10}
+              />
+            )}
+            {isOpenDetails && (
+              <Icon
+                type="custom"
+                alt="arrow_up"
+                customIconLink="/public/images/arrow_up.png"
+                height={5}
+                width={10}
+              />
+            )}
+          </div>
+        )}
       </div>
       {isOpenDetails && (
         <SongDetailsView

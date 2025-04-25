@@ -17,6 +17,10 @@ export interface SongViewProps extends SongCardProps {
   onPlay?: () => void
   onEdit?: () => void
   onDelete?: () => void
+  /** Indicates whether to show detailed info and actions */
+  isOnlyBaseInfo?: boolean
+  /** Indicates whether to remove a background */
+  isTransparent?: boolean
 }
 
 /** Displays a thumbnail of the song, with an optional play button. */

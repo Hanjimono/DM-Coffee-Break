@@ -13,12 +13,12 @@ export function useDurationInMinutes(duration?: number) {
   }, [duration])
 }
 
-export function useToggleDetails(): [
-  boolean,
-  (event: React.MouseEvent) => void
-] {
+export function useToggleDetails(
+  isOnlyBaseInfo: boolean
+): [boolean, (event: React.MouseEvent) => void] {
   const [isOpenDetails, setIsOpenDetails] = useState(false)
   const toggleDetails = (event: React.MouseEvent) => {
+    if (isOnlyBaseInfo) return
     event.stopPropagation()
     setIsOpenDetails((prev) => !prev)
   }

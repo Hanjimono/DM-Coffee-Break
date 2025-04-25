@@ -35,10 +35,12 @@ function MainContentWrapper({
   return (
     <Beam withoutWrap whole withoutGap className="relative">
       <SideMenu />
-      <Frame className="main-content relative z-10">
-        {children}
+      <div className="flex flex-col w-full h-full overflow-hidden">
+        <div className="flex-1 flex relative overflow-hidden">
+          <Frame className="main-content relative z-10">{children}</Frame>
+        </div>
         <PlayerControl />
-      </Frame>
+      </div>
       <PlayerLoader />
       {bgImageType !== "none" && (
         <div className="absolute top-0 left-0 right-0 bottom-0 z-0">
