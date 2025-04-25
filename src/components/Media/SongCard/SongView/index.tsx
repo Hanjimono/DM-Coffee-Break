@@ -76,7 +76,7 @@ function SongView({
         </div>
         {!isOnlyBaseInfo && (
           <SongActionsView
-            duration={32}
+            duration={info.duration}
             className="pr-12"
             onDelete={onDelete}
             onEdit={onEdit}
