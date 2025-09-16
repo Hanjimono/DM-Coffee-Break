@@ -38,3 +38,5 @@ next-env.d.ts
 
 database.sqlite
 .vscode
+main.log
+*.log
