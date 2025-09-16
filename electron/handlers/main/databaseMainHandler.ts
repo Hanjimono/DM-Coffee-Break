@@ -20,6 +20,8 @@ import { Sequelize } from "sequelize"
 import { handleIpcMain } from "./main"
 import { DatabaseHandler } from "@cross/types/handlers/database"
 import { DATABASE_IPC_CHANNELS } from "@cross/constants/ipc"
+import { SettingsService } from "../../services/SettingsService"
+import { container } from "../../container"
 
 /**
  * Function to check if the database is connected
@@ -43,17 +45,7 @@ handleIpcMain<DatabaseHandler["authenticate"]>(
 handleIpcMain<DatabaseHandler["checkVersion"]>(
   DATABASE_IPC_CHANNELS.CHECK_VERSION,
   async (event, lastVersion) => {
-    try {
-      const currentVersion = await Settings.findOne({
-        where: { key: SETTING_DATABASE_VERSION_KEY }
-      })
-      if (!currentVersion) {
-        return false
-      }
-      return currentVersion.value === lastVersion
-    } catch (error) {
-      return false
-    }
+    return container.settingsService.checkDatabaseVersion(lastVersion)
   }
 )
 
@@ -87,18 +79,7 @@ handleIpcMain<DatabaseHandler["sync"]>(
         logger: console
       })
       await umzug.up()
-      let currentVersion = await Settings.findOne({
-        where: { key: SETTING_DATABASE_VERSION_KEY }
-      })
-      if (!currentVersion) {
-        currentVersion = Settings.build({
-          key: SETTING_DATABASE_VERSION_KEY,
-          value: "0.0.0",
-          category: SETTINGS_CATEGORIES.GENERAL
-        })
-      }
-      currentVersion.value = lastVersion
-      await currentVersion.save()
+      await container.settingsService.saveNewDatabaseVersion(lastVersion)
       return lastVersion
     } catch (error) {
       console.log("🚀 ----------------------------------🚀")

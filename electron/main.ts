@@ -5,14 +5,42 @@ import { startServer } from "next/dist/server/lib/start-server"
 import { discordMusicBot } from "./discordMusicBotObject"
 import log from "electron-log/main"
 import path, { join } from "path"
+import fs from "fs"
 
 let mainWindow: BrowserWindow
 let splash: BrowserWindow
 
+const readConfigLogFile = () => {
+  const configPath = path.resolve(
+    is.dev ? "./" : process.resourcesPath,
+    "config.json"
+  )
+  try {
+    const raw = fs.readFileSync(configPath, "utf-8")
+    const config = JSON.parse(raw)
+    return config
+  } catch (error) {
+    log.error("Error reading config file:", error)
+    return {}
+  }
+}
+
 const createWindow = () => {
   log.initialize()
 
-  log.info("Starting application")
+  log.transports.file.resolvePathFn = (variables) =>
+    path.resolve(is.dev ? "./" : process.resourcesPath, "main.log")
+
+  const config = readConfigLogFile()
+
+  log.transports.console.level = config.logLevel || "warn"
+  log.transports.file.level = config.logLevel || "warn"
+  if (is.dev) {
+    log.transports.console.level = "debug"
+    log.transports.file.level = "debug"
+  }
+
+  log.debug("Starting application")
   mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
@@ -58,10 +86,10 @@ const createWindow = () => {
     } else {
       try {
         const port = await startNextJSServer()
-        console.log("Next.js server started on port:", port)
+        log.debug("Next.js server started on port:", port)
         mainWindow.loadURL(`http://localhost:${port}`)
       } catch (error) {
-        console.error("Error starting Next.js server:", error)
+        log.debug("Error starting Next.js server:", error)
       }
     }
   }
@@ -88,7 +116,7 @@ const startNextJSServer = async () => {
 
     return nextJSPort
   } catch (error) {
-    console.error("Error starting Next.js server:", error)
+    log.error("Error starting Next.js server:", error)
     throw error
   }
 }
@@ -106,7 +134,7 @@ app.on("window-all-closed", () => {
   if (discordMusicBot) {
     discordMusicBot.stopSong()
   }
-  log.info("Closing application")
+  log.debug("Closing application")
   if (process.platform !== "darwin") app.quit()
 })
 
