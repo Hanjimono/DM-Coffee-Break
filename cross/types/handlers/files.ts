@@ -1,3 +1,5 @@
+import { RendererHandler } from "./main"
+
 export interface FilesHandler {
-  openSelectFileDialog: () => Promise<string | undefined>
+  openSelectFileDialog: RendererHandler<() => Promise<string | undefined>>
 }

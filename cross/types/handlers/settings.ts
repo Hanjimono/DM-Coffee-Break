@@ -2,7 +2,7 @@ import {
   AvailableSettingsCategories,
   UserSettings
 } from "@cross/types/database/settings"
-import { SONG_CARD_SETTINGS_HANDLER } from "./songCardSettings"
+import { SongCardSettingsHandler } from "./songCardSettings"
 
 /**
  * Handler for settings operations with the database
@@ -25,5 +25,5 @@ export interface SettingsHandler {
   /**
    * Handler for song card settings operations with the database
    */
-  songCard: SONG_CARD_SETTINGS_HANDLER
+  songCard: SongCardSettingsHandler
 }

@@ -1,4 +1,5 @@
 import { AvailableDictionaries, DictionaryData } from "../dictionary"
+import { RendererHandler } from "./main"
 
 /**
  * Interface representing a handler for media-related operations.
@@ -9,5 +10,7 @@ export interface DictionaryHandler {
    *
    * @returns
    */
-  get: (dictionaryType: AvailableDictionaries) => Promise<DictionaryData[]>
+  get: RendererHandler<
+    (dictionaryType: AvailableDictionaries) => Promise<DictionaryData[]>
+  >
 }

@@ -3,6 +3,7 @@ import { SettingsHandler } from "./settings"
 import { MediaHandler } from "./media"
 import { DictionaryHandler } from "./dictionary"
 import { TagHandler } from "./tag"
+import { RendererHandler } from "./main"
 
 /**
  * Interface representing a handler for database operations.
@@ -13,7 +14,7 @@ export interface DatabaseHandler {
    *
    * @returns A promise that resolves to a boolean indicating whether the authentication was successful.
    */
-  authenticate: () => Promise<boolean>
+  authenticate: RendererHandler<() => Promise<boolean>>
 
   /**
    * Checks if the database version matches the provided version.
@@ -21,7 +22,9 @@ export interface DatabaseHandler {
    * @param lastVersion - The last known version of the database.
    * @returns A promise that resolves to a boolean indicating whether the version matches.
    */
-  checkVersion: (lastVersion: DatabaseVersion) => Promise<boolean>
+  checkVersion: RendererHandler<
+    (lastVersion: DatabaseVersion) => Promise<boolean>
+  >
 
   /**
    * Synchronizes the database to the latest version.
@@ -30,14 +33,16 @@ export interface DatabaseHandler {
    * @param lastVersion - The last known version of the database.
    * @returns A promise that resolves to the new version of the database.
    */
-  sync: (lastVersion: DatabaseVersion) => Promise<DatabaseVersion>
+  sync: RendererHandler<
+    (lastVersion: DatabaseVersion) => Promise<DatabaseVersion>
+  >
 
   /**
    * Retrieves the current version of the database.
    *
    * @returns A promise that resolves to the current version of the database.
    */
-  getVersion: () => Promise<DatabaseVersion>
+  getVersion: RendererHandler<() => Promise<DatabaseVersion>>
 
   /**
    * Handles settings related operations in the database.

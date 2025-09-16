@@ -1,10 +1,6 @@
-import { ipcMain } from "electron"
 import { sequelize } from "../../database/connect"
 import { DatabaseVersion } from "@cross/types/database/settings/version"
 import { Settings } from "../../database/models/settings"
-import { MediaCategory } from "../../database/models/mediaCategory"
-import { Tag } from "../../database/models/tag"
-import { Song } from "../../database/models/song"
 import { SETTING_DATABASE_VERSION_KEY } from "@cross/constants/mainSettings"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { DEFAULT_USER_SETTINGS } from "@cross/constants/settings"
@@ -21,26 +17,32 @@ import { Umzug, SequelizeStorage } from "umzug"
 import path from "path"
 import { is } from "@electron-toolkit/utils"
 import { Sequelize } from "sequelize"
+import { handleIpcMain } from "./main"
+import { DatabaseHandler } from "@cross/types/handlers/database"
+import { DATABASE_IPC_CHANNELS } from "@cross/constants/ipc"
 
 /**
  * Function to check if the database is connected
  */
-ipcMain.handle("database-authenticate", async () => {
-  try {
-    await sequelize.authenticate()
-    return true
-  } catch (error) {
-    return false
+handleIpcMain<DatabaseHandler["authenticate"]>(
+  DATABASE_IPC_CHANNELS.AUTHENTICATE,
+  async () => {
+    try {
+      await sequelize.authenticate()
+      return true
+    } catch (error) {
+      return false
+    }
   }
-})
+)
 
 /**
  * Function to check if a database version stored in the settings is the same as
  * the last version defined in the application code
  */
-ipcMain.handle(
-  "database-checkVersion",
-  async (event, lastVersion: DatabaseVersion) => {
+handleIpcMain<DatabaseHandler["checkVersion"]>(
+  DATABASE_IPC_CHANNELS.CHECK_VERSION,
+  async (event, lastVersion) => {
     try {
       const currentVersion = await Settings.findOne({
         where: { key: SETTING_DATABASE_VERSION_KEY }
@@ -58,65 +60,73 @@ ipcMain.handle(
 /**
  * Function to sync the database, applying all the migrations
  */
-ipcMain.handle("database-sync", async (event, lastVersion: DatabaseVersion) => {
-  try {
-    const umzug = new Umzug({
-      migrations: {
-        glob: is.dev
-          ? "resources/migrations/*.js"
-          : path.resolve(process.resourcesPath).replaceAll("\\", "/") +
-            "/migrations/*.js",
-        resolve: ({ name, path, context }) => {
-          if (!path) {
-            throw new Error("Migration path is undefined")
+handleIpcMain<DatabaseHandler["sync"]>(
+  DATABASE_IPC_CHANNELS.SYNC,
+  async (event, lastVersion) => {
+    try {
+      const umzug = new Umzug({
+        migrations: {
+          glob: is.dev
+            ? "resources/migrations/*.js"
+            : path.resolve(process.resourcesPath).replaceAll("\\", "/") +
+              "/migrations/*.js",
+          resolve: ({ name, path, context }) => {
+            if (!path) {
+              throw new Error("Migration path is undefined")
+            }
+            const migration = require(path)
+            return {
+              name,
+              up: async () => migration.up(context, Sequelize),
+              down: async () => migration.down(context, Sequelize)
+            }
           }
-          const migration = require(path)
-          return {
-            name,
-            up: async () => migration.up(context, Sequelize),
-            down: async () => migration.down(context, Sequelize)
-          }
-        }
-      },
-      context: sequelize.getQueryInterface(),
-      storage: new SequelizeStorage({ sequelize }),
-      logger: console
-    })
-    await umzug.up()
-    let currentVersion = await Settings.findOne({
-      where: { key: SETTING_DATABASE_VERSION_KEY }
-    })
-    if (!currentVersion) {
-      currentVersion = Settings.build({
-        key: SETTING_DATABASE_VERSION_KEY,
-        value: "0.0.0",
-        category: SETTINGS_CATEGORIES.GENERAL
+        },
+        context: sequelize.getQueryInterface(),
+        storage: new SequelizeStorage({ sequelize }),
+        logger: console
       })
+      await umzug.up()
+      let currentVersion = await Settings.findOne({
+        where: { key: SETTING_DATABASE_VERSION_KEY }
+      })
+      if (!currentVersion) {
+        currentVersion = Settings.build({
+          key: SETTING_DATABASE_VERSION_KEY,
+          value: "0.0.0",
+          category: SETTINGS_CATEGORIES.GENERAL
+        })
+      }
+      currentVersion.value = lastVersion
+      await currentVersion.save()
+      return lastVersion
+    } catch (error) {
+      console.log("🚀 ----------------------------------🚀")
+      console.log("🚀 ~ ipcMain.handle ~ error:", error)
+      console.log("🚀 ----------------------------------🚀")
+      return "0.0.0"
     }
-    currentVersion.value = lastVersion
-    await currentVersion.save()
-    return lastVersion
-  } catch (error) {
-    console.log("🚀 ----------------------------------🚀")
-    console.log("🚀 ~ ipcMain.handle ~ error:", error)
-    console.log("🚀 ----------------------------------🚀")
-    return "0.0.0"
   }
-})
+)
 
 /**
  * Function to get the current database version stored in the settings
  */
-ipcMain.handle("database-getVersion", async () => {
-  try {
-    const currentVersion = await Settings.findOne({
-      where: { key: SETTING_DATABASE_VERSION_KEY }
-    })
-    return currentVersion ? currentVersion.value : "0.0.0"
-  } catch (error) {
-    return "0.0.0"
+handleIpcMain<DatabaseHandler["getVersion"]>(
+  DATABASE_IPC_CHANNELS.GET_VERSION,
+  async () => {
+    try {
+      const currentVersion = await Settings.findOne({
+        where: { key: SETTING_DATABASE_VERSION_KEY }
+      })
+      return currentVersion
+        ? (currentVersion.value as DatabaseVersion)
+        : "0.0.0"
+    } catch (error) {
+      return "0.0.0"
+    }
   }
-})
+)
 
 export async function getUserSettingsFromDb() {
   let settings = { ...DEFAULT_USER_SETTINGS }
@@ -190,18 +200,19 @@ export async function getUserSettingsFromDb() {
 /**
  * Function to get the user settings from the database
  */
-ipcMain.handle("database-settings-get", async () => {
-  return await getUserSettingsFromDb()
-})
+handleIpcMain<DatabaseHandler["settings"]["get"]>(
+  "database-settings-get",
+  async () => {
+    return await getUserSettingsFromDb()
+  }
+)
 
-ipcMain.handle(
+/**
+ * Function to set a user setting in the database
+ */
+handleIpcMain<DatabaseHandler["settings"]["set"]>(
   "database-settings-set",
-  async (
-    event,
-    key: string,
-    value: string,
-    category?: AvailableSettingsCategories
-  ) => {
+  async (event, key: string, value: string, category) => {
     try {
       const setting = await Settings.findOne({
         where: { key }

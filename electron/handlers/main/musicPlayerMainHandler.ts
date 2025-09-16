@@ -1,5 +1,4 @@
 // system
-import { ipcMain } from "electron"
 import log from "electron-log/main"
 // logic
 import { discordMusicBot } from "../../discordMusicBotObject"
@@ -11,6 +10,9 @@ import { MusicPlayerBaseError } from "@cross/errors/musicPlayerBaseError"
 import { MEDIA_PLAYER_SETTINGS_BOT_KEYS } from "@cross/constants/settingsMedia"
 // types
 import { SongInfo } from "@cross/types/database/media"
+import { handleIpcMain } from "./main"
+import { MusicPlayerHandler } from "@cross/types/handlers/musicPlayer"
+import { MUSIC_IPC_CHANNELS } from "@cross/constants/ipc"
 
 /**
  * Prepares the Discord music bot by initializing it with user settings from the database.
@@ -55,43 +57,55 @@ const handleDiscordMusicBotError = (error: unknown) => {
   return formattedError.getResponse()
 }
 
-ipcMain.handle("music-player-get-status", async () => {
-  try {
-    const bot = await prepareDiscordMusicBot()
-    return bot.getStatus()
-  } catch (error) {
-    return handleDiscordMusicBotError(error)
+handleIpcMain<MusicPlayerHandler["getStatus"]>(
+  MUSIC_IPC_CHANNELS.GET_STATUS,
+  async () => {
+    try {
+      const bot = await prepareDiscordMusicBot()
+      return bot.getStatus()
+    } catch (error) {
+      return handleDiscordMusicBotError(error)
+    }
   }
-})
+)
 
-ipcMain.handle("music-player-play", async (event, song: SongInfo) => {
-  try {
-    const bot = await prepareDiscordMusicBot()
-    return bot.tryToPlayANewSong(song)
-  } catch (error) {
-    return handleDiscordMusicBotError(error)
+handleIpcMain<MusicPlayerHandler["play"]>(
+  MUSIC_IPC_CHANNELS.PLAY,
+  async (event, song: SongInfo) => {
+    try {
+      const bot = await prepareDiscordMusicBot()
+      return bot.tryToPlayANewSong(song)
+    } catch (error) {
+      return handleDiscordMusicBotError(error)
+    }
   }
-})
+)
 
-ipcMain.handle("music-player-resume", async () => {
-  try {
-    const bot = await prepareDiscordMusicBot()
-    return bot.resumeSong()
-  } catch (error) {
-    return handleDiscordMusicBotError(error)
+handleIpcMain<MusicPlayerHandler["resume"]>(
+  MUSIC_IPC_CHANNELS.RESUME,
+  async () => {
+    try {
+      const bot = await prepareDiscordMusicBot()
+      return bot.resumeSong()
+    } catch (error) {
+      return handleDiscordMusicBotError(error)
+    }
   }
-})
+)
 
-ipcMain.handle("music-player-pause", async () => {
-  try {
-    const bot = await prepareDiscordMusicBot()
-    return bot.pauseSong()
-  } catch (error) {
-    return handleDiscordMusicBotError(error)
+handleIpcMain<MusicPlayerHandler["pause"]>(
+  MUSIC_IPC_CHANNELS.PAUSE,
+  async () => {
+    try {
+      const bot = await prepareDiscordMusicBot()
+      return bot.pauseSong()
+    } catch (error) {
+      return handleDiscordMusicBotError(error)
+    }
   }
-})
+)
 
-ipcMain.handle("music-player-stop", async () => {
+handleIpcMain<MusicPlayerHandler["stop"]>(MUSIC_IPC_CHANNELS.STOP, async () => {
   try {
     const bot = await prepareDiscordMusicBot()
     return bot.stopSong()

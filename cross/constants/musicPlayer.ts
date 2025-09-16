@@ -9,7 +9,7 @@ export const MUSIC_PLAYER_STATUS = {
 
 export const MUSIC_PLAYER_EMPTY_RESPONSE = {
   status: MUSIC_PLAYER_STATUS.EMPTY,
-  song: null,
-  queue: [],
+  song: undefined,
+  queue: undefined,
   currentSongIndex: undefined
 } as const

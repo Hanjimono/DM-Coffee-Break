@@ -4,17 +4,25 @@ import { songCardSettingsRendererHandler } from "./songCardSettingsRendererHandl
 import { mediaRendererHandler } from "./mediaRendererHandler"
 import { dictionaryRendererHandler } from "./dictionaryRendererHandler"
 import { tagRendererHandler } from "./tagRendererHandler"
+import { DATABASE_IPC_CHANNELS } from "@cross/constants/ipc"
 
 export const databaseRendererHandler: DatabaseHandler = {
-  authenticate: async () => ipcRenderer.invoke("database-authenticate"),
+  authenticate: async () =>
+    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.AUTHENTICATE),
   checkVersion: async (lastVersion) =>
-    ipcRenderer.invoke("database-checkVersion", lastVersion),
-  sync: async (lastVersion) => ipcRenderer.invoke("database-sync", lastVersion),
-  getVersion: async () => ipcRenderer.invoke("database-getVersion"),
+    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.CHECK_VERSION, lastVersion),
+  sync: async (lastVersion) =>
+    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SYNC, lastVersion),
+  getVersion: async () => ipcRenderer.invoke(DATABASE_IPC_CHANNELS.GET_VERSION),
   settings: {
-    get: async () => ipcRenderer.invoke("database-settings-get"),
+    get: async () => ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SETTINGS_GET),
     set: async (key, value, category) =>
-      ipcRenderer.invoke("database-settings-set", key, value, category),
+      ipcRenderer.invoke(
+        DATABASE_IPC_CHANNELS.SETTINGS_SET,
+        key,
+        value,
+        category
+      ),
     songCard: songCardSettingsRendererHandler
   },
   media: mediaRendererHandler,

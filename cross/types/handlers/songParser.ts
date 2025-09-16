@@ -1,4 +1,5 @@
 import { ParsedSongInfo, SongToParseData } from "@cross/types/media/song"
+import { RendererHandler } from "./main"
 
 /**
  * Handler for parsing songs from different web sources
@@ -9,5 +10,7 @@ export interface SongParserHandler {
    * @param data Data to parse song info from
    * @returns Parsed song info
    */
-  parseSongInfo: (data: SongToParseData) => Promise<ParsedSongInfo>
+  parseSongInfo: RendererHandler<
+    (data: SongToParseData) => Promise<ParsedSongInfo>
+  >
 }
