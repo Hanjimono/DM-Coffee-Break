@@ -4,6 +4,7 @@ export const DATABASE_IPC_CHANNELS = {
   SYNC: "database-sync",
   GET_VERSION: "database-get-version",
   SETTINGS_GET: "database-settings-get",
+  SETTINGS_GET_DOMAIN: "database-settings-get-domain",
   SETTINGS_SET: "database-settings-set"
 } as const
 

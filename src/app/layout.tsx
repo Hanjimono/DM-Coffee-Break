@@ -6,8 +6,6 @@ import DatabaseProtectedComponent from "@/components/Containers/Protectors/Datab
 import { mainFont } from "@/constants/fonts"
 // ui
 import Foundation from "@/ui/Layout/Foundation"
-import Beam from "@/ui/Layout/Beam"
-import Frame from "@/ui/Layout/Frame"
 // types and styles
 import "./global.css"
 

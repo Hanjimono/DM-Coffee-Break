@@ -22,6 +22,7 @@ import { DatabaseHandler } from "@cross/types/handlers/database"
 import { DATABASE_IPC_CHANNELS } from "@cross/constants/ipc"
 import { SettingsService } from "../../services/SettingsService"
 import { container } from "../../container"
+import { SettingsHandler } from "@cross/types/handlers/settings"
 
 /**
  * Function to check if the database is connected
@@ -179,12 +180,23 @@ export async function getUserSettingsFromDb() {
 }
 
 /**
+ * @deprecated use getDomain instead
  * Function to get the user settings from the database
  */
 handleIpcMain<DatabaseHandler["settings"]["get"]>(
   "database-settings-get",
   async () => {
     return await getUserSettingsFromDb()
+  }
+)
+
+/**
+ * Function to get the user settings from the database
+ */
+handleIpcMain<SettingsHandler["getDomain"]>(
+  DATABASE_IPC_CHANNELS.SETTINGS_GET_DOMAIN,
+  async () => {
+    return await container.settingsService.getUserSettings()
   }
 )
 

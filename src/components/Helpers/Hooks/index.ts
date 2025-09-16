@@ -19,11 +19,9 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useStore } from "@/store"
 // constants
 import { DEFAULT_USER_SETTINGS } from "@cross/constants/settings"
+import { getDatabase } from "@/constants/singletons/databaseSingleton"
 // types
-import {
-  AvailableSettingsCategories,
-  UserSettings
-} from "@cross/types/database/settings"
+import { AvailableSettingsCategories } from "@cross/types/database/settings"
 import { DatabaseHandler } from "@cross/types/handlers/database"
 import { FilesHandler } from "@cross/types/handlers/files"
 
@@ -60,7 +58,8 @@ export const Store = createContext({
 export const useCreateDatabaseContext = () => {
   const [database, setDatabase] = useState({})
   useEffect(() => {
-    setDatabase((window as any).database as DatabaseHandler)
+    const database = getDatabase()
+    setDatabase(database)
     return () => {
       setDatabase({} as DatabaseHandler)
     }

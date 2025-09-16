@@ -4,7 +4,7 @@ import { StateCreator } from "zustand"
 import { DEFAULT_USER_SETTINGS } from "@cross/constants/settings"
 // Types
 import { UserSettings } from "@cross/types/database/settings"
-import { DatabaseHandler } from "@cross/types/handlers/database"
+import { getDatabase } from "@/constants/singletons/databaseSingleton"
 
 export interface GlobalState {
   globalSettings: UserSettings
@@ -14,8 +14,7 @@ export interface GlobalState {
 export const createGlobalStore: StateCreator<GlobalState> = (set, get) => ({
   globalSettings: DEFAULT_USER_SETTINGS,
   updateSettings: async () => {
-    if (typeof window === "undefined") return
-    const database: DatabaseHandler = (window as any).database
+    const database = getDatabase()
     const settings = await database.settings.get()
     if (settings) {
       set({ globalSettings: settings })

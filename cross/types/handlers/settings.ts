@@ -1,6 +1,7 @@
 import {
   AvailableSettingsCategories,
-  UserSettings
+  UserSettings,
+  UserSettingsDomain
 } from "@cross/types/database/settings"
 import { SongCardSettingsHandler } from "./songCardSettings"
 
@@ -9,9 +10,15 @@ import { SongCardSettingsHandler } from "./songCardSettings"
  */
 export interface SettingsHandler {
   /**
+   * @deprecated use getDomain instead
    * Get all of the user settings from the database
    */
   get: () => Promise<UserSettings>
+
+  /**
+   * Get all of the user settings from the database
+   */
+  getDomain: () => Promise<UserSettingsDomain>
 
   /**
    * Save or Edit setting in the database via key-value pair

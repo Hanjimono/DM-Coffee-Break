@@ -6,7 +6,7 @@ import LoadingScreen from "@/components/Containers/LoadingScreen"
 import { useDatabase, useUpdateSettings } from "@/components/Helpers/Hooks"
 
 //TODO: move to constants or env
-export const CURRENT_DATABASE_VERSION = "0.0.3"
+export const CURRENT_DATABASE_VERSION = "0.0.4"
 
 /**
  * A component that ensures the database is authenticated and the version is valid before rendering its children.

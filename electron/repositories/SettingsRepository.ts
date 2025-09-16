@@ -3,10 +3,14 @@ import { Settings } from "../database/models/settings"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 
 export class SettingsRepository {
-  async getCurrentDatabaseVersion() {
+  async getSettingByKey(key: string) {
     return await Settings.findOne({
-      where: { key: SETTING_DATABASE_VERSION_KEY }
+      where: { key }
     })
+  }
+
+  async getCurrentDatabaseVersion() {
+    return await this.getSettingByKey(SETTING_DATABASE_VERSION_KEY)
   }
 
   async saveNewDatabaseVersion(version: string) {
@@ -20,5 +24,13 @@ export class SettingsRepository {
     }
     currentVersion.value = version
     await currentVersion.save()
+  }
+
+  async getBaseUserSettings() {
+    return await Settings.findAll({
+      where: {
+        category: [SETTINGS_CATEGORIES.GENERAL, SETTINGS_CATEGORIES.MEDIA]
+      }
+    })
   }
 }
