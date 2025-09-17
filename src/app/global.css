@@ -92,9 +92,9 @@
   --color-cancel-icon: #f4e3e3;
   --color-cancel-transparent-icon: #f2f2f2;
 
-  --color-remove-main: #d04a47;
-  --color-remove-hover: #e05a57;
-  --color-remove-pressed: #b63a37;
+  --color-remove-main: #df6979;
+  --color-remove-hover: #d1606f;
+  --color-remove-pressed: #b94d5a;
   --color-remove-text: #3c0e0d;
   --color-remove-icon: #f4e3e3;
   --color-remove-transparent-icon: #f2f2f2;
@@ -121,7 +121,7 @@
   --color-mask: #212d42;
 
   --color-title: #edc3b5;
-  --color-text: #f4e3e3;
+  --color-text: #edc3b5;
 
   --z-index-under-mask: 100;
 
@@ -159,7 +159,7 @@
     --padding-step-2sm
   ); /* same level elements, like two inputs in the form, but more close than usual */
   --gap-same-level: var(
-    --padding-step-md
+    --padding-step-lg
   ); /* same level elements, like two inputs in the form */
   --gap-distant: var(
     --padding-step-2xl
@@ -184,7 +184,7 @@
   --padding-panel-tiny: var(--padding-step-tiny) var(--padding-step-xs);
   --padding-action: var(--padding-step-xs) var(--padding-step-sm);
   --padding-action-small: var(--padding-step-tiny) var(--padding-step-sm);
-  --padding-form-element: var(--padding-step-xs) var(--padding-step-2xs);
+  --padding-form-element: var(--padding-step-xs) var(--padding-step-sm);
   /* Endregion basic spacing rule */
 
   /* Region ui-settings */
@@ -199,7 +199,7 @@
   --height-form-element-sign: 0.75rem;
   --width-form-element-sign: 0.75rem;
   --radius-button: 1rem;
-  --radius-form-element: 0.375rem;
+  --radius-form-element: 0.75rem;
   /* Endregion ui-settings */
 }
 
@@ -222,7 +222,7 @@
 }
 
 html {
-  color: #f4e3e3;
+  color: #edc3b5;
   font-size: 16px;
   line-height: 16px;
 }
