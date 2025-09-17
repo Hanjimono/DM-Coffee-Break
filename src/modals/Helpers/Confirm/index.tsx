@@ -3,12 +3,12 @@ import { cx } from "class-variance-authority"
 import { twMerge } from "tailwind-merge"
 // Ui
 import Modal from "@/ui/Navigation/Modal"
-import Room from "@/ui/Layout/Room"
 import Text from "@/ui/Presentation/Text"
-import Beam from "@/ui/Layout/Beam"
+import Button from "@/ui/Actions/Button"
+import Inline from "@/ui/Layout/Inline"
+import Stack from "@/ui/Layout/Stack"
 // Styles and types
 import { ConfirmModalProps } from "./types"
-import Button from "@/ui/Actions/Button"
 
 /**
  * Renders a confirm modal dialog with customizable text, title, and action buttons.
@@ -49,17 +49,17 @@ function ConfirmModal({
   }
   return (
     <Modal title={title} className={calculatedClassNames}>
-      <Room bottomGap>
+      <Stack>
         <Text>{text}</Text>
-      </Room>
-      <Beam>
-        <Button onClick={() => handleAction(true)} success>
-          {confirmButtonTitle}
-        </Button>
-        <Button onClick={() => handleAction(false)} cancel>
-          {cancelButtonTitle}
-        </Button>
-      </Beam>
+        <Inline className="justify-end" gap="close">
+          <Button onClick={() => handleAction(false)} primary transparent>
+            {cancelButtonTitle}
+          </Button>
+          <Button onClick={() => handleAction(true)} primary>
+            {confirmButtonTitle}
+          </Button>
+        </Inline>
+      </Stack>
     </Modal>
   )
 }

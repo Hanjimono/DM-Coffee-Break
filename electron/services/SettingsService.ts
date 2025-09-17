@@ -19,6 +19,16 @@ export class SettingsService extends BaseService {
 
   @BaseService.logErrors(false)
   /**
+   * Retrieves the current database version from the settings.
+   */
+  async getCurrentDatabaseVersion(): Promise<DatabaseVersion> {
+    const currentVersionSetting =
+      await this.settingsRepository.getCurrentDatabaseVersion()
+    return (currentVersionSetting?.value as DatabaseVersion) ?? "0.0.0"
+  }
+
+  @BaseService.logErrors(false)
+  /**
    * Checks if the current database version matches the specified last version.
    *
    * @param lastVersion - The version to compare against the current database version.

@@ -23,6 +23,7 @@ import { DATABASE_IPC_CHANNELS } from "@cross/constants/ipc"
 import { SettingsService } from "../../services/SettingsService"
 import { container } from "../../container"
 import { SettingsHandler } from "@cross/types/handlers/settings"
+import Logger from "electron-log/main"
 
 /**
  * Function to check if the database is connected
@@ -77,15 +78,15 @@ handleIpcMain<DatabaseHandler["sync"]>(
         },
         context: sequelize.getQueryInterface(),
         storage: new SequelizeStorage({ sequelize }),
-        logger: console
+        logger: Logger
       })
       await umzug.up()
-      await container.settingsService.saveNewDatabaseVersion(lastVersion)
-      return lastVersion
+      if (await container.settingsService.saveNewDatabaseVersion(lastVersion)) {
+        return lastVersion
+      }
+      return "0.0.0"
     } catch (error) {
-      console.log("🚀 ----------------------------------🚀")
-      console.log("🚀 ~ ipcMain.handle ~ error:", error)
-      console.log("🚀 ----------------------------------🚀")
+      Logger.error("Database sync error:", error)
       return "0.0.0"
     }
   }
@@ -97,16 +98,7 @@ handleIpcMain<DatabaseHandler["sync"]>(
 handleIpcMain<DatabaseHandler["getVersion"]>(
   DATABASE_IPC_CHANNELS.GET_VERSION,
   async () => {
-    try {
-      const currentVersion = await Settings.findOne({
-        where: { key: SETTING_DATABASE_VERSION_KEY }
-      })
-      return currentVersion
-        ? (currentVersion.value as DatabaseVersion)
-        : "0.0.0"
-    } catch (error) {
-      return "0.0.0"
-    }
+    return await container.settingsService.getCurrentDatabaseVersion()
   }
 )
 

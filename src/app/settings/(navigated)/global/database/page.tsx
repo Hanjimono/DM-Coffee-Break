@@ -1,5 +1,5 @@
 // components
-import DatabaseSyncForm from "../../../database/syncForm"
+import DatabaseSyncForm from "@/app/settings/database/syncForm"
 // ui
 import WallDecorated from "@/ui/Layout/Decorators/WallDecorated"
 

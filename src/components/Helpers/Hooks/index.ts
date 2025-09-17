@@ -24,6 +24,7 @@ import { getDatabase } from "@/constants/singletons/databaseSingleton"
 import { AvailableSettingsCategories } from "@cross/types/database/settings"
 import { DatabaseHandler } from "@cross/types/handlers/database"
 import { FilesHandler } from "@cross/types/handlers/files"
+import Logger from "electron-log/renderer"
 
 /**
  * Context for accessing the database handler.
@@ -184,4 +185,43 @@ export const useSettingsFormOnFly = <FormValues extends FieldValues>(
 export const useFileHandler = () => {
   const filesHandler = (window as any).filesHandler as FilesHandler
   return filesHandler
+}
+
+/**
+ * Custom hook that wraps an asynchronous function with loading state management and toast notifications.
+ *
+ * @param func - The asynchronous function to be executed. Should return a Promise that resolves to a boolean indicating success.
+ * @param successMessage - The message to display in a success toast when the function resolves to `true`.
+ * @param errorMessage - The message to display in an error toast when the function resolves to `false` or throws an error.
+ * @returns A tuple containing:
+ *   - The wrapped function with loading and toast logic.
+ *   - A boolean indicating the loading state.
+ */
+export const useFunctionWithLoadingAndToast = (
+  func: (...args: any[]) => Promise<boolean>,
+  successMessage: string,
+  errorMessage: string
+): [(...args: any[]) => Promise<boolean>, boolean] => {
+  const [loading, setLoading] = useState(false)
+  const successSnack = useStore((state) => state.successSnack)
+  const errorSnack = useStore((state) => state.errorSnack)
+  const wrappedFunction = async (...args: any[]) => {
+    try {
+      setLoading(true)
+      const result = await func(...args)
+      setLoading(false)
+      if (result) {
+        successSnack(successMessage)
+      } else {
+        errorSnack(errorMessage)
+      }
+      return result
+    } catch (error) {
+      Logger.error(error)
+      setLoading(false)
+      errorSnack(errorMessage)
+      return false
+    }
+  }
+  return [wrappedFunction, loading]
 }
