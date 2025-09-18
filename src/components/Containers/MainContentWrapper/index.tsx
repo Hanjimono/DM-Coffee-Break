@@ -6,10 +6,11 @@ import SideMenu from "@/components/Navigation/SideMenu"
 import PlayerLoader from "@/components/Media/PlayerLoader"
 // Ui
 import Frame from "@/ui/Layout/Frame"
-import Beam from "@/ui/Layout/Beam"
+import SmartImage from "@/ui/Presentation/SmartImage"
+import Stack from "@/ui/Layout/Stack"
+import Inline from "@/ui/Layout/Inline"
 // Styles and types
 import { MainContentWrapperProps } from "./types"
-import SmartImage from "@/ui/Presentation/SmartImage"
 
 /**
  * Wrapper for main content. It usually used in layouts to wrap the main content of the page.
@@ -33,14 +34,16 @@ function MainContentWrapper({
   if (hideMenu)
     return <Frame className={calculatedClassNames}>{children}</Frame>
   return (
-    <Beam withoutWrap whole withoutGap className="relative">
-      <SideMenu />
-      <div className="flex flex-col w-full h-full overflow-hidden">
-        <div className="flex-1 flex relative overflow-hidden">
-          <Frame className="main-content relative z-10">{children}</Frame>
+    <Stack className="relative flex flex-1 h-full w-full">
+      <Inline className="flex-1" gap="none">
+        <SideMenu />
+        <div className="flex flex-col w-full h-full overflow-hidden">
+          <div className="flex-1 flex relative overflow-hidden">
+            <Frame className="main-content relative z-10">{children}</Frame>
+          </div>
+          <PlayerControl />
         </div>
-        <PlayerControl />
-      </div>
+      </Inline>
       <PlayerLoader />
       {bgImageType !== "none" && (
         <div className="absolute top-0 left-0 right-0 bottom-0 z-0">
@@ -51,7 +54,7 @@ function MainContentWrapper({
           />
         </div>
       )}
-    </Beam>
+    </Stack>
   )
 }
 export default MainContentWrapper

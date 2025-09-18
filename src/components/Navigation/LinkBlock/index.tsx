@@ -11,8 +11,10 @@ import Title from "@/ui/Presentation/Title"
 import Text from "@/ui/Presentation/Text"
 // Styles and types
 import { LinkBlockProps } from "./types"
+import { formatClassnames } from "@/ui/Skeleton/utils"
 
 /**
+ * @deprecated use ImageButton instead
  * A block with image representing a link or a button to navigate to a different page.
  *
  * @param {string} className - Additional class names to apply to the link block.
@@ -34,12 +36,10 @@ function LinkBlock({
   onClick,
   big
 }: LinkBlockProps) {
-  const calculatedClassNames = twMerge(
-    cx(
-      "relative link-block flex flex-col rounded-4xl overflow-hidden min-w-48 max-w-48",
-      !!big && "min-w-72 max-w-72",
-      className
-    )
+  const calculatedClassNames = formatClassnames(
+    "relative link-block flex flex-col rounded-4xl overflow-hidden w-48 h-48",
+    !!big && "w-72 h-72",
+    className
   )
   return (
     <Link href={href || ""} onClick={onClick}>
@@ -58,7 +58,6 @@ function LinkBlock({
                   src={image}
                   alt={title || ""}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-gradient-from-link/80 to-gradient-to-link/0"></div>
               </div>
             )}
           </div>
