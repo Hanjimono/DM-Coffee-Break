@@ -69,35 +69,49 @@
   --color-primary-text: #f4e3e3;
   --color-primary-transparent: #f4e3e317;
   --color-primary-icon: #f4e3e3;
-  --color-primary-transparent: #f4e3e317;
+  --color-primary-icon-hover: #f4e3e3;
+  --color-primary-transparent-icon: #f4e3e317;
+  --color-primary-transparent-icon-hover: #f4e3e317;
 
   --color-secondary-main: #bb204e;
   --color-secondary-hover: #b21745;
   --color-secondary-pressed: #9e0f3b;
   --color-secondary-text: #f4e3e3;
+  --color-secondary-transparent: #f4e3e317;
   --color-secondary-icon: #f4e3e3;
-  --color-secondary-transparent-icon: #f2f2f2;
+  --color-secondary-icon-hover: #f4e3e3;
+  --color-secondary-transparent-icon: #f4e3e317;
+  --color-secondary-transparent-icon-hover: #f4e3e317;
 
-  --color-success-main: #656d4a;
-  --color-success-hover: #7b8a5f;
-  --color-success-pressed: #4d5639;
-  --color-success-text: #2e3222;
-  --color-success-icon: #f4e3e3;
-  --color-success-transparent-icon: #f2f2f2;
+  --color-success-main: #512a2f;
+  --color-success-hover: #461f24;
+  --color-success-pressed: #2f080d;
+  --color-success-text: #edc3b5;
+  --color-success-transparent: #f4e3e317;
+  --color-success-icon: #edc3b5;
+  --color-success-icon-hover: #e3613d;
+  --color-success-transparent-icon: #f4e3e317;
+  --color-success-transparent-icon-hover: #f4e3e317;
 
   --color-cancel-main: #b6ad90;
   --color-cancel-hover: #c1b8a0;
   --color-cancel-pressed: #a49b7e;
   --color-cancel-text: #615c4c;
+  --color-cancel-transparent: #f4e3e317;
   --color-cancel-icon: #f4e3e3;
-  --color-cancel-transparent-icon: #f2f2f2;
+  --color-cancel-icon-hover: #f4e3e3;
+  --color-cancel-transparent-icon: #f4e3e317;
+  --color-cancel-transparent-icon-hover: #f4e3e317;
 
   --color-remove-main: #df6979;
   --color-remove-hover: #d1606f;
   --color-remove-pressed: #b94d5a;
   --color-remove-text: #3c0e0d;
+  --color-remove-transparent: #f4e3e317;
   --color-remove-icon: #f4e3e3;
-  --color-remove-transparent-icon: #f2f2f2;
+  --color-remove-icon-hover: #f4e3e3;
+  --color-remove-transparent-icon: #f4e3e317;
+  --color-remove-transparent-icon-hover: #f4e3e317;
 
   --color-block-100: #8c565b;
   --color-block-200: #7b4c51;
