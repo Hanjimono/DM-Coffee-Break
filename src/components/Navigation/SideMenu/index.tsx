@@ -34,7 +34,7 @@ const EndItems = [
     icon: "settings",
     link: "/settings/global/database",
     iconType: "md" as IconType,
-    success: true,
+    tool: true,
     className: "mx-auto",
     iconSize: 25
   }
