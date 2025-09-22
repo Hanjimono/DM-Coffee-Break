@@ -1,8 +1,8 @@
 // Components
 import MainContentWrapper from "@/components/Containers/MainContentWrapper"
-import SettingsMenu from "@/components/Navigation/SettingsMenu"
-// Ui
-import Beam from "@/ui/Layout/Beam"
+import SettingsBlock from "@/components/Settings/SettingsBlock"
+import Wall from "@/ui/Layout/Wall"
+import ContentAppearTransition from "@/ui/Skeleton/Transition/ContentAppearTransition"
 
 export default function SettingsLayout({
   children
@@ -11,10 +11,13 @@ export default function SettingsLayout({
 }) {
   return (
     <MainContentWrapper>
-      <Beam withoutWrap whole withoutGap>
-        <SettingsMenu />
-        <div className="pl-44 w-full">{children}</div>
-      </Beam>
+      <Wall>
+        <SettingsBlock>
+          <ContentAppearTransition animationVariant="simple">
+            {children}
+          </ContentAppearTransition>
+        </SettingsBlock>
+      </Wall>
     </MainContentWrapper>
   )
 }

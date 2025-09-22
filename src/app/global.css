@@ -127,7 +127,7 @@
 
   --color-form-main: #141414;
   --color-form-disabled: #272626;
-  --color-form-border: #e5e7eb;
+  --color-form-border: #edc3b5;
 
   --color-gradient-from-link: #2e141f;
   --color-gradient-to-link: #8a3d5e;
@@ -189,8 +189,8 @@
   --margin-distant: var(--gap-distant);
   --margin-extra-distant: var(--gap-extra-distant);
   /* inner spacing by types */
-  --padding-card: var(--padding-step-lg) var(--padding-step-2lg)
-    var(--padding-step-2xl) var(--padding-step-2lg);
+  --padding-card: var(--padding-step-3xs) var(--padding-step-2lg)
+    var(--padding-step-3xl) var(--padding-step-2lg);
   --padding-card-small: var(--padding-step-md) var(--padding-step-lg)
     var(--padding-step-xl) var(--padding-step-lg);
   --padding-panel: var(--padding-step-lg) var(--padding-step-2lg);

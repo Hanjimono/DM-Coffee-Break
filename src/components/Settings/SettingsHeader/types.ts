@@ -1,4 +1,4 @@
-export interface SettingHeaderProps {
+export interface SettingsHeaderProps {
   /** Additional class names */
   className?: string
   /** Title of the settings section */

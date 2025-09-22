@@ -53,7 +53,7 @@ export default function SnackbarContainer() {
   return (
     <div
       className={
-        "snackbar-container absolute right-4 bottom-4 min-w-[420px] max-w-[420px] z-top"
+        "snackbar-container absolute right-4 bottom-4 min-w-[420px] max-w-[420px] z-top flex flex-col gap-2"
       }
     >
       {listOfSnackbars}

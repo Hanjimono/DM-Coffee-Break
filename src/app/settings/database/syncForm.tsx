@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useStore } from "@/store"
 import { useRouter } from "next/navigation"
 // components
-import SettingHeader from "@/components/Settings/SettingsHeader"
+import SettingsHeader from "@/components/Settings/SettingsHeader"
 import {
   useDatabase,
   useFunctionWithLoadingAndToast,
@@ -68,7 +68,7 @@ export default function DatabaseSyncForm() {
     <>
       <Room className="mb-same-level">
         <Stack gap="same-level">
-          <SettingHeader
+          <SettingsHeader
             title="Database Settings"
             description="All main info stored in database. It's important to keep it up to date."
           />
