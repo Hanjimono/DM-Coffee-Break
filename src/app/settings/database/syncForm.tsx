@@ -14,7 +14,7 @@ import { CURRENT_DATABASE_VERSION } from "@/components/Containers/Protectors/Dat
 // ui
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
 import Stack from "@/ui/Layout/Stack"
-import Note from "@/ui/Presentation/Note"
+import Note from "@/ds/Presentation/Note"
 import Text from "@/ui/Presentation/Text"
 import Button from "@/ui/Actions/Button"
 import Input from "@/ui/Form/Input"
@@ -85,9 +85,7 @@ export default function DatabaseSyncForm() {
         </Stack>
       </Room>
       <HiddenRoom isShown={!wrongVersion}>
-        {!wrongVersion && (
-          <Note type="success">The database is up to date.</Note>
-        )}
+        {!wrongVersion && <Note>The database is up to date.</Note>}
       </HiddenRoom>
       <HiddenRoom isShown={wrongVersion}>
         <Stack gap="same-level-close">

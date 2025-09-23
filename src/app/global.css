@@ -136,6 +136,11 @@
 
   --color-title: #edc3b5;
   --color-text: #edc3b5;
+  --color-light: #f4e3e3;
+  --color-accent: #461f24;
+  --color-info: #512a2f;
+  --color-success: #1c622e;
+  --color-warning: #bb204e;
 
   --z-index-under-mask: 100;
 
