@@ -156,7 +156,7 @@
   --padding-step-tiny: 0.25rem;
   --padding-step-xs: 0.5rem;
   --padding-step-2xs: 0.625rem;
-  --padding-step-3xs: 0.875rem;
+  --padding-step-3xs: 0.75rem;
   --padding-step-sm: 1rem;
   --padding-step-2sm: 1.125rem;
   --padding-step-md: 1.25rem;
@@ -175,13 +175,13 @@
     --padding-step-xs
   ); /* very close elements, like checkbox and label */
   --gap-same-level-close: var(
-    --padding-step-2sm
+    --padding-step-3xs
   ); /* same level elements, like two inputs in the form, but more close than usual */
   --gap-same-level: var(
-    --padding-step-lg
+    --padding-step-sm
   ); /* same level elements, like two inputs in the form */
   --gap-distant: var(
-    --padding-step-2xl
+    --padding-step-lg
   ); /* distant elements, like two sections in the page */
   --gap-extra-distant: var(
     --padding-step-4xl
@@ -256,22 +256,22 @@ a {
 
 /* custom scrollbar */
 ::-webkit-scrollbar {
-  width: 20px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: transparent;
+  background-color: #260004;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #b1b1b1;
+  background-color: #8a3d5e;
   border-radius: 20px;
-  border: 6px solid transparent;
+  border: 0px solid transparent;
   background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #c5c5c5;
+  background-color: #8a3d5e;
 }
 
 @layer utilities {
