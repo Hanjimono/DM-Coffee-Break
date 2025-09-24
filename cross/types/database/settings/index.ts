@@ -1,31 +1,6 @@
 import { DatabaseVersion } from "./version"
-import {
-  AVAILABLE_MEDIA_PLAYER_SETTINGS_API_KEYS,
-  AVAILABLE_MEDIA_PLAYER_SETTINGS_BOT_KEYS,
-  AVAILABLE_MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS,
-  AVAILABLE_MEDIA_PLAYER_TYPES,
-  AVAILABLE_SONG_CARD_SETTINGS
-} from "./media"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
-
-/** @deprecated use UserSettingsDTO instead */
 export interface UserSettings {
-  main: {
-    version: DatabaseVersion
-  }
-  media: {
-    songCard: Record<AVAILABLE_SONG_CARD_SETTINGS, string>
-    player: {
-      type: AVAILABLE_MEDIA_PLAYER_TYPES
-      api: Record<AVAILABLE_MEDIA_PLAYER_SETTINGS_API_KEYS, string>
-      clipboard: Record<AVAILABLE_MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS, string>
-      bot: Record<AVAILABLE_MEDIA_PLAYER_SETTINGS_BOT_KEYS, string>
-    }
-  }
-}
-
-//TODO: rename to UserSettings after removing the deprecated interface
-export interface UserSettingsDomain {
   main: {
     version: DatabaseVersion
   }
@@ -80,7 +55,7 @@ type Paths<T, Depth extends number = 3> = [Depth] extends [never]
 
 type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8]
 
-export type AvailableUserSettingsPaths = Paths<UserSettingsDomain, 6>
+export type AvailableUserSettingsPaths = Paths<UserSettings, 6>
 
 export type UserSettingsMapper = Record<string, AvailableUserSettingsPaths>
 

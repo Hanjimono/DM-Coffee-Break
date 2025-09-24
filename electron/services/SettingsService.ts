@@ -1,19 +1,25 @@
-import { DatabaseVersion } from "@cross/types/database/settings/version"
-import { SettingsRepository } from "../repositories/SettingsRepository"
+// system
+import Logger from "electron-log/main"
+// services
 import { BaseService } from "./BaseService"
+// constants
 import {
   DEFAULT_USER_SETTINGS,
-  DEFAULT_USER_SETTINGS_DOMAIN,
   USER_SETTINGS_DB_MAPPER
 } from "@cross/constants/settings"
+import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
+// repositories
+import { SettingsRepository } from "../repositories/SettingsRepository"
+// types
+import { DatabaseVersion } from "@cross/types/database/settings/version"
 import {
   AvailableSettingsCategories,
-  UserSettings,
-  UserSettingsDomain
+  UserSettings
 } from "@cross/types/database/settings"
-import Logger from "electron-log/main"
-import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 
+/**
+ * Business logic for managing application settings.
+ */
 export class SettingsService extends BaseService {
   constructor(private settingsRepository: SettingsRepository) {
     super()
@@ -63,7 +69,7 @@ export class SettingsService extends BaseService {
     return true
   }
 
-  @BaseService.logErrors(DEFAULT_USER_SETTINGS_DOMAIN)
+  @BaseService.logErrors(DEFAULT_USER_SETTINGS)
   /**
    * Retrieves the user settings by merging default settings with values from the database.
    *
@@ -72,10 +78,10 @@ export class SettingsService extends BaseService {
    * keys and settings object paths is defined by `USER_SETTINGS_DB_MAPPER`. For each database
    * row, the corresponding property in the settings object is updated.
    *
-   * @returns {Promise<UserSettingsDomain>} A promise that resolves to the merged user settings.
+   * @returns {Promise<UserSettings>} A promise that resolves to the merged user settings.
    */
-  async getUserSettings(): Promise<UserSettingsDomain> {
-    let settings = { ...DEFAULT_USER_SETTINGS_DOMAIN }
+  async getUserSettings(): Promise<UserSettings> {
+    let settings = { ...DEFAULT_USER_SETTINGS }
     // Fetch all relevant settings from the database
     const dbSettings = await this.settingsRepository.getBaseUserSettings()
     for (const row of dbSettings) {

@@ -1,29 +1,19 @@
+// system
 import { sequelize } from "../../database/connect"
-import { DatabaseVersion } from "@cross/types/database/settings/version"
-import { Settings } from "../../database/models/settings"
-import { SETTING_DATABASE_VERSION_KEY } from "@cross/constants/mainSettings"
-import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
-import { DEFAULT_USER_SETTINGS } from "@cross/constants/settings"
-import {
-  MEDIA_PLAYER_SETTINGS_API_KEYS,
-  MEDIA_PLAYER_SETTINGS_BOT_KEYS,
-  MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS,
-  MEDIA_PLAYER_SETTINGS_TYPE_KEY,
-  SONG_CARD_SETTINGS_KEYS
-} from "@cross/constants/settingsMedia"
-import { AVAILABLE_MEDIA_PLAYER_TYPES } from "@cross/types/database/settings/media"
-import { AvailableSettingsCategories } from "@cross/types/database/settings"
 import { Umzug, SequelizeStorage } from "umzug"
 import path from "path"
 import { is } from "@electron-toolkit/utils"
 import { Sequelize } from "sequelize"
-import { handleIpcMain } from "./main"
-import { DatabaseHandler } from "@cross/types/handlers/database"
-import { DATABASE_IPC_CHANNELS } from "@cross/constants/ipc"
-import { SettingsService } from "../../services/SettingsService"
-import { container } from "../../container"
-import { SettingsHandler } from "@cross/types/handlers/settings"
 import Logger from "electron-log/main"
+// helpers
+import { handleIpcMain } from "./main"
+// containers
+import { container } from "../../container"
+// constants
+import { DATABASE_IPC_CHANNELS } from "@cross/constants/ipc"
+// types
+import { DatabaseHandler } from "@cross/types/handlers/database"
+import { SettingsHandler } from "@cross/types/handlers/settings"
 
 /**
  * Function to check if the database is connected
@@ -102,91 +92,11 @@ handleIpcMain<DatabaseHandler["getVersion"]>(
   }
 )
 
-export async function getUserSettingsFromDb() {
-  let settings = { ...DEFAULT_USER_SETTINGS }
-  async function getSingleSetting(key: string) {
-    return await Settings.findOne({
-      where: { key }
-    })
-  }
-  async function getAllSettingsForKeysObjectList<
-    KeyObjectType extends Record<string, string>
-  >(keysObjectList: KeyObjectType, category: AvailableSettingsCategories) {
-    let resultSettings: Record<KeyObjectType[keyof KeyObjectType], string> =
-      {} as Record<KeyObjectType[keyof KeyObjectType], string>
-    for (const key of Object.values(keysObjectList) as Array<
-      KeyObjectType[keyof KeyObjectType]
-    >) {
-      const setting = await Settings.findOne({
-        where: { key, category: category }
-      })
-      if (setting) {
-        resultSettings[key] = setting.value
-      }
-    }
-    return resultSettings
-  }
-  try {
-    const currentVersion = await getSingleSetting(SETTING_DATABASE_VERSION_KEY)
-    if (currentVersion) {
-      settings.main.version = currentVersion.value as DatabaseVersion
-    }
-    const songCardSettings = await getAllSettingsForKeysObjectList(
-      SONG_CARD_SETTINGS_KEYS,
-      SETTINGS_CATEGORIES.MEDIA
-    )
-    settings.media.songCard = {
-      ...settings.media.songCard,
-      ...songCardSettings
-    }
-    const mediaPlayerType = await getSingleSetting(
-      MEDIA_PLAYER_SETTINGS_TYPE_KEY
-    )
-    if (mediaPlayerType) {
-      settings.media.player.type = parseInt(
-        mediaPlayerType.value
-      ) as AVAILABLE_MEDIA_PLAYER_TYPES
-    }
-    const clipboardSettings = await getAllSettingsForKeysObjectList(
-      MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS,
-      SETTINGS_CATEGORIES.MEDIA
-    )
-    settings.media.player.clipboard = {
-      ...settings.media.player.clipboard,
-      ...clipboardSettings
-    }
-    const apiSettings = await getAllSettingsForKeysObjectList(
-      MEDIA_PLAYER_SETTINGS_API_KEYS,
-      SETTINGS_CATEGORIES.MEDIA
-    )
-    settings.media.player.api = { ...settings.media.player.api, ...apiSettings }
-    const botSettings = await getAllSettingsForKeysObjectList(
-      MEDIA_PLAYER_SETTINGS_BOT_KEYS,
-      SETTINGS_CATEGORIES.MEDIA
-    )
-    settings.media.player.bot = { ...settings.media.player.bot, ...botSettings }
-    return settings
-  } catch (error) {
-    return settings
-  }
-}
-
-/**
- * @deprecated use getDomain instead
- * Function to get the user settings from the database
- */
-handleIpcMain<DatabaseHandler["settings"]["get"]>(
-  "database-settings-get",
-  async () => {
-    return await getUserSettingsFromDb()
-  }
-)
-
 /**
  * Function to get the user settings from the database
  */
-handleIpcMain<SettingsHandler["getDomain"]>(
-  DATABASE_IPC_CHANNELS.SETTINGS_GET_DOMAIN,
+handleIpcMain<SettingsHandler["get"]>(
+  DATABASE_IPC_CHANNELS.SETTINGS_GET,
   async () => {
     return await container.settingsService.getUserSettings()
   }
@@ -195,7 +105,7 @@ handleIpcMain<SettingsHandler["getDomain"]>(
 /**
  * Function to set a user setting in the database
  */
-handleIpcMain<DatabaseHandler["settings"]["set"]>(
+handleIpcMain<SettingsHandler["set"]>(
   "database-settings-set",
   async (event, key: string, value: string, category) => {
     return await container.settingsService.setUserSettings(key, value, category)

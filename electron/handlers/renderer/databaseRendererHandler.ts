@@ -17,8 +17,6 @@ export const databaseRendererHandler: DatabaseHandler = {
   settings: {
     /** @deprecated use getDomain instead */
     get: async () => ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SETTINGS_GET),
-    getDomain: async () =>
-      ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SETTINGS_GET_DOMAIN),
     set: async (key, value, category) =>
       ipcRenderer.invoke(
         DATABASE_IPC_CHANNELS.SETTINGS_SET,

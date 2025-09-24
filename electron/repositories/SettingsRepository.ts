@@ -1,8 +1,14 @@
-import { SETTING_DATABASE_VERSION_KEY } from "@cross/constants/mainSettings"
+// db
 import { Settings } from "../database/models/settings"
+// constants
+import { SETTING_DATABASE_VERSION_KEY } from "@cross/constants/mainSettings"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
+// types
 import { AvailableSettingsCategories } from "@cross/types/database/settings"
 
+/**
+ * Repository class for managing application settings in the database.
+ */
 export class SettingsRepository {
   async getSettingByKey(key: string) {
     return await Settings.findOne({
