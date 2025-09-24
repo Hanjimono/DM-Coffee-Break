@@ -3,7 +3,8 @@
 import { useStore } from "@/store"
 // ui
 import Button from "@/ui/Actions/Button"
-import Beam from "@/ui/Layout/Beam"
+import Inline from "@/ui/Layout/Inline"
+import Stack from "@/ui/Layout/Stack"
 import Text from "@/ui/Presentation/Text"
 import Title from "@/ui/Presentation/Title"
 
@@ -22,17 +23,19 @@ const MusicPlayerProtectedComponent = ({
   const stop = useStore((state) => state.stopSong)
   if (currentSong) {
     return (
-      <div className="fixed inset-0 bg-primary-transparent z-top flex items-center justify-center">
-        <div className="flex flex-col items-center space-y-4 p-4">
+      <div className="fixed inset-0 bg-block-500 z-top flex items-center justify-center">
+        <Stack className="items-center">
           <Title size={1}>Music is currently playing</Title>
           <Text>
             You can not access this functionality while music is playing.
           </Text>
-          <Beam contentJustify="center">
-            <Button onClick={stop}>Stop Music</Button>
+          <Inline>
+            <Button transparent onClick={stop}>
+              Stop Music
+            </Button>
             <Button link="/home">Return to Home</Button>
-          </Beam>
-        </div>
+          </Inline>
+        </Stack>
       </div>
     )
   }

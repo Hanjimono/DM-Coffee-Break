@@ -6,7 +6,6 @@ import Stack from "@/ui/Layout/Stack"
 import TabPanel from "@/ds/Navigation/TabPanel"
 // Styles and types
 import { SettingsBlockProps } from "./types"
-import Spacer from "@/ui/Layout/Spacer"
 
 const MENU_ITEMS = [
   { name: "Global", href: "/settings/global/database" },
