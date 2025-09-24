@@ -66,7 +66,7 @@ export default function DatabaseSyncForm() {
   const loading = false
   return (
     <>
-      <Room className="mb-same-level">
+      <Room className="mb-distant">
         <Stack gap="same-level">
           <SettingsHeader
             title="Database Settings"

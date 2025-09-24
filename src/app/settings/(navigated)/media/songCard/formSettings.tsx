@@ -1,33 +1,21 @@
 "use client"
 // system
 import * as yup from "yup"
-import { useStore } from "@/store"
 import Radio from "@/ui/Form/Radio"
 // ui
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
-import Divider from "@/ui/Presentation/Divider"
-import Text from "@/ui/Presentation/Text"
 import Title from "@/ui/Presentation/Title"
 import {
   SONG_CARD_SETTINGS_KEYS,
   SONG_CARD_TYPES
 } from "@cross/constants/settingsMedia"
-import {
-  AVAILABLE_SONG_CARD_SETTINGS,
-  SONG_CARD_SETTINGS
-} from "@cross/types/database/settings/media"
-import { useEffect, useState } from "react"
 import ShortFormSettings from "./shortFormSettings"
 import FullFormSettings from "./fullFormSettings"
-import { formateSettingsFormAfterChange } from "./utils"
-import {
-  useDatabase,
-  useSettings,
-  useSettingsFormOnFly,
-  useUpdateSettings
-} from "@/components/Helpers/Hooks"
+import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
 import Form from "@/ui/Form/Form"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
+import SettingsHeader from "@/components/Settings/SettingsHeader"
+import Stack from "@/ui/Layout/Stack"
 
 const yupSettings = {
   [SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE]: yup.number().required()
@@ -46,16 +34,15 @@ export default function SongCardSettingsForm() {
   const currentSettings = methods.watch()
   return (
     <>
-      <Room bottomGap="same-level">
-        <Title bottomGap="same">Song Card visual settings</Title>
-        <Text>You can customize the appearance of the song card here.</Text>
-        <Divider bottomGap="close" />
+      <Room className="mb-distant">
+        <SettingsHeader
+          title="Song Card visual settings"
+          description="Customize the appearance of the song card."
+        />
       </Room>
-      <Room bottomGap="same-level">
+      <Room className="mb-distant">
         <Form methods={methods} onChange={handleChange}>
-          <Title bottomGap="same" size={6}>
-            Type of song card
-          </Title>
+          <Title size={6}>Type of song card</Title>
           <Radio
             name={SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE}
             options={[
@@ -74,14 +61,12 @@ export default function SongCardSettingsForm() {
             ]}
           />
         </Form>
-        <Divider bottomGap="same" />
       </Room>
       <HiddenRoom
         isShown={
           currentSettings[SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE] ===
           SONG_CARD_TYPES.SHORT
         }
-        bottomGap="same-level"
       >
         <ShortFormSettings />
       </HiddenRoom>
@@ -99,8 +84,10 @@ export default function SongCardSettingsForm() {
           SONG_CARD_TYPES.TOOLTIP
         }
       >
-        <ShortFormSettings />
-        <FullFormSettings />
+        <Stack gap="distant">
+          <ShortFormSettings />
+          <FullFormSettings />
+        </Stack>
       </HiddenRoom>
     </>
   )

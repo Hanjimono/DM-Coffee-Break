@@ -85,15 +85,13 @@ export default function ShortFormSettings() {
       <Form methods={methods} onChange={formattedChange}>
         <FormElementNestedWrapper>
           <Room>
-            <Room>
-              <Title bottomGap="same" size={6}>
+            <Room className="mb-same-level">
+              <Title className="mb-tight" size={6}>
                 Short card settings
               </Title>
-              <Beam bottomGap="same-level">
-                <SongCard info={SONG_EXAMPLE} type="short" isEdit />
-              </Beam>
+              <SongCard info={SONG_EXAMPLE} type="short" isEdit />
             </Room>
-            <Room>
+            <Room className="mb-same-level">
               <FormElementWrapper>
                 <Select
                   name={SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY}
@@ -105,7 +103,7 @@ export default function ShortFormSettings() {
                 />
               </FormElementWrapper>
             </Room>
-            <Room>
+            <Room className="mb-same-level">
               <FormElementWrapper>
                 <Checkbox
                   name={SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY}

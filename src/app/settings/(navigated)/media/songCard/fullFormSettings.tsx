@@ -14,6 +14,8 @@ import Form from "@/ui/Form/Form"
 import { SONG_EXAMPLE } from "@cross/constants/media"
 import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
+import Stack from "@/ui/Layout/Stack"
+import Spacer from "@/ui/Layout/Spacer"
 
 const yupSettings = {
   [SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY]: yup.string().required(),
@@ -55,10 +57,10 @@ export default function FullFormSettings() {
   }
   return (
     <Room>
-      <Title bottomGap="same" size={6}>
+      <Title className="mb-same-level" size={6}>
         Full card settings
       </Title>
-      <Beam bottomGap="same-level">
+      <Beam cols={12}>
         <Pillar sm={7}>
           <Form methods={methods} onChange={formattedChange}>
             <Select
@@ -81,10 +83,9 @@ export default function FullFormSettings() {
             />
           </Form>
         </Pillar>
-        <Pillar sm={5}>
-          <Beam contentJustify="center">
-            <SongCard info={SONG_EXAMPLE} type="full" isEdit />
-          </Beam>
+        <Spacer />
+        <Pillar sm={4}>
+          <SongCard info={SONG_EXAMPLE} type="full" isEdit />
         </Pillar>
       </Beam>
     </Room>

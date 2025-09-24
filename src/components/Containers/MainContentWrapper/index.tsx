@@ -34,8 +34,8 @@ function MainContentWrapper({
   if (hideMenu)
     return <Frame className={calculatedClassNames}>{children}</Frame>
   return (
-    <Stack className="relative flex flex-1 h-full w-full">
-      <Inline className="flex-1" gap="none">
+    <Stack className="relative flex flex-1 h-full w-full overflow-hidden">
+      <Inline className="flex-1 h-full" gap="none">
         <SideMenu />
         <div className="flex flex-col w-full h-full overflow-hidden">
           <div className="flex-1 flex relative overflow-hidden">

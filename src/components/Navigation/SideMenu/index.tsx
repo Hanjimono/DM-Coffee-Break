@@ -54,6 +54,7 @@ export default function SideMenu() {
       endItems={EndItems}
       orientation="vertical"
       isNoPadding
+      gap="distant"
     />
   )
 }

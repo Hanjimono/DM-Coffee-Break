@@ -12,7 +12,7 @@ export default function HomePageContent() {
     <WallDecorated>
       <Stack gap="none" className="justify-center items-center h-full">
         <Title className="mb-14">Every Tale Needs an Epic Soundtrack</Title>
-        <Inline>
+        <Inline gap="distant">
           <ImageButton
             className="rounded-3xl"
             width={275}

@@ -6,6 +6,7 @@ import Stack from "@/ui/Layout/Stack"
 import TabPanel from "@/ds/Navigation/TabPanel"
 // Styles and types
 import { SettingsBlockProps } from "./types"
+import Spacer from "@/ui/Layout/Spacer"
 
 const MENU_ITEMS = [
   { name: "Global", href: "/settings/global/database" },
@@ -24,13 +25,16 @@ const MENU_ITEMS = [
  */
 function SettingsBlock({ children, className }: SettingsBlockProps) {
   const calculatedClassNames = formatClassnames(
-    "settings-block p-card pb-20",
+    "settings-block overflow-hidden",
     className
   )
   return (
-    <Brick className={calculatedClassNames} durability={6}>
-      <Stack>
-        <TabPanel items={MENU_ITEMS} />
+    <Brick className={calculatedClassNames} durability={6} noPadding>
+      <Stack className="h-full overflow-auto p-card pb-step-2lg pt-0">
+        <TabPanel
+          className="sticky top-0 bg-block-600 z-10 pt-step-3xs"
+          items={MENU_ITEMS}
+        />
         {children}
       </Stack>
     </Brick>

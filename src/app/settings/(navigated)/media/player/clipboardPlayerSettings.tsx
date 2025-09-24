@@ -11,6 +11,7 @@ import Input from "@/ui/Form/Input"
 // constants
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS } from "@cross/constants/settingsMedia"
+import Stack from "@/ui/Layout/Stack"
 
 const yupSettings = {
   [MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS.PREFIX]: yup.string().required()
@@ -27,22 +28,24 @@ export default function ClipboardPlayerSettings() {
     SETTINGS_CATEGORIES.MEDIA
   )
   return (
-    <Room bottomGap="same-level">
-      <Title bottomGap="same" size={6}>
-        Clipboard settings
-      </Title>
-      <Text>
-        After click on play button for song, it&apos;s link will be copied to
-        your clipboard. Alongside with this defined prefix. So you can easily
-        past it to discord chat as command.
-      </Text>
-      <Form methods={methods} onChange={handleChange}>
-        <Input
-          name={MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS.PREFIX}
-          label="Clipboard prefix"
-          placeholder="Type your command prefix or leave blank to copy only link"
-        />
-      </Form>
+    <Room>
+      <Stack>
+        <Stack gap="tight">
+          <Title size={6}>Clipboard settings</Title>
+          <Text>
+            After click on play button for song, it&apos;s link will be copied
+            to your clipboard. Alongside with this defined prefix. So you can
+            easily past it to discord chat as command.
+          </Text>
+        </Stack>
+        <Form methods={methods} onChange={handleChange}>
+          <Input
+            name={MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS.PREFIX}
+            label="Clipboard prefix"
+            placeholder="Type your command prefix or leave blank to copy only link"
+          />
+        </Form>
+      </Stack>
     </Room>
   )
 }

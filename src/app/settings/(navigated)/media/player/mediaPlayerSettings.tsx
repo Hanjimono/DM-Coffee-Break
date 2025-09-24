@@ -1,6 +1,7 @@
 "use client"
 import * as yup from "yup"
 // component
+import SettingsHeader from "@/components/Settings/SettingsHeader"
 import ClipboardPlayerSettings from "./clipboardPlayerSettings"
 import ApiPlayerSettings from "./apiPlayerSettings"
 import BotPlayerSettings from "./botPlayerSettings"
@@ -16,6 +17,7 @@ import Radio from "@/ui/Form/Radio"
 import { MEDIA_PLAYER_TYPES } from "@cross/constants/media"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { MEDIA_PLAYER_SETTINGS_TYPE_KEY } from "@cross/constants/settingsMedia"
+import Stack from "@/ui/Layout/Stack"
 
 const yupSettings = {
   [MEDIA_PLAYER_SETTINGS_TYPE_KEY]: yup.number().required()
@@ -34,31 +36,30 @@ export default function MediaPlayerSettingsContent() {
   const currentSettings = methods.watch()
   return (
     <>
-      <Room bottomGap="same-level">
-        <Title bottomGap="same">Media Player settings</Title>
-        <Text>
-          You can customize what happens on the play button click for your media
-          library.
-        </Text>
-        <Divider bottomGap="close" />
+      <Room className="mb-distant">
+        <SettingsHeader
+          title="Media Player Settings"
+          description="You can customize what happens when the play button is clicked for your media library"
+        />
       </Room>
-      <Room bottomGap="same-level">
-        <Title bottomGap="same" size={6}>
-          Type of action
-        </Title>
-        <Form methods={methods} onChange={handleChange}>
-          <Radio
-            name={MEDIA_PLAYER_SETTINGS_TYPE_KEY}
-            options={[
-              { value: MEDIA_PLAYER_TYPES.API, title: "Discord API" },
-              {
-                value: MEDIA_PLAYER_TYPES.CLIPBOARD,
-                title: "Copy to Clipboard"
-              },
-              { value: MEDIA_PLAYER_TYPES.BOT, title: "Play via Discord Bot" }
-            ]}
-          />
-        </Form>
+      <Room className="mb-distant">
+        <Stack gap="same-level">
+          <Title size={6}>Type of action</Title>
+          <Form methods={methods} onChange={handleChange}>
+            <Radio
+              type="rows"
+              name={MEDIA_PLAYER_SETTINGS_TYPE_KEY}
+              options={[
+                { value: MEDIA_PLAYER_TYPES.API, title: "Discord API" },
+                {
+                  value: MEDIA_PLAYER_TYPES.CLIPBOARD,
+                  title: "Copy to Clipboard"
+                },
+                { value: MEDIA_PLAYER_TYPES.BOT, title: "Play via Discord Bot" }
+              ]}
+            />
+          </Form>
+        </Stack>
       </Room>
       <HiddenRoom
         isShown={
