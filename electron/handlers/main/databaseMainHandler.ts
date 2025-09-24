@@ -198,24 +198,6 @@ handleIpcMain<SettingsHandler["getDomain"]>(
 handleIpcMain<DatabaseHandler["settings"]["set"]>(
   "database-settings-set",
   async (event, key: string, value: string, category) => {
-    try {
-      const setting = await Settings.findOne({
-        where: { key }
-      })
-      if (setting) {
-        setting.value = value
-        setting.category = category || setting.category
-        await setting.save()
-      } else {
-        await Settings.create({
-          key,
-          value,
-          category: category || SETTINGS_CATEGORIES.GENERAL
-        })
-      }
-      return true
-    } catch (error) {
-      return false
-    }
+    return await container.settingsService.setUserSettings(key, value, category)
   }
 )

@@ -1,21 +1,27 @@
 // System
 import { StateCreator } from "zustand"
 // Constants
-import { DEFAULT_USER_SETTINGS } from "@cross/constants/settings"
+import {
+  DEFAULT_USER_SETTINGS,
+  DEFAULT_USER_SETTINGS_DOMAIN
+} from "@cross/constants/settings"
 // Types
-import { UserSettings } from "@cross/types/database/settings"
+import {
+  UserSettings,
+  UserSettingsDomain
+} from "@cross/types/database/settings"
 import { getDatabase } from "@/constants/singletons/databaseSingleton"
 
 export interface GlobalState {
-  globalSettings: UserSettings
+  globalSettings: UserSettingsDomain
   updateSettings: () => void
 }
 
 export const createGlobalStore: StateCreator<GlobalState> = (set, get) => ({
-  globalSettings: DEFAULT_USER_SETTINGS,
+  globalSettings: DEFAULT_USER_SETTINGS_DOMAIN,
   updateSettings: async () => {
     const database = getDatabase()
-    const settings = await database.settings.get()
+    const settings = await database.settings.getDomain()
     if (settings) {
       set({ globalSettings: settings })
     }

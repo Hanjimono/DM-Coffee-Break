@@ -8,10 +8,10 @@ import Text from "@/ui/Presentation/Text"
 import Title from "@/ui/Presentation/Title"
 import Form from "@/ui/Form/Form"
 import Input from "@/ui/Form/Input"
+import Stack from "@/ui/Layout/Stack"
 // constants
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS } from "@cross/constants/settingsMedia"
-import Stack from "@/ui/Layout/Stack"
 
 const yupSettings = {
   [MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS.PREFIX]: yup.string().required()
@@ -23,7 +23,10 @@ const yupSettings = {
 export default function ClipboardPlayerSettings() {
   const settings = useSettings()
   const [methods, handleChange] = useSettingsFormOnFly(
-    settings.media.player.clipboard,
+    {
+      [MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS.PREFIX]:
+        settings.media.player.clipboard.prefix
+    },
     yupSettings,
     SETTINGS_CATEGORIES.MEDIA
   )

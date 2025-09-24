@@ -8,16 +8,14 @@ import BotPlayerSettings from "./botPlayerSettings"
 import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
 // ui
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
-import Divider from "@/ui/Presentation/Divider"
-import Text from "@/ui/Presentation/Text"
 import Title from "@/ui/Presentation/Title"
 import Form from "@/ui/Form/Form"
 import Radio from "@/ui/Form/Radio"
+import Stack from "@/ui/Layout/Stack"
 // constants
 import { MEDIA_PLAYER_TYPES } from "@cross/constants/media"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { MEDIA_PLAYER_SETTINGS_TYPE_KEY } from "@cross/constants/settingsMedia"
-import Stack from "@/ui/Layout/Stack"
 
 const yupSettings = {
   [MEDIA_PLAYER_SETTINGS_TYPE_KEY]: yup.number().required()

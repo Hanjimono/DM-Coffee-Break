@@ -1,6 +1,7 @@
 import { SETTING_DATABASE_VERSION_KEY } from "@cross/constants/mainSettings"
 import { Settings } from "../database/models/settings"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
+import { AvailableSettingsCategories } from "@cross/types/database/settings"
 
 export class SettingsRepository {
   async getSettingByKey(key: string) {
@@ -32,5 +33,24 @@ export class SettingsRepository {
         category: [SETTINGS_CATEGORIES.GENERAL, SETTINGS_CATEGORIES.MEDIA]
       }
     })
+  }
+
+  async saveSetting(
+    key: string,
+    value: string,
+    category: AvailableSettingsCategories = SETTINGS_CATEGORIES.GENERAL
+  ): Promise<boolean> {
+    const currentSetting = await Settings.findOne({
+      where: { key, category }
+    })
+    if (currentSetting) {
+      currentSetting.value = value
+      await currentSetting.save()
+      return true
+    } else {
+      const newSetting = Settings.build({ key, value, category })
+      await newSetting.save()
+      return true
+    }
   }
 }

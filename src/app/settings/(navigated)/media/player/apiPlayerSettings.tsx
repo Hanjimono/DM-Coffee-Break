@@ -9,11 +9,11 @@ import Title from "@/ui/Presentation/Title"
 import Form from "@/ui/Form/Form"
 import Input from "@/ui/Form/Input"
 import Note from "@/ds/Presentation/Note"
+import Stack from "@/ui/Layout/Stack"
+import { FormElementLine } from "@/ui/Form/FormElementWrapper"
 // constants
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { MEDIA_PLAYER_SETTINGS_API_KEYS } from "@cross/constants/settingsMedia"
-import Stack from "@/ui/Layout/Stack"
-import { FormElementLine } from "@/ui/Form/FormElementWrapper"
 
 const yupSettings = {
   [MEDIA_PLAYER_SETTINGS_API_KEYS.CHANNEL_ID]: yup.string().required(),
@@ -28,7 +28,16 @@ const yupSettings = {
 export default function ApiPlayerSettings() {
   const settings = useSettings()
   const [methods, handleChange] = useSettingsFormOnFly(
-    settings.media.player.api,
+    {
+      [MEDIA_PLAYER_SETTINGS_API_KEYS.CHANNEL_ID]:
+        settings.media.player.api.channelId,
+      [MEDIA_PLAYER_SETTINGS_API_KEYS.PLAY_PREFIX]:
+        settings.media.player.api.playPrefix,
+      [MEDIA_PLAYER_SETTINGS_API_KEYS.STOP_PREFIX]:
+        settings.media.player.api.stopPrefix,
+      [MEDIA_PLAYER_SETTINGS_API_KEYS.WEBHOOK_URL]:
+        settings.media.player.api.webhookUrl
+    },
     yupSettings,
     SETTINGS_CATEGORIES.MEDIA
   )

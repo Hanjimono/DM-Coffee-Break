@@ -7,10 +7,12 @@ import {
   USER_SETTINGS_DB_MAPPER
 } from "@cross/constants/settings"
 import {
+  AvailableSettingsCategories,
   UserSettings,
   UserSettingsDomain
 } from "@cross/types/database/settings"
 import Logger from "electron-log/main"
+import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 
 export class SettingsService extends BaseService {
   constructor(private settingsRepository: SettingsRepository) {
@@ -90,5 +92,22 @@ export class SettingsService extends BaseService {
       current[parts[parts.length - 1]] = row.value
     }
     return settings
+  }
+
+  @BaseService.logErrors(false)
+  /**
+   * Save a user setting in the database.
+   *
+   * @param key - The key of the setting to update.
+   * @param value - The new value for the setting.
+   * @param category - The category of the setting.
+   * @returns A promise that resolves to `true` if the setting was saved successfully, or `false` if an error occurred.
+   */
+  async setUserSettings(
+    key: string,
+    value: string,
+    category: AvailableSettingsCategories = SETTINGS_CATEGORIES.GENERAL
+  ): Promise<boolean> {
+    return await this.settingsRepository.saveSetting(key, value, category)
   }
 }

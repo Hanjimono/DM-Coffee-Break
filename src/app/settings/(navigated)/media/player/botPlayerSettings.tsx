@@ -9,11 +9,11 @@ import Title from "@/ui/Presentation/Title"
 import Form from "@/ui/Form/Form"
 import Input from "@/ui/Form/Input"
 import Note from "@/ds/Presentation/Note"
+import Stack from "@/ui/Layout/Stack"
+import { FormElementLine } from "@/ui/Form/FormElementWrapper"
 // constants
 import { MEDIA_PLAYER_SETTINGS_BOT_KEYS } from "@cross/constants/settingsMedia"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
-import Stack from "@/ui/Layout/Stack"
-import { FormElementLine } from "@/ui/Form/FormElementWrapper"
 
 const yupSettings = {
   [MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_TOKEN]: yup.string().required()
@@ -25,7 +25,14 @@ const yupSettings = {
 export default function BotPlayerSettings() {
   const settings = useSettings()
   const [methods, handleChange] = useSettingsFormOnFly(
-    settings.media.player.bot,
+    {
+      [MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_TOKEN]:
+        settings.media.player.bot.token,
+      [MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_GUILD_ID]:
+        settings.media.player.bot.guildId,
+      [MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_CHANNEL_ID]:
+        settings.media.player.bot.channelId
+    },
     yupSettings,
     SETTINGS_CATEGORIES.MEDIA
   )
