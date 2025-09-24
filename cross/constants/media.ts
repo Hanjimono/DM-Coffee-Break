@@ -62,9 +62,9 @@ export const UNSORTED_CATEGORY = {
 } as const
 
 export const MEDIA_PLAYER_TYPES = {
-  API: "1",
-  CLIPBOARD: "2",
-  BOT: "3"
+  API: 1,
+  CLIPBOARD: 2,
+  BOT: 3
 } as const
 
 export const MEDIA_CATEGORY_DEFAULT_SONGS_COUNT = 3

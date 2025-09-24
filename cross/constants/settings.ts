@@ -74,7 +74,7 @@ export const DEFAULT_USER_SETTINGS_DOMAIN: UserSettingsDomain = {
       }
     },
     player: {
-      type: "clipboard",
+      type: MEDIA_PLAYER_TYPES.CLIPBOARD,
       api: {
         playPrefix: "play",
         stopPrefix: "stop",

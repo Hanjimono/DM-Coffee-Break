@@ -89,7 +89,18 @@ export class SettingsService extends BaseService {
       for (let i = 0; i < parts.length - 1; i++) {
         current = current[parts[i]]
       }
-      current[parts[parts.length - 1]] = row.value
+      const key = parts[parts.length - 1]
+      let value: any = row.value
+
+      // Try to infer type from default settings
+      const defaultValue = current[key]
+      if (typeof defaultValue === "boolean") {
+        value = row.value === "true"
+      } else if (typeof defaultValue === "number") {
+        value = parseFloat(row.value)
+      }
+
+      current[key] = value
     }
     return settings
   }

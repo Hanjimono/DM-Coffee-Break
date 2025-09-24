@@ -47,7 +47,7 @@ export interface UserSettingsDomain {
       }
     }
     player: {
-      type: string
+      type: number
       api: {
         playPrefix: string
         stopPrefix: string

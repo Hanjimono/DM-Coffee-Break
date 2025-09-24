@@ -1,7 +1,6 @@
 // System
 import * as yup from "yup"
 // Components
-import SongCard from "@/components/Media/SongCard"
 import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
 // Ui
 import Select from "@/ui/Form/Select"
@@ -10,26 +9,28 @@ import Pillar from "@/ui/Layout/Pillar"
 import Room from "@/ui/Layout/Room"
 import Title from "@/ui/Presentation/Title"
 import Form from "@/ui/Form/Form"
+import Spacer from "@/ui/Layout/Spacer"
 // Constants
 import { SONG_EXAMPLE } from "@cross/constants/media"
 import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
-import Stack from "@/ui/Layout/Stack"
-import Spacer from "@/ui/Layout/Spacer"
 
 const yupSettings = {
   [SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY]: yup.string().required(),
   [SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY]: yup.string().required()
 }
 
+/**
+ * Settings for full form of song card
+ */
 export default function FullFormSettings() {
   const settings = useSettings()
   const [methods, handleChange] = useSettingsFormOnFly(
     {
       [SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY]:
-        settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_FULL_PRIMARY],
+        settings.media.songs.card.full.primary,
       [SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY]:
-        settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_FULL_SECONDARY]
+        settings.media.songs.card.full.secondary
     },
     yupSettings,
     SETTINGS_CATEGORIES.MEDIA
@@ -84,9 +85,6 @@ export default function FullFormSettings() {
           </Form>
         </Pillar>
         <Spacer />
-        <Pillar sm={4}>
-          <SongCard info={SONG_EXAMPLE} type="full" isEdit />
-        </Pillar>
       </Beam>
     </Room>
   )

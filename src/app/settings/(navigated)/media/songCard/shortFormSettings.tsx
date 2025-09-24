@@ -3,11 +3,9 @@ import * as yup from "yup"
 import { useMemo } from "react"
 // Components
 import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
-import SongCard from "@/components/Media/SongCard"
 // Ui
 import Checkbox from "@/ui/Form/Checkbox"
 import Select from "@/ui/Form/Select"
-import Beam from "@/ui/Layout/Beam"
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
 import Title from "@/ui/Presentation/Title"
 import Form from "@/ui/Form/Form"
@@ -25,18 +23,19 @@ const yupSettings = {
   [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY]: yup.string().required()
 }
 
+/**
+ * Settings for short form of song card
+ */
 export default function ShortFormSettings() {
   const settings = useSettings()
   const [methods, handleChange] = useSettingsFormOnFly(
     {
       [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY]:
-        settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY],
+        settings.media.songs.card.short.primary,
       [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY]:
-        settings.media.songCard[
-          SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY
-        ],
+        settings.media.songs.card.short.isHideSecondary,
       [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY]:
-        settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY]
+        settings.media.songs.card.short.secondary
     },
     yupSettings,
     SETTINGS_CATEGORIES.MEDIA
@@ -89,7 +88,6 @@ export default function ShortFormSettings() {
               <Title className="mb-tight" size={6}>
                 Short card settings
               </Title>
-              <SongCard info={SONG_EXAMPLE} type="short" isEdit />
             </Room>
             <Room className="mb-same-level">
               <FormElementWrapper>
@@ -112,7 +110,7 @@ export default function ShortFormSettings() {
                     currentSettings &&
                     currentSettings[
                       SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY
-                    ].toString() === "true"
+                    ]
                   }
                 />
               </FormElementWrapper>
@@ -122,7 +120,7 @@ export default function ShortFormSettings() {
                 !currentSettings ||
                 currentSettings[
                   SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY
-                ].toString() !== "true"
+                ]
               }
               mode="wait"
             >

@@ -1,32 +1,36 @@
 "use client"
 // system
 import * as yup from "yup"
-import Radio from "@/ui/Form/Radio"
+// Components
+import SettingsHeader from "@/components/Settings/SettingsHeader"
+import ShortFormSettings from "./shortFormSettings"
+import FullFormSettings from "./fullFormSettings"
+import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
 // ui
+import Radio from "@/ui/Form/Radio"
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
 import Title from "@/ui/Presentation/Title"
+import Form from "@/ui/Form/Form"
+import Stack from "@/ui/Layout/Stack"
+// Constants
 import {
   SONG_CARD_SETTINGS_KEYS,
   SONG_CARD_TYPES
 } from "@cross/constants/settingsMedia"
-import ShortFormSettings from "./shortFormSettings"
-import FullFormSettings from "./fullFormSettings"
-import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
-import Form from "@/ui/Form/Form"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
-import SettingsHeader from "@/components/Settings/SettingsHeader"
-import Stack from "@/ui/Layout/Stack"
 
 const yupSettings = {
   [SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE]: yup.number().required()
 }
 
+/**
+ * Main component for song card settings
+ */
 export default function SongCardSettingsForm() {
   const settings = useSettings()
   const [methods, handleChange] = useSettingsFormOnFly(
     {
-      [SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE]:
-        settings.media.songCard[SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE]
+      [SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE]: settings.media.songs.card.type
     },
     yupSettings,
     SETTINGS_CATEGORIES.MEDIA
