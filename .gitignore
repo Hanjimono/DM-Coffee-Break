@@ -40,3 +40,8 @@ database.sqlite
 .vscode
 main.log
 *.log
+
+public/data/*
+*.sqlite
+*storybook.log
+storybook-static
