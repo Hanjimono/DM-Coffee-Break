@@ -45,3 +45,4 @@ public/data/*
 *.sqlite
 *storybook.log
 storybook-static
+/electron/database/generated

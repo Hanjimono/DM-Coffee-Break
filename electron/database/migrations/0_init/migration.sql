@@ -1,0 +1,52 @@
+-- CreateTable
+CREATE TABLE "mediaCategory" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "title" TEXT NOT NULL,
+    "hex" TEXT,
+    "createdAt" DATETIME NOT NULL,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "settings" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "key" TEXT NOT NULL,
+    "value" TEXT,
+    "category" INTEGER DEFAULT 0,
+    "createdAt" DATETIME NOT NULL,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "song" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "title" TEXT NOT NULL,
+    "artist" TEXT,
+    "duration" INTEGER,
+    "thumbnail" TEXT,
+    "url" TEXT NOT NULL,
+    "comment" TEXT,
+    "source" INTEGER NOT NULL,
+    "categoryId" INTEGER,
+    "createdAt" DATETIME NOT NULL,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "tag" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "title" TEXT NOT NULL,
+    "color" TEXT,
+    "createdAt" DATETIME NOT NULL,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "tagToSong" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "tagId" INTEGER NOT NULL,
+    "songId" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL,
+    "updatedAt" DATETIME NOT NULL
+);
+
