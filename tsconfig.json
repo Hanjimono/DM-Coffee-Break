@@ -22,7 +22,8 @@
     "paths": {
       "@cross/*": ["./cross/*"],
       "@database/*": ["./cross/database/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@db/*": ["./electron/database/*"]
     }
   },
   "include": [

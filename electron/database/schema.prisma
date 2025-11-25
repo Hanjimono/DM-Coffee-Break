@@ -12,8 +12,8 @@ model mediaCategory {
   id        Int      @id @default(autoincrement())
   title     String
   hex       String?
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @default(now())
 }
 
 model settings {
@@ -21,8 +21,8 @@ model settings {
   key       String
   value     String?
   category  Int?                   @default(0)
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @default(now())
 }
 
 model song {
@@ -35,22 +35,16 @@ model song {
   comment    String?
   source     Int
   categoryId Int?
-  createdAt  DateTime
-  updatedAt  DateTime
+  createdAt  DateTime               @default(now())
+  updatedAt  DateTime               @default(now())
+  tags       tag[]
 }
 
 model tag {
   id        Int      @id @default(autoincrement())
   title     String
   color     String?
-  createdAt DateTime
-  updatedAt DateTime
-}
-
-model tagToSong {
-  id        Int      @id @default(autoincrement())
-  tagId     Int
-  songId    Int
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @default(now())
+  songs     song[]
 }

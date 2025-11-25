@@ -9,7 +9,8 @@ export default defineConfig({
   skipNodeModulesBundle: true,
   treeshake: true,
   outDir: "build",
-  external: ["electron"],
+  external: ["electron", "@prisma/client", "prisma"],
   format: ["cjs"],
-  bundle: true
+  bundle: true,
+  target: "es2020"
 })

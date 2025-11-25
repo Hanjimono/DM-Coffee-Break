@@ -3,8 +3,8 @@ CREATE TABLE "mediaCategory" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "title" TEXT NOT NULL,
     "hex" TEXT,
-    "createdAt" DATETIME NOT NULL,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateTable
@@ -13,8 +13,8 @@ CREATE TABLE "settings" (
     "key" TEXT NOT NULL,
     "value" TEXT,
     "category" INTEGER DEFAULT 0,
-    "createdAt" DATETIME NOT NULL,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateTable
@@ -28,8 +28,8 @@ CREATE TABLE "song" (
     "comment" TEXT,
     "source" INTEGER NOT NULL,
     "categoryId" INTEGER,
-    "createdAt" DATETIME NOT NULL,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateTable
@@ -37,8 +37,8 @@ CREATE TABLE "tag" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "title" TEXT NOT NULL,
     "color" TEXT,
-    "createdAt" DATETIME NOT NULL,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateTable
@@ -46,7 +46,7 @@ CREATE TABLE "tagToSong" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "tagId" INTEGER NOT NULL,
     "songId" INTEGER NOT NULL,
-    "createdAt" DATETIME NOT NULL,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

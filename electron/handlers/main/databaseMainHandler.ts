@@ -4,6 +4,8 @@ import { Umzug, SequelizeStorage } from "umzug"
 import path from "path"
 import { is } from "@electron-toolkit/utils"
 import { Sequelize } from "sequelize"
+import { prisma } from "@db/prisma"
+// logging
 import Logger from "electron-log/main"
 // helpers
 import { handleIpcMain } from "./main"
@@ -22,7 +24,7 @@ handleIpcMain<DatabaseHandler["authenticate"]>(
   DATABASE_IPC_CHANNELS.AUTHENTICATE,
   async () => {
     try {
-      await sequelize.authenticate()
+      await prisma.$queryRaw`SELECT 1+1 AS result`
       return true
     } catch (error) {
       return false
@@ -48,29 +50,33 @@ handleIpcMain<DatabaseHandler["sync"]>(
   DATABASE_IPC_CHANNELS.SYNC,
   async (event, lastVersion) => {
     try {
-      const umzug = new Umzug({
-        migrations: {
-          glob: is.dev
-            ? "resources/migrations/*.js"
-            : path.resolve(process.resourcesPath).replaceAll("\\", "/") +
-              "/migrations/*.js",
-          resolve: ({ name, path, context }) => {
-            if (!path) {
-              throw new Error("Migration path is undefined")
-            }
-            const migration = require(path)
-            return {
-              name,
-              up: async () => migration.up(context, Sequelize),
-              down: async () => migration.down(context, Sequelize)
-            }
-          }
-        },
-        context: sequelize.getQueryInterface(),
-        storage: new SequelizeStorage({ sequelize }),
-        logger: Logger
-      })
-      await umzug.up()
+      console.log("🚀 -----------------------------🚀")
+      console.log("🚀 ~ lastVersion:", lastVersion)
+      console.log("🚀 -----------------------------🚀")
+      // TODO: migrate from Umzug to handle migrations manually with Prisma Migrate
+      // const umzug = new Umzug({
+      //   migrations: {
+      //     glob: is.dev
+      //       ? "resources/migrations/*.js"
+      //       : path.resolve(process.resourcesPath).replaceAll("\\", "/") +
+      //         "/migrations/*.js",
+      //     resolve: ({ name, path, context }) => {
+      //       if (!path) {
+      //         throw new Error("Migration path is undefined")
+      //       }
+      //       const migration = require(path)
+      //       return {
+      //         name,
+      //         up: async () => migration.up(context, Sequelize),
+      //         down: async () => migration.down(context, Sequelize)
+      //       }
+      //     }
+      //   },
+      //   context: sequelize.getQueryInterface(),
+      //   storage: new SequelizeStorage({ sequelize }),
+      //   logger: Logger
+      // })
+      // await umzug.up()
       if (await container.settingsService.saveNewDatabaseVersion(lastVersion)) {
         return lastVersion
       }

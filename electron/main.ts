@@ -6,6 +6,9 @@ import { discordMusicBot } from "./discordMusicBotObject"
 import log from "electron-log/main"
 import path, { join } from "path"
 import fs from "fs"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 let mainWindow: BrowserWindow
 let splash: BrowserWindow
@@ -145,6 +148,7 @@ ipcMain.on("ready", () => {
 })
 
 // Load all main handlers
+import "./database/prisma"
 import "./handlers/main/databaseMainHandler"
 import "./handlers/main/songParserMainHandler"
 import "./handlers/main/songCardSettingsMainHandler"
