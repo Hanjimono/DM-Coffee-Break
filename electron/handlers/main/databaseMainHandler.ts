@@ -50,9 +50,6 @@ handleIpcMain<DatabaseHandler["sync"]>(
   DATABASE_IPC_CHANNELS.SYNC,
   async (event, lastVersion) => {
     try {
-      console.log("🚀 -----------------------------🚀")
-      console.log("🚀 ~ lastVersion:", lastVersion)
-      console.log("🚀 -----------------------------🚀")
       // TODO: migrate from Umzug to handle migrations manually with Prisma Migrate
       // const umzug = new Umzug({
       //   migrations: {

@@ -26,9 +26,6 @@ const yupSettings = {
  */
 export default function MediaPlayerSettingsContent() {
   const settings = useSettings()
-  console.log("🚀 ----------------------------------------------------🚀")
-  console.log("🚀 ~ MediaPlayerSettingsContent ~ settings:", settings)
-  console.log("🚀 ----------------------------------------------------🚀")
   const [methods, handleChange] = useSettingsFormOnFly(
     { [MEDIA_PLAYER_SETTINGS_TYPE_KEY]: settings.media.player.type },
     yupSettings,

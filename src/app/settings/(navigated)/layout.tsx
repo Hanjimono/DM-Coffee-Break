@@ -15,7 +15,7 @@ export default function SettingsLayout({
       <Wall className="overflow-hidden box-border" isShortYPadding>
         <Title className="mb-distant">Settings</Title>
         <SettingsBlock>
-          <ContentAppearTransition animationVariant="simple">
+          <ContentAppearTransition className="h-full" animationVariant="simple">
             {children}
           </ContentAppearTransition>
         </SettingsBlock>

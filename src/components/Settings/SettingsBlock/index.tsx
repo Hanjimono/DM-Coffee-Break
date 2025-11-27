@@ -24,7 +24,7 @@ const MENU_ITEMS = [
  */
 function SettingsBlock({ children, className }: SettingsBlockProps) {
   const calculatedClassNames = formatClassnames(
-    "settings-block overflow-hidden",
+    "settings-block overflow-hidden min-h-80",
     className
   )
   return (
