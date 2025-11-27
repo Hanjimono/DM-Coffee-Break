@@ -1,6 +1,10 @@
+// system
 import { dialog } from "electron"
+// helpers
 import { handleIpcMain } from "./main"
+// constants
 import { FILES_IPC_CHANNELS } from "@cross/constants/ipc"
+// types
 import { FilesHandler } from "@cross/types/handlers/files"
 
 /**

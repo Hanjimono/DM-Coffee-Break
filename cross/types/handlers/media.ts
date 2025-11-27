@@ -1,4 +1,7 @@
-import { MediaCategory } from "@cross/types/media/category"
+import {
+  MediaCategoryWithSongsInfo,
+  SaveMediaCategoryDTO
+} from "@cross/types/media/category"
 import { SongInfo } from "../database/media"
 import { RendererHandler } from "./main"
 
@@ -11,7 +14,9 @@ export interface MediaHandler {
    * @param data - The media category data to save.
    * @returns A promise that resolves to a boolean indicating whether the save operation was successful.
    */
-  saveCategory: RendererHandler<(data: MediaCategory) => Promise<boolean>>
+  saveCategory: RendererHandler<
+    (data: SaveMediaCategoryDTO) => Promise<boolean>
+  >
 
   /**
    * Deletes a media category by its ID.
@@ -24,7 +29,7 @@ export interface MediaHandler {
    * Retrieves all media categories.
    * @returns A promise that resolves to an array of media categories.
    */
-  getCategories: RendererHandler<() => Promise<MediaCategory[]>>
+  getCategories: RendererHandler<() => Promise<MediaCategoryWithSongsInfo[]>>
 
   /**
    * Retrieves a song by its ID.

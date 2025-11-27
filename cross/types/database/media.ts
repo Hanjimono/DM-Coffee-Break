@@ -19,3 +19,13 @@ export interface SongInfo {
   /** Id of category saved in the database */
   categoryId?: number
 }
+
+/**
+ * Formatted basic short info about a song for simple listings.
+ */
+export interface ShortSongInfo {
+  id?: number
+  title: string
+  artist?: string
+  thumbnail?: string
+}
