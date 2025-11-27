@@ -103,7 +103,7 @@ export class SettingsService extends BaseService {
       if (typeof defaultValue === "boolean") {
         value = row.value === "true"
       } else if (typeof defaultValue === "number") {
-        value = parseFloat(row.value)
+        value = parseFloat(row.value || "0")
       }
 
       current[key] = value

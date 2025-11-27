@@ -1,9 +1,4 @@
 // system
-import { sequelize } from "../../database/connect"
-import { Umzug, SequelizeStorage } from "umzug"
-import path from "path"
-import { is } from "@electron-toolkit/utils"
-import { Sequelize } from "sequelize"
 import { prisma } from "@db/prisma"
 // logging
 import Logger from "electron-log/main"
