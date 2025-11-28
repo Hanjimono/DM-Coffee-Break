@@ -151,7 +151,6 @@ ipcMain.on("ready", () => {
 import "./database/prisma"
 import "./handlers/main/databaseMainHandler"
 import "./handlers/main/songParserMainHandler"
-import "./handlers/main/songCardSettingsMainHandler"
 import "./handlers/main/mediaMainHandler"
 import "./handlers/main/dictionaryMainHandler"
 import "./handlers/main/tagMainHandler"

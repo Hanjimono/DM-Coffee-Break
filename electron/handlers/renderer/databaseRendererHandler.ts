@@ -1,6 +1,5 @@
 import { ipcRenderer } from "electron"
 import { DatabaseHandler } from "@cross/types/handlers/database"
-import { songCardSettingsRendererHandler } from "./songCardSettingsRendererHandler"
 import { mediaRendererHandler } from "./mediaRendererHandler"
 import { dictionaryRendererHandler } from "./dictionaryRendererHandler"
 import { tagRendererHandler } from "./tagRendererHandler"
@@ -23,8 +22,7 @@ export const databaseRendererHandler: DatabaseHandler = {
         key,
         value,
         category
-      ),
-    songCard: songCardSettingsRendererHandler
+      )
   },
   media: mediaRendererHandler,
   dictionary: dictionaryRendererHandler,

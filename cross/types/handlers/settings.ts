@@ -2,7 +2,6 @@ import {
   AvailableSettingsCategories,
   UserSettings
 } from "@cross/types/database/settings"
-import { SongCardSettingsHandler } from "./songCardSettings"
 
 /**
  * Handler for settings operations with the database
@@ -21,9 +20,4 @@ export interface SettingsHandler {
     value: string,
     category?: AvailableSettingsCategories
   ) => Promise<boolean>
-
-  /**
-   * Handler for song card settings operations with the database
-   */
-  songCard: SongCardSettingsHandler
 }

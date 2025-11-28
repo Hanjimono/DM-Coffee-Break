@@ -1,13 +1,12 @@
 // system
 import log from "electron-log/main"
+// containers
+import { container } from "../../container"
 // logic
 import { discordMusicBot } from "../../discordMusicBotObject"
-import { getUserSettingsFromDb } from "./databaseMainHandler"
 // errors
 import { MusicPlayerUnexpectedError } from "@cross/errors/musicPlayerUnexpectedError"
 import { MusicPlayerBaseError } from "@cross/errors/musicPlayerBaseError"
-// constants
-import { MEDIA_PLAYER_SETTINGS_BOT_KEYS } from "@cross/constants/settingsMedia"
 // types
 import { SongInfo } from "@cross/types/database/media"
 import { handleIpcMain } from "./main"
@@ -26,11 +25,11 @@ async function prepareDiscordMusicBot() {
     if (discordMusicBot.client !== undefined) {
       return discordMusicBot
     }
-    const settings = await getUserSettingsFromDb()
+    const settings = await container.settingsService.getUserSettings()
     discordMusicBot.startClient(
-      settings.media.player.bot[MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_TOKEN],
-      settings.media.player.bot[MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_CHANNEL_ID],
-      settings.media.player.bot[MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_GUILD_ID]
+      settings.media.player.bot.token,
+      settings.media.player.bot.channelId,
+      settings.media.player.bot.guildId
     )
     return discordMusicBot
   } catch (error) {
