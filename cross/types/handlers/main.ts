@@ -1,4 +1,9 @@
+import { UseMutationResult, UseQueryResult } from "@tanstack/react-query"
 import type { IpcMainInvokeEvent } from "electron"
+import { DatabaseHandler } from "./database"
+import { SongParserHandler } from "./songParser"
+import { FilesHandler } from "./files"
+import { MusicPlayerHandler } from "./musicPlayer"
 
 /** IPC channel names */
 export type IpcChannel = Record<string, string>
@@ -28,3 +33,52 @@ export type MainHandler<T extends (...args: any) => any> = (
   event: IpcMainInvokeEvent,
   ...args: Parameters<T>
 ) => UnwrapIpcReturn<ReturnType<T>>
+
+/** Combined main IPC handler interface */
+export interface cIpcHandler {
+  database: DatabaseHandler
+  songParser: SongParserHandler
+  filesHandler: FilesHandler
+  musicPlayer: MusicPlayerHandler
+}
+
+/** Type for react-query operation type in SDK */
+export type OperationType = "query" | "mutation"
+
+/** Specification type for mapping SDK structure to operation types */
+export type SpecificationFor<T> = {
+  [K in keyof T]: T[K] extends (...args: any) => any
+    ? OperationType
+    : SpecificationFor<T[K]>
+}
+
+/** Utility type to extract function type from RendererHandler */
+type ExtractRendererFn<T> = T extends RendererHandler<infer F> ? F : never
+
+/** Utility type to extract data type from Promise or IpcResponse */
+type ExtractData<T> =
+  T extends Promise<infer R> ? R : T extends IpcResponse<infer D> ? D : T
+
+/** Type representing a method in the SDK. Maps to query or mutation */
+type SdkMethod<
+  TFn extends RendererHandler<any>,
+  TKind extends OperationType
+> = TKind extends "query"
+  ? (
+      ...args: Parameters<ExtractRendererFn<TFn>>
+    ) => UseQueryResult<ExtractData<ReturnType<ExtractRendererFn<TFn>>>>
+  : (
+      ...args: Parameters<ExtractRendererFn<TFn>>
+    ) => UseMutationResult<ExtractData<ReturnType<ExtractRendererFn<TFn>>>>
+
+/** Type representing the SDK generated from handlers and specification */
+export type SdkFromSpec<THandlers, TSpec> = {
+  [K in keyof THandlers]: THandlers[K] extends RendererHandler<any>
+    ? SdkMethod<THandlers[K], OperationType>
+    : THandlers[K] extends object
+      ? SdkFromSpec<THandlers[K], TSpec>
+      : never
+}
+
+/** Type alias for the cIpc SDK API */
+export type cIpcSDKApi = SdkFromSpec<cIpcHandler, SpecificationFor<cIpcHandler>>

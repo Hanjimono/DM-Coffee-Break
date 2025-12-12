@@ -8,11 +8,7 @@ import { mainFont } from "@/constants/fonts"
 import Foundation from "@/ui/Layout/Foundation"
 // types and styles
 import "./global.css"
-
-export const metadata = {
-  title: "DM Coffee Break",
-  description: "A Discord bot that plays music in voice channels."
-}
+import CIPCProviderContainer from "@/components/Containers/CIpcProvider"
 
 export default function RootLayout({
   children
@@ -34,10 +30,12 @@ export default function RootLayout({
       </head>
       <body className={mainFont.className}>
         <Foundation>
-          <DatabaseProvider>
-            <DatabaseProtectedComponent>{children}</DatabaseProtectedComponent>
+          <CIPCProviderContainer>
+            {/* <DatabaseProtectedComponent> */}
+            {children}
+            {/* </DatabaseProtectedComponent> */}
             <Initializer />
-          </DatabaseProvider>
+          </CIPCProviderContainer>
         </Foundation>
       </body>
     </html>
