@@ -77,47 +77,74 @@ function mapSpecEntryToHandler(
   const kind = entry.type
   const specKey = entry.key ?? key
   if (kind === "query") {
-    return (...args: any[]) =>
+    return (...args: any[]) => {
+      const { args: actualArgs, options } = splitArgsAndOptions<any>(args)
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      useQuery({
-        queryKey: [specKey, ...args],
+      return useQuery({
+        queryKey: [specKey, ...actualArgs],
         queryFn: createQueryFn(
           {
             path,
             kind: "query",
-            key: [specKey, ...args],
-            args
+            key: [specKey, ...actualArgs],
+            args: actualArgs,
+            options
           },
           middlewares,
           async () => {
-            const r = await handler(...args)
+            const r = await handler(...actualArgs)
             if (!r.ok) throw new Error(r.error)
             return r.data
           }
         )
       })
+    }
   }
   if (kind === "mutation") {
-    return (...args: any[]) =>
+    return (...args: any[]) => {
+      const { args: actualArgs, options } = splitArgsAndOptions<any>(args)
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      useMutation({
-        mutationKey: [specKey, ...args],
+      return useMutation({
+        mutationKey: [specKey, ...actualArgs],
         mutationFn: createQueryFn(
           {
             path,
             kind: "mutation",
-            key: [specKey, ...args],
-            args
+            key: [specKey, ...actualArgs],
+            args: actualArgs,
+            options
           },
           middlewares,
           async () => {
-            const r = await handler(...args)
+            const r = await handler(...actualArgs)
             if (!r.ok) throw new Error(r.error)
             return r.data
           }
         )
       })
+    }
   }
+}
+
+/**
+ * Splits raw arguments into actual arguments and options if present.
+ * @param rawArgs - The array of raw arguments passed to the handler.
+ * @returns An object containing the separated arguments and options.
+ */
+function splitArgsAndOptions<TOptions>(rawArgs: unknown[]): {
+  args: unknown[]
+  options?: TOptions
+} {
+  const last = rawArgs[rawArgs.length - 1]
+
+  if (typeof last === "object" && last !== null && "__options" in last) {
+    return {
+      args: rawArgs.slice(0, -1),
+      options: (last as any).__options
+    }
+  }
+
+  return { args: rawArgs }
 }
 
 /**

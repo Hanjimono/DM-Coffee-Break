@@ -6,6 +6,7 @@ import { cIpcHandler } from "@cross/types/handlers/main"
 import { cIpcSDKApi } from "@/cIpc/types"
 import { cIpcSpecification } from "@/cIpc/spec"
 import { loggingMiddleware } from "@/cIpc/middleware/logging"
+import { snackbarMiddleware } from "@/cIpc/middleware/snackbar"
 
 /**
  * Create a new QueryClient instance.
@@ -70,7 +71,10 @@ export default function CIpcProviderContainer({
   const ipcHandler = getIpcHandler()
   let api = null
   if (ipcHandler) {
-    api = createCIpcSdk(ipcHandler, cIpcSpecification, [loggingMiddleware])
+    api = createCIpcSdk(ipcHandler, cIpcSpecification, [
+      loggingMiddleware,
+      snackbarMiddleware
+    ])
   }
   return (
     <QueryClientProvider client={queryClient}>

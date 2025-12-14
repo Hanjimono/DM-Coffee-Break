@@ -5,9 +5,41 @@ import {
 } from "@cross/types/handlers/main"
 import {
   QueryKey,
+  UseMutationOptions,
   UseMutationResult,
+  UseQueryOptions,
   UseQueryResult
 } from "@tanstack/react-query"
+
+/** Options for making cIpc calls with additional UI feedback settings */
+export type CIpcCallOptions = {
+  /** Whether to show a success snackbar on successful operation */
+  isShowSuccessSnack?: boolean
+  /** Whether to hide error snackbar on failed operation */
+  isHideErrorSnack?: boolean
+  /** Custom success message to display in snackbar */
+  successMessage?: string
+}
+
+/** Options for cIpc query operations */
+export type CIpcQueryOptions<TData> = Omit<
+  UseQueryOptions<TData>,
+  "queryKey" | "queryFn"
+> &
+  CIpcCallOptions
+
+/** Options for cIpc mutation operations */
+export type CIpcMutationOptions<TData, TVariables> = Omit<
+  UseMutationOptions<TData, unknown, TVariables>,
+  "mutationKey" | "mutationFn"
+> &
+  CIpcCallOptions
+
+/** Argument type that includes optional cIpc operation options */
+export interface CIpcOptionsArgument<TData, TVariables> {
+  /** Options for query operations */
+  __options: CIpcQueryOptions<TData> | CIpcMutationOptions<TData, TVariables>
+}
 
 /** Type for react-query operation type in SDK */
 export type OperationType = "query" | "mutation"
@@ -40,10 +72,22 @@ type SdkMethod<
   TKind extends SpecificationEntry
 > = TKind["type"] extends "query"
   ? (
-      ...args: Parameters<ExtractRendererFn<TFn>>
+      ...args: [
+        ...Parameters<ExtractRendererFn<TFn>>,
+        options?: CIpcOptionsArgument<
+          ExtractData<ReturnType<ExtractRendererFn<TFn>>>,
+          never
+        >
+      ]
     ) => UseQueryResult<ExtractData<ReturnType<ExtractRendererFn<TFn>>>>
   : (
-      ...args: Parameters<ExtractRendererFn<TFn>>
+      ...args: [
+        ...Parameters<ExtractRendererFn<TFn>>,
+        options?: CIpcOptionsArgument<
+          ExtractData<ReturnType<ExtractRendererFn<TFn>>>,
+          never
+        >
+      ]
     ) => UseMutationResult<ExtractData<ReturnType<ExtractRendererFn<TFn>>>>
 
 /** Type representing the SDK generated from handlers and specification */
@@ -64,6 +108,7 @@ export type CIpcContext = {
   kind: "query" | "mutation"
   key: QueryKey
   args: unknown[]
+  options: CIpcCallOptions
 }
 
 /** Interface representing a log event in cIpc */
