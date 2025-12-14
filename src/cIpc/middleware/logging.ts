@@ -12,7 +12,8 @@ function logToConsole(event: CIpcLogEvent) {
   console.groupCollapsed(
     label,
     `color:${color};font-weight:bold`,
-    event.path.join(".")
+    event.path.join(".") + (event.requestId ? ` [${event.requestId}]` : ""),
+    event.error ? "❌" : "✅"
   )
 
   console.log("args:", event.args)
@@ -35,7 +36,7 @@ function logToConsole(event: CIpcLogEvent) {
 function logToFile(event: CIpcLogEvent) {
   if (event.error) {
     Logger.error(
-      `cIpc ${event.kind.toUpperCase()} ${event.path.join(".")} failed`,
+      `cIpc ${event.kind.toUpperCase()} ${event.path.join(".")} [${event.requestId ?? "unknown"}] failed`,
       {
         args: event.args,
         duration: `${event.duration.toFixed(1)}ms`,
@@ -44,7 +45,7 @@ function logToFile(event: CIpcLogEvent) {
     )
   } else {
     Logger.info(
-      `cIpc ${event.kind.toUpperCase()} ${event.path.join(".")} succeeded`,
+      `cIpc ${event.kind.toUpperCase()} ${event.path.join(".")} [${event.requestId ?? "unknown"}] succeeded`,
       {
         args: event.args,
         duration: `${event.duration.toFixed(1)}ms`,

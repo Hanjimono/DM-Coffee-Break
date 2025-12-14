@@ -104,17 +104,29 @@ export type cIpcSDKApi = SdkFromSpec<cIpcHandler, SpecificationFor<cIpcHandler>>
 
 /** Typical context object passed to IPC handlers */
 export type CIpcContext = {
+  /** Full path of the handler being invoked */
   path: string[]
+  /** Kind of operation being performed */
   kind: "query" | "mutation"
+  /** Key associated with the operation (for react-query) */
   key: QueryKey
+  /** Arguments passed to the handler */
   args: unknown[]
+  /** Additional options for the cIpc call */
   options: CIpcCallOptions
+  /** Optional unique request ID for tracing */
+  requestId?: string
+  /** Optional start time for performance measurement */
+  startTime?: number
 }
 
 /** Interface representing a log event in cIpc */
 export interface CIpcLogEvent extends CIpcContext {
+  /** Duration of the operation in milliseconds */
   duration: number
+  /** Result of the operation, if successful */
   result?: unknown
+  /** Error encountered during the operation, if any */
   error?: unknown
 }
 

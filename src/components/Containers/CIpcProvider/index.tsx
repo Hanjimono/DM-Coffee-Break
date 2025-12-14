@@ -7,6 +7,7 @@ import { cIpcSDKApi } from "@/cIpc/types"
 import { cIpcSpecification } from "@/cIpc/spec"
 import { loggingMiddleware } from "@/cIpc/middleware/logging"
 import { snackbarMiddleware } from "@/cIpc/middleware/snackbar"
+import { tracingMiddleware } from "@/cIpc/middleware/tracing"
 
 /**
  * Create a new QueryClient instance.
@@ -72,6 +73,7 @@ export default function CIpcProviderContainer({
   let api = null
   if (ipcHandler) {
     api = createCIpcSdk(ipcHandler, cIpcSpecification, [
+      tracingMiddleware,
       loggingMiddleware,
       snackbarMiddleware
     ])

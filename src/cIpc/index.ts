@@ -1,3 +1,4 @@
+import { IpcResponse } from "@cross/types/handlers/main"
 import { executeWithMiddleware } from "./middleware"
 import {
   CIpcContext,
@@ -91,8 +92,12 @@ function mapSpecEntryToHandler(
             options
           },
           middlewares,
-          async () => {
-            const r = await handler(...actualArgs)
+          async (ctx) => {
+            const r = (await invokeWithTracing(
+              handler,
+              actualArgs,
+              ctx
+            )) as IpcResponse<any>
             if (!r.ok) throw new Error(r.error)
             return r.data
           }
@@ -115,8 +120,12 @@ function mapSpecEntryToHandler(
             options
           },
           middlewares,
-          async () => {
-            const r = await handler(...actualArgs)
+          async (ctx) => {
+            const r = (await invokeWithTracing(
+              handler,
+              actualArgs,
+              ctx
+            )) as IpcResponse<any>
             if (!r.ok) throw new Error(r.error)
             return r.data
           }
@@ -157,7 +166,26 @@ function splitArgsAndOptions<TOptions>(rawArgs: unknown[]): {
 function createQueryFn(
   ctx: CIpcContext,
   middlewares: CIpcMiddleware[],
-  handler: () => Promise<unknown>
+  handler: (ctx: CIpcContext) => Promise<unknown>
 ) {
   return () => executeWithMiddleware(ctx, middlewares, handler)
+}
+
+/**
+ * Invokes a handler function with tracing information in the context.
+ * @param handler - The handler function to invoke.
+ * @param args - The arguments to pass to the handler.
+ * @param ctx- The cIpc context containing tracing information.
+ * @returns The result of the handler invocation.
+ */
+async function invokeWithTracing(
+  handler: Function,
+  args: unknown[],
+  ctx: CIpcContext
+) {
+  return handler(...args, {
+    __cIpcMeta: {
+      requestId: ctx.requestId
+    }
+  })
 }

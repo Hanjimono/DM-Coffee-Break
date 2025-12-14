@@ -4,7 +4,7 @@ import { CIpcContext, CIpcMiddleware } from "../types"
 export function executeWithMiddleware<T>(
   ctx: CIpcContext,
   middlewares: CIpcMiddleware[],
-  handler: () => Promise<T>
+  handler: (ctx: CIpcContext) => Promise<T>
 ): Promise<T> {
   let index = -1
 
@@ -16,7 +16,7 @@ export function executeWithMiddleware<T>(
 
     const mw = middlewares[i]
     if (!mw) {
-      return handler()
+      return handler(ctx)
     }
 
     return mw(ctx, () => dispatch(i + 1))
