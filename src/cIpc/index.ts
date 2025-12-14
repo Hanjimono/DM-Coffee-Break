@@ -1,4 +1,8 @@
-import { SdkFromSpec, SpecificationFor } from "@cross/types/handlers/main"
+import {
+  SdkFromSpec,
+  SpecificationEntry,
+  SpecificationFor
+} from "@cross/types/handlers/main"
 import { useMutation, useQuery } from "@tanstack/react-query"
 
 /**
@@ -16,12 +20,12 @@ export function createCIpcSdk<THandlers extends object>(
 
   for (const key in handlers) {
     const handler = handlers[key as keyof THandlers]
-    const kind = spec[key as keyof typeof spec]
+    const specificationEntry = spec[key as keyof typeof spec]
 
     if (typeof handler === "object" && handler !== null) {
       result[key] = createCIpcSdk(
         handler,
-        kind as SpecificationFor<typeof handler>
+        specificationEntry as SpecificationFor<typeof handler>
       )
       continue
     }
@@ -29,11 +33,18 @@ export function createCIpcSdk<THandlers extends object>(
     if (typeof handler !== "function") {
       throw new Error("Handler is not a function")
     }
+    if ("type" in specificationEntry === false) {
+      throw new Error("Specification entry missing type")
+    }
+    const kind = (specificationEntry as SpecificationEntry).type
     if (kind === "query") {
       result[key] = (...args: any[]) =>
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useQuery({
-          queryKey: [key, ...args],
+          queryKey: [
+            (specificationEntry as SpecificationEntry).key ?? key,
+            ...args
+          ],
           queryFn: async () => {
             const r = await handler(...args)
             if (!r.ok) throw new Error(r.error)
@@ -46,6 +57,10 @@ export function createCIpcSdk<THandlers extends object>(
       result[key] = (...args: any[]) =>
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useMutation({
+          mutationKey: [
+            (specificationEntry as SpecificationEntry).key ?? key,
+            ...args
+          ],
           mutationFn: async () => {
             const r = await handler(...args)
             if (!r.ok) throw new Error(r.error)

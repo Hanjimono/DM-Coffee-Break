@@ -45,10 +45,18 @@ export interface cIpcHandler {
 /** Type for react-query operation type in SDK */
 export type OperationType = "query" | "mutation"
 
+/** Interface representing a single specification entry */
+export interface SpecificationEntry {
+  /** The type of operation (query or mutation) */
+  type: OperationType
+  /** The key for query associated with the operation */
+  key: string
+}
+
 /** Specification type for mapping SDK structure to operation types */
 export type SpecificationFor<T> = {
   [K in keyof T]: T[K] extends (...args: any) => any
-    ? OperationType
+    ? SpecificationEntry
     : SpecificationFor<T[K]>
 }
 
@@ -62,8 +70,8 @@ type ExtractData<T> =
 /** Type representing a method in the SDK. Maps to query or mutation */
 type SdkMethod<
   TFn extends RendererHandler<any>,
-  TKind extends OperationType
-> = TKind extends "query"
+  TKind extends SpecificationEntry
+> = TKind["type"] extends "query"
   ? (
       ...args: Parameters<ExtractRendererFn<TFn>>
     ) => UseQueryResult<ExtractData<ReturnType<ExtractRendererFn<TFn>>>>
@@ -74,7 +82,7 @@ type SdkMethod<
 /** Type representing the SDK generated from handlers and specification */
 export type SdkFromSpec<THandlers, TSpec> = {
   [K in keyof THandlers]: THandlers[K] extends RendererHandler<any>
-    ? SdkMethod<THandlers[K], OperationType>
+    ? SdkMethod<THandlers[K], SpecificationEntry>
     : THandlers[K] extends object
       ? SdkFromSpec<THandlers[K], TSpec>
       : never
