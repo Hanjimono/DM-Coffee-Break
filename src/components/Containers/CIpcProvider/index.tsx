@@ -2,8 +2,10 @@
 import { createContext, useContext } from "react"
 import { createCIpcSdk } from "@/cIpc"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { cIpcHandler, cIpcSDKApi } from "@cross/types/handlers/main"
-import { cIpcSpecification } from "@cross/constants/cIpc"
+import { cIpcHandler } from "@cross/types/handlers/main"
+import { cIpcSDKApi } from "@/cIpc/types"
+import { cIpcSpecification } from "@/cIpc/spec"
+import { loggingMiddleware } from "@/cIpc/middleware/logging"
 
 /**
  * Create a new QueryClient instance.
@@ -68,7 +70,7 @@ export default function CIpcProviderContainer({
   const ipcHandler = getIpcHandler()
   let api = null
   if (ipcHandler) {
-    api = createCIpcSdk(ipcHandler, cIpcSpecification)
+    api = createCIpcSdk(ipcHandler, cIpcSpecification, [loggingMiddleware])
   }
   return (
     <QueryClientProvider client={queryClient}>

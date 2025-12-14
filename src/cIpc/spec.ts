@@ -1,4 +1,5 @@
-import { cIpcHandler, SpecificationFor } from "@cross/types/handlers/main"
+import { cIpcHandler } from "@cross/types/handlers/main"
+import { SpecificationFor } from "./types"
 
 /** Specification for cIpc SDK mapping handlers to operation types */
 export const cIpcSpecification: SpecificationFor<cIpcHandler> = {

@@ -8,7 +8,7 @@ import { mainFont } from "@/constants/fonts"
 import Foundation from "@/ui/Layout/Foundation"
 // types and styles
 import "./global.css"
-import CIPCProviderContainer from "@/components/Containers/CIpcProvider"
+import CIpcProviderContainer from "@/components/Containers/CIpcProvider"
 
 export default function RootLayout({
   children
@@ -30,12 +30,12 @@ export default function RootLayout({
       </head>
       <body className={mainFont.className}>
         <Foundation>
-          <CIPCProviderContainer>
+          <CIpcProviderContainer>
             {/* <DatabaseProtectedComponent> */}
             {children}
             {/* </DatabaseProtectedComponent> */}
             <Initializer />
-          </CIPCProviderContainer>
+          </CIpcProviderContainer>
         </Foundation>
       </body>
     </html>
