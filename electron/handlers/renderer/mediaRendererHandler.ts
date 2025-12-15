@@ -3,19 +3,20 @@ import { MediaHandler } from "@cross/types/handlers/media"
 import { MEDIA_IPC_CHANNELS } from "@cross/constants/ipc"
 
 export const mediaRendererHandler: MediaHandler = {
-  saveCategory: async (data) =>
-    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.SAVE_CATEGORY, data),
-  deleteCategory: async (id) =>
-    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.DELETE_CATEGORY, id),
-  getCategories: async () =>
-    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.GET_CATEGORIES),
-  getSong: async (id) => ipcRenderer.invoke(MEDIA_IPC_CHANNELS.GET_SONG, id),
-  editSong: async (data) =>
-    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.EDIT_SONG, data),
-  deleteSong: async (id) =>
-    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.DELETE_SONG, id),
-  getSongs: async (categoryId) =>
-    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.GET_SONGS, categoryId),
-  getUnassignedSongs: async () =>
-    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.GET_UNASSIGNED_SONGS)
+  saveCategory: async (data, meta) =>
+    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.SAVE_CATEGORY, data, meta),
+  deleteCategory: async (id, meta) =>
+    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.DELETE_CATEGORY, id, meta),
+  getCategories: async (meta) =>
+    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.GET_CATEGORIES, meta),
+  getSong: async (id, meta) =>
+    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.GET_SONG, id, meta),
+  editSong: async (data, meta) =>
+    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.EDIT_SONG, data, meta),
+  deleteSong: async (id, meta) =>
+    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.DELETE_SONG, id, meta),
+  getSongs: async (categoryId, meta) =>
+    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.GET_SONGS, categoryId, meta),
+  getUnassignedSongs: async (meta) =>
+    ipcRenderer.invoke(MEDIA_IPC_CHANNELS.GET_UNASSIGNED_SONGS, meta)
 }

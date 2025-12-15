@@ -23,9 +23,17 @@ type UnwrapIpcReturn<T> =
       ? R
       : T
 
+/** Metadata interface for cIpc renderer calls */
+export interface CIpcRendererCallMeta {
+  /** An actual meta info */
+  __cIpcMeta: {
+    /** Trace ID for tracing purposes */
+    traceId: string
+  }
+}
 /** Type representing a handler in the renderer process */
 export type RendererHandler<T extends (...args: any) => any> = (
-  ...args: Parameters<T>
+  ...args: [...Parameters<T>, meta?: CIpcRendererCallMeta]
 ) => Promise<IpcResponse<Awaited<ReturnType<T>>>>
 
 /** Type representing a handler in the main process */

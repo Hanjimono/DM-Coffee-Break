@@ -6,22 +6,25 @@ import { tagRendererHandler } from "./tagRendererHandler"
 import { DATABASE_IPC_CHANNELS } from "@cross/constants/ipc"
 
 export const databaseRendererHandler: DatabaseHandler = {
-  authenticate: async () =>
-    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.AUTHENTICATE),
-  checkVersion: async (lastVersion) =>
-    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.CHECK_VERSION, lastVersion),
-  sync: async (lastVersion) =>
-    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SYNC, lastVersion),
-  getVersion: async () => ipcRenderer.invoke(DATABASE_IPC_CHANNELS.GET_VERSION),
+  authenticate: async (meta) =>
+    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.AUTHENTICATE, meta),
+  checkVersion: async (lastVersion, meta) =>
+    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.CHECK_VERSION, lastVersion, meta),
+  sync: async (lastVersion, meta) =>
+    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SYNC, lastVersion, meta),
+  getVersion: async (meta) =>
+    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.GET_VERSION, meta),
   settings: {
     /** @deprecated use getDomain instead */
-    get: async () => ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SETTINGS_GET),
-    set: async (key, value, category) =>
+    get: async (meta) =>
+      ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SETTINGS_GET, meta),
+    set: async (key, value, category, meta) =>
       ipcRenderer.invoke(
         DATABASE_IPC_CHANNELS.SETTINGS_SET,
         key,
         value,
-        category
+        category,
+        meta
       )
   },
   media: mediaRendererHandler,

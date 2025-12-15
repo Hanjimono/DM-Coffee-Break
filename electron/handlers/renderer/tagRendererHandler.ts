@@ -3,7 +3,9 @@ import { TagHandler } from "@cross/types/handlers/tag"
 import { ipcRenderer } from "electron"
 
 export const tagRendererHandler: TagHandler = {
-  getAll: async () => ipcRenderer.invoke(TAG_IPC_CHANNELS.GET_ALL),
-  edit: async (tag) => ipcRenderer.invoke(TAG_IPC_CHANNELS.EDIT, tag),
-  delete: async (tagId) => ipcRenderer.invoke(TAG_IPC_CHANNELS.DELETE, tagId)
+  getAll: async (meta) => ipcRenderer.invoke(TAG_IPC_CHANNELS.GET_ALL, meta),
+  edit: async (tag, meta) =>
+    ipcRenderer.invoke(TAG_IPC_CHANNELS.EDIT, tag, meta),
+  delete: async (tagId, meta) =>
+    ipcRenderer.invoke(TAG_IPC_CHANNELS.DELETE, tagId, meta)
 }

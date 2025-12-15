@@ -95,7 +95,7 @@ handleIpcMain<DatabaseHandler["getVersion"]>(
  */
 handleIpcMain<SettingsHandler["get"]>(
   DATABASE_IPC_CHANNELS.SETTINGS_GET,
-  async () => {
+  async (...args) => {
     return await container.settingsService.getUserSettings()
   }
 )
