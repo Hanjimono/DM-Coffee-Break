@@ -1,5 +1,5 @@
 "use client"
-import { useCIpc } from "@/components/Containers/CIpcProvider"
+import { useCIpc } from "@/components/Containers/CIpcProvider/cIpcProviderContainer.client"
 // Components
 import LoadingScreen from "@/components/Containers/LoadingScreen"
 // Ui
