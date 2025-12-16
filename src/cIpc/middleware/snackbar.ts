@@ -1,4 +1,6 @@
+// system
 import { useStore } from "@/store"
+// types
 import { CIpcMiddleware } from "../types"
 
 /**

@@ -1,5 +1,8 @@
-import { IpcResponse } from "@cross/types/handlers/main"
+// system
+import { useMutation, useQuery } from "@tanstack/react-query"
+// cIpc
 import { executeWithMiddleware } from "./middleware"
+// types
 import {
   CIpcContext,
   CIpcMiddleware,
@@ -7,7 +10,8 @@ import {
   SpecificationEntry,
   SpecificationFor
 } from "./types"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { UserConfig } from "@cross/constants/config"
+import { IpcResponse } from "@cross/types/handlers/main"
 
 /**
  * Create a cIpc SDK from handlers and specification. It maps handlers to react-query queries and mutations.
@@ -22,7 +26,8 @@ export function createCIpcSdk<THandlers extends object>(
   handlers: THandlers,
   spec: SpecificationFor<THandlers>,
   middlewares: CIpcMiddleware[] = [],
-  path: string[] = []
+  path: string[] = [],
+  userConfig: UserConfig = {}
 ): SdkFromSpec<THandlers, SpecificationFor<THandlers>> {
   const result: any = {}
 
@@ -36,7 +41,8 @@ export function createCIpcSdk<THandlers extends object>(
         handler,
         specificationEntry as SpecificationFor<typeof handler>,
         middlewares,
-        nextPath
+        nextPath,
+        userConfig
       )
       continue
     }
@@ -53,7 +59,8 @@ export function createCIpcSdk<THandlers extends object>(
       handler,
       key,
       middlewares,
-      nextPath
+      nextPath,
+      userConfig
     )
   }
 
@@ -73,7 +80,8 @@ function mapSpecEntryToHandler(
   handler: Function,
   key: string,
   middlewares: CIpcMiddleware[],
-  path: string[]
+  path: string[],
+  config: UserConfig = {}
 ) {
   const kind = entry.type
   const specKey = entry.key ?? key
@@ -89,7 +97,8 @@ function mapSpecEntryToHandler(
             kind: "query",
             key: [specKey, ...actualArgs],
             args: actualArgs,
-            options
+            options,
+            config
           },
           middlewares,
           async (ctx) => {
@@ -117,7 +126,8 @@ function mapSpecEntryToHandler(
             kind: "mutation",
             key: [specKey, ...actualArgs],
             args: actualArgs,
-            options
+            options,
+            config
           },
           middlewares,
           async (ctx) => {

@@ -72,11 +72,13 @@ export default function CIpcProviderContainer({
   const ipcHandler = getIpcHandler()
   let api = null
   if (ipcHandler) {
-    api = createCIpcSdk(ipcHandler, cIpcSpecification, [
-      tracingMiddleware,
-      loggingMiddleware,
-      snackbarMiddleware
-    ])
+    api = createCIpcSdk(
+      ipcHandler,
+      cIpcSpecification,
+      [tracingMiddleware, loggingMiddleware, snackbarMiddleware],
+      [],
+      (window as any).cIpcEnv?.userConfig || {}
+    )
   }
   return (
     <QueryClientProvider client={queryClient}>

@@ -1,3 +1,4 @@
+// types
 import { CIpcContext, CIpcMiddleware } from "../types"
 
 /** Executes a handler function with a series of middleware functions applied in sequence. */

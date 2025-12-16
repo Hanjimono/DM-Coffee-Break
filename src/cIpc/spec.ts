@@ -1,3 +1,4 @@
+// types
 import { cIpcHandler } from "@cross/types/handlers/main"
 import { SpecificationFor } from "./types"
 

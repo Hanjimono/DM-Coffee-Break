@@ -7,7 +7,7 @@ import WallDecorated from "@/ui/Layout/Decorators/WallDecorated"
 
 export default function MainPage() {
   const cIpc = useCIpc()
-  const { data, isPending } = cIpc.database.settings.get()
+  const { data, isPending, error } = cIpc.database.settings.get()
   return (
     <WallDecorated>
       <LoadingScreen loaded={false} />

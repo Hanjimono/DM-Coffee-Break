@@ -5,28 +5,13 @@ import { startServer } from "next/dist/server/lib/start-server"
 import { discordMusicBot } from "./discordMusicBotObject"
 import log from "electron-log/main"
 import path, { join } from "path"
-import fs from "fs"
 import dotenv from "dotenv"
+import { readConfigLogFile } from "./userConfig"
 
 dotenv.config()
 
 let mainWindow: BrowserWindow
 let splash: BrowserWindow
-
-const readConfigLogFile = () => {
-  const configPath = path.resolve(
-    is.dev ? "./" : process.resourcesPath,
-    "config.json"
-  )
-  try {
-    const raw = fs.readFileSync(configPath, "utf-8")
-    const config = JSON.parse(raw)
-    return config
-  } catch (error) {
-    log.error("Error reading config file:", error)
-    return {}
-  }
-}
 
 const createWindow = () => {
   log.initialize()
@@ -42,6 +27,9 @@ const createWindow = () => {
     log.transports.console.level = "debug"
     log.transports.file.level = "debug"
   }
+  if (!!config.ipcLogLevel) {
+    log.transports.ipc.level = config.ipcLogLevel
+  }
 
   log.debug("Starting application")
   mainWindow = new BrowserWindow({
@@ -53,6 +41,7 @@ const createWindow = () => {
     autoHideMenuBar: true,
     webPreferences: {
       preload: join(__dirname, "preload.js"),
+      additionalArguments: [`--userConfig=${JSON.stringify(config)}`],
       nodeIntegration: true
     }
   })

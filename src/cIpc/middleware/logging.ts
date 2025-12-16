@@ -1,5 +1,7 @@
-import { CIpcLogEvent, CIpcMiddleware } from "../types"
+// system
 import Logger from "electron-log/renderer"
+// types
+import { CIpcLogEvent, CIpcMiddleware } from "../types"
 
 /**
  * Logs cIpc events to the console.
@@ -64,8 +66,8 @@ function logToFile(event: CIpcLogEvent) {
  */
 export const loggingMiddleware: CIpcMiddleware = async (ctx, next) => {
   const start = performance.now()
-  const isDev = true
-  const isTrace = false
+  const isDev = process.env.NODE_ENV === "development"
+  const isTrace = ctx.config?.traceApiCalls === true
 
   try {
     const result = await next()

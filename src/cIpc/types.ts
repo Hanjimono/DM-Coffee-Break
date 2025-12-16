@@ -1,8 +1,4 @@
-import {
-  cIpcHandler,
-  IpcResponse,
-  RendererHandler
-} from "@cross/types/handlers/main"
+// system
 import {
   QueryKey,
   UseMutationOptions,
@@ -10,6 +6,14 @@ import {
   UseQueryOptions,
   UseQueryResult
 } from "@tanstack/react-query"
+// constants
+import { UserConfig } from "@cross/constants/config"
+// types
+import {
+  cIpcHandler,
+  IpcResponse,
+  RendererHandler
+} from "@cross/types/handlers/main"
 
 /** Options for making cIpc calls with additional UI feedback settings */
 export type CIpcCallOptions = {
@@ -114,6 +118,8 @@ export type CIpcContext = {
   args: unknown[]
   /** Additional options for the cIpc call */
   options: CIpcCallOptions
+  /** User configuration object */
+  config?: UserConfig
   /** Optional unique request ID for tracing */
   requestId?: string
   /** Optional start time for performance measurement */

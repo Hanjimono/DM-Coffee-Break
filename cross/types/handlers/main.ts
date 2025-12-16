@@ -27,8 +27,8 @@ type UnwrapIpcReturn<T> =
 export interface CIpcRendererCallMeta {
   /** An actual meta info */
   __cIpcMeta: {
-    /** Trace ID for tracing purposes */
-    traceId: string
+    /** Request ID for tracing purposes */
+    requestId: string
   }
 }
 /** Type representing a handler in the renderer process */

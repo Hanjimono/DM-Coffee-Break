@@ -9,7 +9,14 @@ contextBridge.exposeInMainWorld("electron", {
   }
 })
 
+const arg = process.argv.find((a) => a.startsWith("--userConfig="))
+const config = arg ? JSON.parse(arg.replace("--userConfig=", "")) : {}
+
 // preloader of all ipc modules for cIPC SDK
 contextBridge.exposeInMainWorld("ipcHandler", mainRendererHandler)
+
+contextBridge.exposeInMainWorld("cIpcEnv", {
+  userConfig: config
+})
 
 import "./discordMusicBotObject"
