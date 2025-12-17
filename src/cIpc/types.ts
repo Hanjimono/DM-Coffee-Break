@@ -14,6 +14,7 @@ import {
   IpcResponse,
   RendererHandler
 } from "@cross/types/handlers/main"
+import { cIpcSpecification } from "./spec"
 
 /** Options for making cIpc calls with additional UI feedback settings */
 export type CIpcCallOptions = {
@@ -101,16 +102,27 @@ type SdkMethod<
     >
 
 /** Type representing the SDK generated from handlers and specification */
-export type SdkFromSpec<THandlers, TSpec> = {
-  [K in keyof THandlers]: THandlers[K] extends RendererHandler<any>
-    ? SdkMethod<THandlers[K], SpecificationEntry>
-    : THandlers[K] extends object
-      ? SdkFromSpec<THandlers[K], TSpec>
-      : never
+export type SdkFromSpec<
+  THandlers,
+  TSpec extends SpecificationFor<THandlers>
+> = {
+  [K in keyof THandlers]: K extends keyof TSpec
+    ? THandlers[K] extends RendererHandler<any>
+      ? TSpec[K] extends SpecificationEntry
+        ? SdkMethod<THandlers[K], TSpec[K]>
+        : never
+      : THandlers[K] extends object
+        ? TSpec[K] extends SpecificationFor<THandlers[K]>
+          ? SdkFromSpec<THandlers[K], TSpec[K]>
+          : never
+        : never
+    : never
 }
 
 /** Type alias for the cIpc SDK API */
-export type cIpcSDKApi = SdkFromSpec<cIpcHandler, SpecificationFor<cIpcHandler>>
+export type cIpcSDKApi = SdkFromSpec<cIpcHandler, typeof cIpcSpecification>
+
+export type test = cIpcSDKApi["database"]
 
 /** Typical context object passed to IPC handlers */
 export type CIpcContext = {

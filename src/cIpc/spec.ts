@@ -1,12 +1,8 @@
-// types
-import { cIpcHandler } from "@cross/types/handlers/main"
-import { SpecificationFor } from "./types"
-
 /** Specification for cIpc SDK mapping handlers to operation types */
-export const cIpcSpecification: SpecificationFor<cIpcHandler> = {
+export const cIpcSpecification = {
   database: {
     authenticate: { type: "query", key: "authenticate" },
-    checkVersion: { type: "mutation", key: "version" },
+    checkVersion: { type: "query", key: "version" },
     sync: { type: "mutation", key: "version" },
     getVersion: { type: "query", key: "version" },
     settings: {

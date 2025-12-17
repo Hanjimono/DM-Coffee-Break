@@ -25,15 +25,10 @@ export default function DatabaseProtectedComponent({
   const pathname = usePathname()
   const router = useRouter()
   const authenticate = cIpc.database.authenticate()
-  const checkVersion = cIpc.database.checkVersion()
+  const checkVersion = cIpc.database.checkVersion({
+    lastVersion: CURRENT_DATABASE_VERSION
+  })
   const isPending = authenticate.isPending || checkVersion.isPending
-  useEffect(() => {
-    if (!checkVersion.data && !checkVersion.isPending) {
-      checkVersion.mutate({
-        lastVersion: CURRENT_DATABASE_VERSION
-      })
-    }
-  }, [checkVersion])
   if (!isPending && !authenticate.data) {
     throw new Error("Database connection failed")
   }
