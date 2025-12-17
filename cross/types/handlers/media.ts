@@ -5,25 +5,48 @@ import {
 import { SongInfo } from "../database/media"
 import { RendererHandler } from "./main"
 
+/** Data transfer object for deleting a media category. */
+interface DeleteCategoryDTO {
+  /** The ID of the media category to delete. */
+  id: number
+}
+
+/** Data transfer object for retrieving a song by ID. */
+interface GetSongDTO {
+  /** The ID of the song to retrieve. */
+  id: number
+}
+
+/** Data transfer object for editing a song. */
+interface EditSongDTO extends SongInfo {}
+
+/** Data transfer object for deleting a song by ID. */
+interface DeleteSongDTO {
+  /** The ID of the song to delete. */
+  id: number
+}
+
+/** Data transfer object for retrieving songs by category ID. */
+interface GetSongsDTO {
+  /** The ID of the category to retrieve songs from. */
+  categoryId: number
+}
+
 /**
  * Interface for handling media-related operations.
  */
 export interface MediaHandler {
   /**
    * Saves a media category. Can create a new category or update an existing one.
-   * @param data - The media category data to save.
    * @returns A promise that resolves to a boolean indicating whether the save operation was successful.
    */
-  saveCategory: RendererHandler<
-    (data: SaveMediaCategoryDTO) => Promise<boolean>
-  >
+  saveCategory: RendererHandler<(arg: SaveMediaCategoryDTO) => Promise<boolean>>
 
   /**
    * Deletes a media category by its ID.
-   * @param id - The ID of the media category to delete.
    * @returns A promise that resolves to a boolean indicating whether the delete operation was successful.
    */
-  deleteCategory: RendererHandler<(id: number) => Promise<boolean>>
+  deleteCategory: RendererHandler<(arg: DeleteCategoryDTO) => Promise<boolean>>
 
   /**
    * Retrieves all media categories.
@@ -33,31 +56,27 @@ export interface MediaHandler {
 
   /**
    * Retrieves a song by its ID.
-   * @param id - song ID
    * @returns
    */
-  getSong: RendererHandler<(id: number) => Promise<SongInfo | undefined>>
+  getSong: RendererHandler<(arg: GetSongDTO) => Promise<SongInfo | undefined>>
 
   /**
    * Edits a song's information.
-   * @param song - The song information to edit.
    * @returns A promise that resolves to a boolean indicating whether the edit operation was successful.
    */
-  editSong: RendererHandler<(song: SongInfo) => Promise<boolean>>
+  editSong: RendererHandler<(arg: EditSongDTO) => Promise<boolean>>
 
   /**
    * Deletes a song by its ID.
-   * @param id - The ID of the song to delete.
    * @returns A promise that resolves to a boolean indicating whether the delete operation was successful.
    */
-  deleteSong: RendererHandler<(id: number) => Promise<boolean>>
+  deleteSong: RendererHandler<(arg: DeleteSongDTO) => Promise<boolean>>
 
   /**
    * Retrieves all songs in a specific category.
-   * @param categoryId - The ID of the category to retrieve songs from.
    * @returns A promise that resolves to an array of song information.
    */
-  getSongs: RendererHandler<(categoryId: number) => Promise<SongInfo[]>>
+  getSongs: RendererHandler<(arg: GetSongsDTO) => Promise<SongInfo[]>>
 
   /**
    * Retrieves all unassigned songs.

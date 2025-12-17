@@ -8,24 +8,18 @@ import { DATABASE_IPC_CHANNELS } from "@cross/constants/ipc"
 export const databaseRendererHandler: DatabaseHandler = {
   authenticate: async (meta) =>
     ipcRenderer.invoke(DATABASE_IPC_CHANNELS.AUTHENTICATE, meta),
-  checkVersion: async (lastVersion, meta) =>
-    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.CHECK_VERSION, lastVersion, meta),
-  sync: async (lastVersion, meta) =>
-    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SYNC, lastVersion, meta),
+  checkVersion: async (arg, meta) =>
+    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.CHECK_VERSION, arg, meta),
+  sync: async (arg, meta) =>
+    ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SYNC, arg, meta),
   getVersion: async (meta) =>
     ipcRenderer.invoke(DATABASE_IPC_CHANNELS.GET_VERSION, meta),
   settings: {
     /** @deprecated use getDomain instead */
     get: async (meta) =>
       ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SETTINGS_GET, meta),
-    set: async (key, value, category, meta) =>
-      ipcRenderer.invoke(
-        DATABASE_IPC_CHANNELS.SETTINGS_SET,
-        key,
-        value,
-        category,
-        meta
-      )
+    set: async (arg, meta) =>
+      ipcRenderer.invoke(DATABASE_IPC_CHANNELS.SETTINGS_SET, arg, meta)
   },
   media: mediaRendererHandler,
   dictionary: dictionaryRendererHandler,

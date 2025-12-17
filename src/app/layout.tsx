@@ -1,6 +1,5 @@
 // components
 import Initializer from "@/components/Helpers/Initializer"
-import DatabaseProvider from "@/components/Containers/DatabaseProvider"
 import DatabaseProtectedComponent from "@/components/Containers/Protectors/DatabaseProtectedComponent"
 // constants
 import { mainFont } from "@/constants/fonts"
@@ -31,9 +30,7 @@ export default function RootLayout({
       <body className={mainFont.className}>
         <Foundation>
           <CIpcProviderContainer>
-            {/* <DatabaseProtectedComponent> */}
-            {children}
-            {/* </DatabaseProtectedComponent> */}
+            <DatabaseProtectedComponent>{children}</DatabaseProtectedComponent>
             <Initializer />
           </CIpcProviderContainer>
         </Foundation>

@@ -23,8 +23,8 @@ handleIpcMain<MediaHandler["getCategories"]>(
  */
 handleIpcMain<MediaHandler["saveCategory"]>(
   MEDIA_IPC_CHANNELS.SAVE_CATEGORY,
-  async (event, categoryInfo: SaveMediaCategoryDTO) => {
-    return await container.mediaService.saveCategory(categoryInfo)
+  async (event, data: SaveMediaCategoryDTO) => {
+    return await container.mediaService.saveCategory(data)
   }
 )
 
@@ -33,8 +33,8 @@ handleIpcMain<MediaHandler["saveCategory"]>(
  */
 handleIpcMain<MediaHandler["deleteCategory"]>(
   MEDIA_IPC_CHANNELS.DELETE_CATEGORY,
-  async (event, id) => {
-    return await container.mediaService.deleteCategory(id)
+  async (event, data) => {
+    return await container.mediaService.deleteCategory(data.id)
   }
 )
 
@@ -43,8 +43,8 @@ handleIpcMain<MediaHandler["deleteCategory"]>(
  */
 handleIpcMain<MediaHandler["editSong"]>(
   MEDIA_IPC_CHANNELS.EDIT_SONG,
-  async (event, song: SongInfo) => {
-    return await container.mediaService.saveSong(song)
+  async (event, data) => {
+    return await container.mediaService.saveSong(data)
   }
 )
 
@@ -53,8 +53,8 @@ handleIpcMain<MediaHandler["editSong"]>(
  */
 handleIpcMain<MediaHandler["deleteSong"]>(
   MEDIA_IPC_CHANNELS.DELETE_SONG,
-  async (event, id) => {
-    return await container.mediaService.deleteSong(id)
+  async (event, data) => {
+    return await container.mediaService.deleteSong(data.id)
   }
 )
 
@@ -63,8 +63,8 @@ handleIpcMain<MediaHandler["deleteSong"]>(
  */
 handleIpcMain<MediaHandler["getSongs"]>(
   MEDIA_IPC_CHANNELS.GET_SONGS,
-  async (event, categoryId) => {
-    return await container.mediaService.getSongsByCategoryId(categoryId)
+  async (event, data) => {
+    return await container.mediaService.getSongsByCategoryId(data.categoryId)
   }
 )
 
@@ -83,7 +83,7 @@ handleIpcMain<MediaHandler["getUnassignedSongs"]>(
  */
 handleIpcMain<MediaHandler["getSong"]>(
   MEDIA_IPC_CHANNELS.GET_SONG,
-  async (event, id) => {
-    return await container.mediaService.getSongById(id)
+  async (event, data) => {
+    return await container.mediaService.getSongById(data.id)
   }
 )

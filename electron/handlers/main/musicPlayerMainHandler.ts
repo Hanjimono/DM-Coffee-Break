@@ -70,10 +70,10 @@ handleIpcMain<MusicPlayerHandler["getStatus"]>(
 
 handleIpcMain<MusicPlayerHandler["play"]>(
   MUSIC_IPC_CHANNELS.PLAY,
-  async (event, song: SongInfo) => {
+  async (event, data) => {
     try {
       const bot = await prepareDiscordMusicBot()
-      return bot.tryToPlayANewSong(song)
+      return bot.tryToPlayANewSong(data.song)
     } catch (error) {
       return handleDiscordMusicBotError(error)
     }

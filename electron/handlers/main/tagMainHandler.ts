@@ -6,7 +6,6 @@ import { TAG_IPC_CHANNELS } from "@cross/constants/ipc"
 import { container } from "../../container"
 // types
 import { TagHandler } from "@cross/types/handlers/tag"
-import { TagInfo } from "@cross/types/database/tags"
 
 /**
  * Function to get all existing tags
@@ -20,8 +19,8 @@ handleIpcMain<TagHandler["getAll"]>(TAG_IPC_CHANNELS.GET_ALL, async () => {
  */
 handleIpcMain<TagHandler["edit"]>(
   TAG_IPC_CHANNELS.EDIT,
-  async (event, tag: TagInfo) => {
-    return await container.tagService.saveTag(tag)
+  async (event, data) => {
+    return await container.tagService.saveTag(data)
   }
 )
 
@@ -30,7 +29,7 @@ handleIpcMain<TagHandler["edit"]>(
  */
 handleIpcMain<TagHandler["delete"]>(
   TAG_IPC_CHANNELS.DELETE,
-  async (event, tagId: number) => {
-    return await container.tagService.deleteTag(tagId)
+  async (event, data) => {
+    return await container.tagService.deleteTag(data.id)
   }
 )

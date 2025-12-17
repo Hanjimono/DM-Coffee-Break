@@ -33,8 +33,8 @@ handleIpcMain<DatabaseHandler["authenticate"]>(
  */
 handleIpcMain<DatabaseHandler["checkVersion"]>(
   DATABASE_IPC_CHANNELS.CHECK_VERSION,
-  async (event, lastVersion) => {
-    return container.settingsService.checkDatabaseVersion(lastVersion)
+  async (event, data) => {
+    return container.settingsService.checkDatabaseVersion(data.lastVersion)
   }
 )
 
@@ -43,7 +43,7 @@ handleIpcMain<DatabaseHandler["checkVersion"]>(
  */
 handleIpcMain<DatabaseHandler["sync"]>(
   DATABASE_IPC_CHANNELS.SYNC,
-  async (event, lastVersion) => {
+  async (event, data) => {
     try {
       // TODO: migrate from Umzug to handle migrations manually with Prisma Migrate
       // const umzug = new Umzug({
@@ -69,8 +69,10 @@ handleIpcMain<DatabaseHandler["sync"]>(
       //   logger: Logger
       // })
       // await umzug.up()
-      if (await container.settingsService.saveNewDatabaseVersion(lastVersion)) {
-        return lastVersion
+      if (
+        await container.settingsService.saveNewDatabaseVersion(data.lastVersion)
+      ) {
+        return data.lastVersion
       }
       return "0.0.0"
     } catch (error) {
@@ -105,7 +107,11 @@ handleIpcMain<SettingsHandler["get"]>(
  */
 handleIpcMain<SettingsHandler["set"]>(
   "database-settings-set",
-  async (event, key: string, value: string, category) => {
-    return await container.settingsService.setUserSettings(key, value, category)
+  async (event, data) => {
+    return await container.settingsService.setUserSettings(
+      data.key,
+      data.value,
+      data.category
+    )
   }
 )

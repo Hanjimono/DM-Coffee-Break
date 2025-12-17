@@ -115,27 +115,27 @@ function mapSpecEntryToHandler(
     }
   }
   if (kind === "mutation") {
-    return (...args: any[]) => {
-      const { args: actualArgs, options } = splitArgsAndOptions<any>(args)
+    return (options?: any) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       return useMutation({
-        mutationKey: [specKey, ...actualArgs],
-        mutationFn: createQueryFn(
+        mutationKey: [specKey],
+        mutationFn: createMutationFn(
           {
             path,
             kind: "mutation",
-            key: [specKey, ...actualArgs],
-            args: actualArgs,
+            args: [],
+            key: [specKey],
             options,
             config
           },
           middlewares,
-          async (ctx) => {
+          async (ctx, variables: unknown) => {
             const r = (await invokeWithTracing(
               handler,
-              actualArgs,
+              [variables],
               ctx
             )) as IpcResponse<any>
+
             if (!r.ok) throw new Error(r.error)
             return r.data
           }
@@ -179,6 +179,29 @@ function createQueryFn(
   handler: (ctx: CIpcContext) => Promise<unknown>
 ) {
   return () => executeWithMiddleware(ctx, middlewares, handler)
+}
+
+/**
+ * A factory function to create a mutation function that executes with middleware.
+ * @param ctx - The cIpc context for the operation.
+ * @param middlewares - The list of middlewares to apply.
+ * @param handler - The actual handler function to be executed.
+ * @returns A function that executes the handler with middleware applied.
+ */
+function createMutationFn(
+  baseCtx: CIpcContext,
+  middlewares: CIpcMiddleware[],
+  handler: (ctx: CIpcContext, variables: unknown) => Promise<unknown>
+) {
+  return (variables: unknown) =>
+    executeWithMiddleware(
+      {
+        ...baseCtx,
+        args: [variables]
+      },
+      middlewares,
+      (ctx) => handler(ctx, variables)
+    )
 }
 
 /**

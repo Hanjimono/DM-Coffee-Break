@@ -1,9 +1,10 @@
 "use client"
-import { useEffect, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 // Components
 import LoadingScreen from "@/components/Containers/LoadingScreen"
-import { useDatabase, useUpdateSettings } from "@/components/Helpers/Hooks"
+import { useCIpc } from "../../CIpcProvider/cIpcProviderContainer.client"
+import { useEffect } from "react"
+import { DatabaseVersion } from "@cross/types/database/settings/version"
 
 //TODO: move to constants or env
 export const CURRENT_DATABASE_VERSION = "0.0.4"
@@ -20,31 +21,29 @@ export default function DatabaseProtectedComponent({
 }: {
   children: React.ReactNode
 }) {
-  const [loading, setLoading] = useState(true)
-  const { authenticate, checkVersion } = useDatabase()
-  const updateSettings = useUpdateSettings()
+  const cIpc = useCIpc()
   const pathname = usePathname()
   const router = useRouter()
+  const authenticate = cIpc.database.authenticate()
+  const checkVersion = cIpc.database.checkVersion()
+  const isPending = authenticate.isPending || checkVersion.isPending
   useEffect(() => {
-    if (!authenticate) return
-    const checkDatabase = async () => {
-      const result = await authenticate()
-      if (!result) {
-        throw new Error("Database connection failed")
-      }
-      const isValidVersion = await checkVersion(CURRENT_DATABASE_VERSION)
-      if (!isValidVersion) {
-        router.push("/settings/database")
-      } else {
-        updateSettings()
-        if (pathname === "/") {
-          router.push("/home")
-        }
-      }
-      setLoading(false)
-      return result
+    if (!checkVersion.data && !checkVersion.isPending) {
+      checkVersion.mutate({
+        lastVersion: CURRENT_DATABASE_VERSION
+      })
     }
-    checkDatabase()
-  }, [authenticate, checkVersion, updateSettings, router, pathname])
-  return <LoadingScreen loaded={!loading}>{children}</LoadingScreen>
+  }, [checkVersion])
+  if (!isPending && !authenticate.data) {
+    throw new Error("Database connection failed")
+  }
+  if (!isPending && !checkVersion.data) {
+    console.log("Database version invalid")
+    // router.push("/settings/database")
+  }
+  if (!isPending && pathname === "/") {
+    console.log("Redirecting to home")
+    // router.push("/home")
+  }
+  return <LoadingScreen loaded={!isPending}>{children}</LoadingScreen>
 }

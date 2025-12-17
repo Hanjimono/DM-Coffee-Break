@@ -11,7 +11,9 @@ import { DictionaryHandler } from "@cross/types/handlers/dictionary"
  */
 handleIpcMain<DictionaryHandler["get"]>(
   DICTIONARY_IPC_CHANNELS.GET,
-  async (event, dictionaryType) => {
-    return await container.dictionaryService.getDictionaryData(dictionaryType)
+  async (event, data) => {
+    return await container.dictionaryService.getDictionaryData(
+      data.dictionaryType
+    )
   }
 )

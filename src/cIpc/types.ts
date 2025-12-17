@@ -70,6 +70,11 @@ type ExtractRendererFn<T> = T extends RendererHandler<infer F> ? F : never
 type ExtractData<T> =
   T extends Promise<infer R> ? R : T extends IpcResponse<infer D> ? D : T
 
+/** Utility type to extract mutation variables from RendererHandler */
+type MutationVariables<TFn extends RendererHandler<any>> = Parameters<
+  ExtractRendererFn<TFn>
+>[0]
+
 /** Type representing a method in the SDK. Maps to query or mutation */
 type SdkMethod<
   TFn extends RendererHandler<any>,
@@ -85,14 +90,15 @@ type SdkMethod<
       ]
     ) => UseQueryResult<ExtractData<ReturnType<ExtractRendererFn<TFn>>>>
   : (
-      ...args: [
-        ...Parameters<ExtractRendererFn<TFn>>,
-        options?: CIpcOptionsArgument<
-          ExtractData<ReturnType<ExtractRendererFn<TFn>>>,
-          never
-        >
-      ]
-    ) => UseMutationResult<ExtractData<ReturnType<ExtractRendererFn<TFn>>>>
+      options?: CIpcOptionsArgument<
+        ExtractData<ReturnType<ExtractRendererFn<TFn>>>,
+        never
+      >
+    ) => UseMutationResult<
+      ExtractData<ReturnType<ExtractRendererFn<TFn>>>,
+      Error,
+      MutationVariables<TFn>
+    >
 
 /** Type representing the SDK generated from handlers and specification */
 export type SdkFromSpec<THandlers, TSpec> = {

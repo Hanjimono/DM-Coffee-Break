@@ -1,6 +1,15 @@
 import { AvailableDictionaries, DictionaryData } from "../dictionary"
 import { RendererHandler } from "./main"
 
+/** Interface representing the data transfer object for retrieving a dictionary.
+ */
+interface DictionaryGetDTO {
+  /**
+   *  The type of dictionary to retrieve.
+   */
+  dictionaryType: AvailableDictionaries
+}
+
 /**
  * Interface representing a handler for media-related operations.
  */
@@ -10,7 +19,5 @@ export interface DictionaryHandler {
    *
    * @returns
    */
-  get: RendererHandler<
-    (dictionaryType: AvailableDictionaries) => Promise<DictionaryData[]>
-  >
+  get: RendererHandler<(arg: DictionaryGetDTO) => Promise<DictionaryData[]>>
 }

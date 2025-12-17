@@ -5,6 +5,12 @@ import { DictionaryHandler } from "./dictionary"
 import { TagHandler } from "./tag"
 import { RendererHandler } from "./main"
 
+/** Data Transfer Object for checking database version */
+interface CheckVersionDTO {
+  /** The last known version of the database. */
+  lastVersion: DatabaseVersion
+}
+
 /**
  * Interface representing a handler for database operations.
  */
@@ -22,9 +28,7 @@ export interface DatabaseHandler {
    * @param lastVersion - The last known version of the database.
    * @returns A promise that resolves to a boolean indicating whether the version matches.
    */
-  checkVersion: RendererHandler<
-    (lastVersion: DatabaseVersion) => Promise<boolean>
-  >
+  checkVersion: RendererHandler<(arg: CheckVersionDTO) => Promise<boolean>>
 
   /**
    * Synchronizes the database to the latest version.
@@ -33,9 +37,7 @@ export interface DatabaseHandler {
    * @param lastVersion - The last known version of the database.
    * @returns A promise that resolves to the new version of the database.
    */
-  sync: RendererHandler<
-    (lastVersion: DatabaseVersion) => Promise<DatabaseVersion>
-  >
+  sync: RendererHandler<(arg: CheckVersionDTO) => Promise<DatabaseVersion>>
 
   /**
    * Retrieves the current version of the database.

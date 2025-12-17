@@ -4,8 +4,8 @@ import { ipcRenderer } from "electron"
 
 export const tagRendererHandler: TagHandler = {
   getAll: async (meta) => ipcRenderer.invoke(TAG_IPC_CHANNELS.GET_ALL, meta),
-  edit: async (tag, meta) =>
-    ipcRenderer.invoke(TAG_IPC_CHANNELS.EDIT, tag, meta),
-  delete: async (tagId, meta) =>
-    ipcRenderer.invoke(TAG_IPC_CHANNELS.DELETE, tagId, meta)
+  edit: async (arg, meta) =>
+    ipcRenderer.invoke(TAG_IPC_CHANNELS.EDIT, arg, meta),
+  delete: async (arg, meta) =>
+    ipcRenderer.invoke(TAG_IPC_CHANNELS.DELETE, arg, meta)
 }

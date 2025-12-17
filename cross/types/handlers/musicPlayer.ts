@@ -2,6 +2,10 @@ import { MusicPlayerResponse } from "@cross/types/media/musicPlayer"
 import { SongInfo } from "@cross/types/database/media"
 import { RendererHandler } from "./main"
 
+interface PlaySongDTO {
+  song: SongInfo
+}
+
 /**
  * Interface representing a handler for a music player.
  */
@@ -14,10 +18,9 @@ export interface MusicPlayerHandler {
 
   /**
    * Plays the specified song.
-   * @param song - The information of the song to be played.
    * @returns A promise that resolves to a MusicPlayerResponse object.
    */
-  play: RendererHandler<(song: SongInfo) => Promise<MusicPlayerResponse>>
+  play: RendererHandler<(arg: PlaySongDTO) => Promise<MusicPlayerResponse>>
 
   /**
    * Resumes the currently paused song.
