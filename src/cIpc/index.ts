@@ -37,7 +37,7 @@ export function createCIpcSdk<
   middlewares: CIpcMiddleware[] = [],
   path: string[] = [],
   userConfig: UserConfig = {}
-): SdkFromSpec<THandlers, SpecificationFor<THandlers>> {
+): SdkFromSpec<THandlers, TSpec> {
   const result: any = {}
 
   for (const key in handlers) {
@@ -96,18 +96,22 @@ function mapSpecEntryToHandler(
   queryClient: QueryClient
 ) {
   const kind = entry.type
-  const specKey = entry.key ?? key
+  const specKey = entry.key
+    ? Array.isArray(entry.key)
+      ? entry.key
+      : [entry.key]
+    : [key]
   if (kind === "query") {
     return (...args: any[]) => {
       const { args: actualArgs, options } = splitArgsAndOptions<any>(args)
       // eslint-disable-next-line react-hooks/rules-of-hooks
       return useQuery({
-        queryKey: [specKey, ...actualArgs],
+        queryKey: [...specKey, ...actualArgs],
         queryFn: createQueryFn(
           {
             path,
             kind: "query",
-            key: [specKey, ...actualArgs],
+            key: [...specKey, ...actualArgs],
             args: actualArgs,
             options,
             config
@@ -136,7 +140,7 @@ function mapSpecEntryToHandler(
             path,
             kind: "mutation",
             args: [],
-            key: [specKey],
+            key: [...specKey],
             options,
             config
           },
@@ -154,8 +158,10 @@ function mapSpecEntryToHandler(
         ),
         onSuccess: (...args) => {
           if (entry.invalidateQueries) {
-            queryClient.invalidateQueries({
-              queryKey: entry.invalidateQueries
+            entry.invalidateQueries.forEach((key) => {
+              queryClient.invalidateQueries({
+                queryKey: key
+              })
             })
           }
         }

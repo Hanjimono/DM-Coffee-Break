@@ -10,7 +10,7 @@ import { snackbarMiddleware } from "@/cIpc/middleware/snackbar"
 import { tracingMiddleware } from "@/cIpc/middleware/tracing"
 // types
 import { cIpcHandler } from "@cross/types/handlers/main"
-import { cIpcSDKApi, SdkFromSpec } from "@/cIpc/types"
+import { cIpcSDKApi } from "@/cIpc/types"
 
 /**
  * Create a new QueryClient instance.

@@ -49,14 +49,17 @@ export interface CIpcOptionsArgument<TData, TVariables> {
 /** Type for react-query operation type in SDK */
 export type OperationType = "query" | "mutation"
 
+/** Type for query keys to invalidate after mutations */
+type QueryInvalidateType = readonly string[]
+
 /** Interface representing a single specification entry */
 export interface SpecificationEntry {
   /** The type of operation (query or mutation) */
   type: OperationType
   /** The key for query associated with the operation */
-  key: string
+  key: string[] | string
   /** Optional array of query keys to invalidate after mutation */
-  invalidateQueries?: readonly string[]
+  invalidateQueries?: readonly QueryInvalidateType[]
 }
 
 /** Specification type for mapping SDK structure to operation types */
