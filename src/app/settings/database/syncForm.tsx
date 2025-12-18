@@ -1,15 +1,11 @@
 "use client"
 // system
-import { useEffect, useState } from "react"
 import { useStore } from "@/store"
 import { useRouter } from "next/navigation"
+// cIpc
+import { useCIpc } from "@/components/Containers/CIpcProvider/cIpcProviderContainer.client"
 // components
 import SettingsHeader from "@/components/Settings/SettingsHeader"
-import {
-  useDatabase,
-  useFunctionWithLoadingAndToast,
-  useUpdateSettings
-} from "@/components/Helpers/Hooks"
 import { CURRENT_DATABASE_VERSION } from "@/components/Containers/Protectors/DatabaseProtectedComponent"
 // ui
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
@@ -20,50 +16,39 @@ import Button from "@/ui/Actions/Button"
 import Input from "@/ui/Form/Input"
 
 export default function DatabaseSyncForm() {
-  const { getVersion, sync } = useDatabase()
-  const updateSettings = useUpdateSettings()
-  const [version, setVersion] = useState("0.0.0")
   const confirm = useStore((state) => state.confirm)
   const router = useRouter()
-
-  // Fetch the current database version when the component mounts
-  useEffect(() => {
-    const getCurrentVersion = async () => {
-      const version = await getVersion()
-      setVersion(version)
+  const cIpc = useCIpc()
+  const currentVersion = cIpc.database.getVersion()
+  const sync = cIpc.database.sync({
+    __options: {
+      isShowSuccessSnack: true,
+      successMessage: "Database updated successfully"
     }
-    getCurrentVersion()
-  }, [getVersion])
+  })
 
   /**
    * Handles the database synchronization process.
    */
   const handleSync = async () => {
-    const resultVersion = await sync(CURRENT_DATABASE_VERSION)
-    if (resultVersion !== CURRENT_DATABASE_VERSION) {
-      return false
+    const syncResult = await sync.saveMutateAsync({
+      lastVersion: CURRENT_DATABASE_VERSION
+    })
+    if (syncResult) {
+      currentVersion.refetch()
+      router.push("/settings/global/database")
     }
-    updateSettings()
-    setVersion(resultVersion)
-    router.push("/settings/global/database")
-    return true
   }
-
-  // Wrap the handleSync function to manage loading state and show success/error toasts
-  const [wrappedHandleSync, isLoading] = useFunctionWithLoadingAndToast(
-    handleSync,
-    "Database updated successfully",
-    "Database update failed"
-  )
 
   const handleSyncButtonClick = () => {
     confirm(
       "Are you sure you want to update the database? Changes are irreversible.",
-      { onConfirm: wrappedHandleSync }
+      { onConfirm: handleSync }
     )
   }
-  const wrongVersion = version !== CURRENT_DATABASE_VERSION
-  const loading = false
+  const wrongVersion =
+    !currentVersion.isPending &&
+    currentVersion.data !== CURRENT_DATABASE_VERSION
   return (
     <>
       <Room className="mb-distant">
@@ -75,12 +60,12 @@ export default function DatabaseSyncForm() {
           <Input
             label="Current database version"
             name="version"
-            value={version}
+            value={currentVersion.data || "0.0.0"}
             disabled
             error={
               wrongVersion ? "The database version is outdated" : undefined
             }
-            loading={loading}
+            loading={currentVersion.isPending}
           />
         </Stack>
       </Room>

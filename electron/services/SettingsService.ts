@@ -50,7 +50,7 @@ export class SettingsService extends BaseService {
     return currentVersion === lastVersion
   }
 
-  @BaseService.logErrors(false)
+  @BaseService.logErrorsWithCustomMessage("Failed to save database version")
   /**
    * Saves a new database version if it does not already exist.
    *

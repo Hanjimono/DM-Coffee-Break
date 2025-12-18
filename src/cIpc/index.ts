@@ -1,5 +1,10 @@
 // system
-import { useMutation, useQuery } from "@tanstack/react-query"
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from "@tanstack/react-query"
 // cIpc
 import { executeWithMiddleware } from "./middleware"
 // types
@@ -22,9 +27,13 @@ import { IpcResponse } from "@cross/types/handlers/main"
  * @param path - The current path in the handler structure (used for nested handlers).
  * @returns
  */
-export function createCIpcSdk<THandlers extends object>(
+export function createCIpcSdk<
+  THandlers extends object,
+  TSpec extends SpecificationFor<THandlers>
+>(
   handlers: THandlers,
-  spec: SpecificationFor<THandlers>,
+  spec: TSpec,
+  queryClient: QueryClient,
   middlewares: CIpcMiddleware[] = [],
   path: string[] = [],
   userConfig: UserConfig = {}
@@ -40,6 +49,7 @@ export function createCIpcSdk<THandlers extends object>(
       result[key] = createCIpcSdk(
         handler,
         specificationEntry as SpecificationFor<typeof handler>,
+        queryClient,
         middlewares,
         nextPath,
         userConfig
@@ -60,7 +70,8 @@ export function createCIpcSdk<THandlers extends object>(
       key,
       middlewares,
       nextPath,
-      userConfig
+      userConfig,
+      queryClient
     )
   }
 
@@ -81,7 +92,8 @@ function mapSpecEntryToHandler(
   key: string,
   middlewares: CIpcMiddleware[],
   path: string[],
-  config: UserConfig = {}
+  config: UserConfig = {},
+  queryClient: QueryClient
 ) {
   const kind = entry.type
   const specKey = entry.key ?? key
@@ -117,7 +129,7 @@ function mapSpecEntryToHandler(
   if (kind === "mutation") {
     return (options?: any) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      return useMutation({
+      const mutationHook = useMutation({
         mutationKey: [specKey],
         mutationFn: createMutationFn(
           {
@@ -139,8 +151,27 @@ function mapSpecEntryToHandler(
             if (!r.ok) throw new Error(r.error)
             return r.data
           }
-        )
+        ),
+        onSuccess: (...args) => {
+          if (entry.invalidateQueries) {
+            queryClient.invalidateQueries({
+              queryKey: entry.invalidateQueries
+            })
+          }
+        }
       })
+      return {
+        ...mutationHook,
+        saveMutateAsync: async (variables: unknown) => {
+          try {
+            const data = await mutationHook.mutateAsync(variables)
+            return data
+          } catch (error) {
+            // Swallow error to prevent unhandled promise rejection in UI
+            return undefined
+          }
+        }
+      }
     }
   }
 }

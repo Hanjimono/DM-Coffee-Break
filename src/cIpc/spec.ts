@@ -3,7 +3,7 @@ export const cIpcSpecification = {
   database: {
     authenticate: { type: "query", key: "authenticate" },
     checkVersion: { type: "query", key: "version" },
-    sync: { type: "mutation", key: "version" },
+    sync: { type: "mutation", key: "version", invalidateQueries: ["version"] },
     getVersion: { type: "query", key: "version" },
     settings: {
       get: { type: "query", key: "settings" },

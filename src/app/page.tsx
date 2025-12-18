@@ -6,8 +6,7 @@ import WallDecorated from "@/ui/Layout/Decorators/WallDecorated"
 export default function MainPage() {
   return (
     <WallDecorated>
-      <LoadingScreen loaded={true} />
-      111
+      <LoadingScreen loaded={false} />
     </WallDecorated>
   )
 }

@@ -37,7 +37,7 @@ export interface DatabaseHandler {
    * @param lastVersion - The last known version of the database.
    * @returns A promise that resolves to the new version of the database.
    */
-  sync: RendererHandler<(arg: CheckVersionDTO) => Promise<DatabaseVersion>>
+  sync: RendererHandler<(arg: CheckVersionDTO) => Promise<boolean>>
 
   /**
    * Retrieves the current version of the database.

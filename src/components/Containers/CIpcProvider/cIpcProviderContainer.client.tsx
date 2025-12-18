@@ -10,7 +10,7 @@ import { snackbarMiddleware } from "@/cIpc/middleware/snackbar"
 import { tracingMiddleware } from "@/cIpc/middleware/tracing"
 // types
 import { cIpcHandler } from "@cross/types/handlers/main"
-import { cIpcSDKApi } from "@/cIpc/types"
+import { cIpcSDKApi, SdkFromSpec } from "@/cIpc/types"
 
 /**
  * Create a new QueryClient instance.
@@ -82,14 +82,15 @@ export function CIpcProviderClientContainer({
   const ipcHandler = getIpcHandler()
   const userConfig = getUserConfig()
   const api = useMemo(() => {
-    return createCIpcSdk(
+    return createCIpcSdk<cIpcHandler, typeof cIpcSpecification>(
       ipcHandler,
       cIpcSpecification,
+      queryClient,
       [tracingMiddleware, loggingMiddleware, snackbarMiddleware],
       [],
       userConfig
     )
-  }, [ipcHandler, userConfig])
+  }, [ipcHandler, userConfig, queryClient])
   return (
     <QueryClientProvider client={queryClient}>
       <CIpcContext.Provider value={api}>{children}</CIpcContext.Provider>

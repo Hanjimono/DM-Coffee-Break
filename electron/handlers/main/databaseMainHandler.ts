@@ -44,41 +44,33 @@ handleIpcMain<DatabaseHandler["checkVersion"]>(
 handleIpcMain<DatabaseHandler["sync"]>(
   DATABASE_IPC_CHANNELS.SYNC,
   async (event, data) => {
-    try {
-      // TODO: migrate from Umzug to handle migrations manually with Prisma Migrate
-      // const umzug = new Umzug({
-      //   migrations: {
-      //     glob: is.dev
-      //       ? "resources/migrations/*.js"
-      //       : path.resolve(process.resourcesPath).replaceAll("\\", "/") +
-      //         "/migrations/*.js",
-      //     resolve: ({ name, path, context }) => {
-      //       if (!path) {
-      //         throw new Error("Migration path is undefined")
-      //       }
-      //       const migration = require(path)
-      //       return {
-      //         name,
-      //         up: async () => migration.up(context, Sequelize),
-      //         down: async () => migration.down(context, Sequelize)
-      //       }
-      //     }
-      //   },
-      //   context: sequelize.getQueryInterface(),
-      //   storage: new SequelizeStorage({ sequelize }),
-      //   logger: Logger
-      // })
-      // await umzug.up()
-      if (
-        await container.settingsService.saveNewDatabaseVersion(data.lastVersion)
-      ) {
-        return data.lastVersion
-      }
-      return "0.0.0"
-    } catch (error) {
-      Logger.error("Database sync error:", error)
-      return "0.0.0"
-    }
+    // TODO: migrate from Umzug to handle migrations manually with Prisma Migrate
+    // const umzug = new Umzug({
+    //   migrations: {
+    //     glob: is.dev
+    //       ? "resources/migrations/*.js"
+    //       : path.resolve(process.resourcesPath).replaceAll("\\", "/") +
+    //         "/migrations/*.js",
+    //     resolve: ({ name, path, context }) => {
+    //       if (!path) {
+    //         throw new Error("Migration path is undefined")
+    //       }
+    //       const migration = require(path)
+    //       return {
+    //         name,
+    //         up: async () => migration.up(context, Sequelize),
+    //         down: async () => migration.down(context, Sequelize)
+    //       }
+    //     }
+    //   },
+    //   context: sequelize.getQueryInterface(),
+    //   storage: new SequelizeStorage({ sequelize }),
+    //   logger: Logger
+    // })
+    // await umzug.up()
+    return await container.settingsService.saveNewDatabaseVersion(
+      data.lastVersion
+    )
   }
 )
 

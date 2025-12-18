@@ -55,6 +55,8 @@ export interface SpecificationEntry {
   type: OperationType
   /** The key for query associated with the operation */
   key: string
+  /** Optional array of query keys to invalidate after mutation */
+  invalidateQueries?: readonly string[]
 }
 
 /** Specification type for mapping SDK structure to operation types */
@@ -99,7 +101,18 @@ type SdkMethod<
       ExtractData<ReturnType<ExtractRendererFn<TFn>>>,
       Error,
       MutationVariables<TFn>
-    >
+    > & {
+      saveMutateAsync: (
+        variables: MutationVariables<TFn>,
+        options?: Omit<
+          CIpcMutationOptions<
+            ExtractData<ReturnType<ExtractRendererFn<TFn>>>,
+            MutationVariables<TFn>
+          >,
+          "mutationKey" | "mutationFn"
+        >
+      ) => Promise<ExtractData<ReturnType<ExtractRendererFn<TFn>>> | undefined>
+    }
 
 /** Type representing the SDK generated from handlers and specification */
 export type SdkFromSpec<

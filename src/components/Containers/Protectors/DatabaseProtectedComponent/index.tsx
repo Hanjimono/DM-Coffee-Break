@@ -1,10 +1,8 @@
 "use client"
-import { usePathname, useRouter } from "next/navigation"
+import { redirect, usePathname, useRouter } from "next/navigation"
 // Components
 import LoadingScreen from "@/components/Containers/LoadingScreen"
 import { useCIpc } from "../../CIpcProvider/cIpcProviderContainer.client"
-import { useEffect } from "react"
-import { DatabaseVersion } from "@cross/types/database/settings/version"
 
 //TODO: move to constants or env
 export const CURRENT_DATABASE_VERSION = "0.0.4"
@@ -23,7 +21,6 @@ export default function DatabaseProtectedComponent({
 }) {
   const cIpc = useCIpc()
   const pathname = usePathname()
-  const router = useRouter()
   const authenticate = cIpc.database.authenticate()
   const checkVersion = cIpc.database.checkVersion({
     lastVersion: CURRENT_DATABASE_VERSION
@@ -32,13 +29,11 @@ export default function DatabaseProtectedComponent({
   if (!isPending && !authenticate.data) {
     throw new Error("Database connection failed")
   }
-  if (!isPending && !checkVersion.data) {
-    console.log("Database version invalid")
-    // router.push("/settings/database")
+  if (!isPending && !checkVersion.data && pathname !== "/settings/database") {
+    redirect("/settings/database")
   }
   if (!isPending && pathname === "/") {
-    console.log("Redirecting to home")
-    // router.push("/home")
+    redirect("/home")
   }
   return <LoadingScreen loaded={!isPending}>{children}</LoadingScreen>
 }
