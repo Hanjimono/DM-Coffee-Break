@@ -27,7 +27,7 @@ export default function RootLayout({
           integrity="sha512-B46MVOJpI6RBsdcU307elYeStF2JKT87SsHZfRSkjVi4/iZ3912zXi45X5/CBr/GbCyLx6M1GQtTKYRd52Jxgw=="
         />
       </head>
-      <body className={mainFont.className}>
+      <body style={{ background: "##512a2f" }} className={mainFont.className}>
         <Foundation>
           <CIpcProviderContainer>
             <DatabaseProtectedComponent>{children}</DatabaseProtectedComponent>

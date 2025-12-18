@@ -38,6 +38,7 @@ const createWindow = () => {
     minWidth: 900,
     minHeight: 670,
     show: false,
+    backgroundColor: "#512a2f",
     autoHideMenuBar: true,
     webPreferences: {
       preload: join(__dirname, "preload.js"),
@@ -59,8 +60,7 @@ const createWindow = () => {
   )
   splash.center()
 
-  mainWindow.webContents.on("did-finish-load", () => {
-    mainWindow.maximize()
+  mainWindow.once("ready-to-show", () => {
     mainWindow.show()
     splash.close()
     mainWindow.focus()

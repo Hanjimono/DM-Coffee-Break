@@ -248,6 +248,7 @@ html {
 
 body {
   overflow: hidden;
+  background-color: var(--color-page);
 }
 
 a {
