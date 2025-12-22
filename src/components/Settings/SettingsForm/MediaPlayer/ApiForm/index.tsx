@@ -1,7 +1,8 @@
 // system
-import * as yup from "yup"
-// components
-import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
+import * as zod from "zod"
+// utils
+import { useChangedSettings } from "../../utils"
+import { useSettings } from "@/components/Containers/SettingsProvider"
 // ui
 import Room from "@/ui/Layout/Room"
 import Text from "@/ui/Presentation/Text"
@@ -15,19 +16,20 @@ import { FormElementLine } from "@/ui/Form/FormElementWrapper"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { MEDIA_PLAYER_SETTINGS_API_KEYS } from "@cross/constants/settingsMedia"
 
-const yupSettings = {
-  [MEDIA_PLAYER_SETTINGS_API_KEYS.CHANNEL_ID]: yup.string().required(),
-  [MEDIA_PLAYER_SETTINGS_API_KEYS.PLAY_PREFIX]: yup.string().required(),
-  [MEDIA_PLAYER_SETTINGS_API_KEYS.STOP_PREFIX]: yup.string().required(),
-  [MEDIA_PLAYER_SETTINGS_API_KEYS.WEBHOOK_URL]: yup.string().required()
-}
+const apiPlayerSettingsSchema = zod.object({
+  [MEDIA_PLAYER_SETTINGS_API_KEYS.CHANNEL_ID]: zod.string(),
+  [MEDIA_PLAYER_SETTINGS_API_KEYS.PLAY_PREFIX]: zod.string(),
+  [MEDIA_PLAYER_SETTINGS_API_KEYS.STOP_PREFIX]: zod.string(),
+  [MEDIA_PLAYER_SETTINGS_API_KEYS.WEBHOOK_URL]: zod.string()
+})
 
 /**
  * Form for API player settings
  */
-export default function ApiPlayerSettings() {
+export default function ApiPlayerSettingsForm() {
   const settings = useSettings()
-  const [methods, handleChange] = useSettingsFormOnFly(
+  const [methods, handleChange] = useChangedSettings(
+    apiPlayerSettingsSchema,
     {
       [MEDIA_PLAYER_SETTINGS_API_KEYS.CHANNEL_ID]:
         settings.media.player.api.channelId,
@@ -38,7 +40,6 @@ export default function ApiPlayerSettings() {
       [MEDIA_PLAYER_SETTINGS_API_KEYS.WEBHOOK_URL]:
         settings.media.player.api.webhookUrl
     },
-    yupSettings,
     SETTINGS_CATEGORIES.MEDIA
   )
   return (

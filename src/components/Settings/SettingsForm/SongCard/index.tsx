@@ -1,11 +1,12 @@
 "use client"
 // system
-import * as yup from "yup"
+import * as zod from "zod"
+// utils
+import { useSettings } from "@/components/Containers/SettingsProvider"
+import { useChangedSettings } from "../utils"
 // Components
 import SettingsHeader from "@/components/Settings/SettingsHeader"
-import ShortFormSettings from "./shortFormSettings"
-import FullFormSettings from "./fullFormSettings"
-import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
+import SongCardFullFormSettings from "./fullFormSettings"
 // ui
 import Radio from "@/ui/Form/Radio"
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
@@ -18,21 +19,22 @@ import {
   SONG_CARD_TYPES
 } from "@cross/constants/settingsMedia"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
+import SongCardShortFormSettings from "./shortFormSettings"
 
-const yupSettings = {
-  [SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE]: yup.number().required()
-}
+const songCardSettingsSchema = zod.object({
+  [SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE]: zod.string()
+})
 
 /**
- * Main component for song card settings
+ * Song card settings form
  */
 export default function SongCardSettingsForm() {
   const settings = useSettings()
-  const [methods, handleChange] = useSettingsFormOnFly(
+  const [methods, handleChange] = useChangedSettings(
+    songCardSettingsSchema,
     {
       [SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE]: settings.media.songs.card.type
     },
-    yupSettings,
     SETTINGS_CATEGORIES.MEDIA
   )
   const currentSettings = methods.watch()
@@ -72,7 +74,7 @@ export default function SongCardSettingsForm() {
           SONG_CARD_TYPES.SHORT
         }
       >
-        <ShortFormSettings />
+        <SongCardShortFormSettings />
       </HiddenRoom>
       <HiddenRoom
         isShown={
@@ -80,7 +82,7 @@ export default function SongCardSettingsForm() {
           SONG_CARD_TYPES.FULL
         }
       >
-        <FullFormSettings />
+        <SongCardFullFormSettings />
       </HiddenRoom>
       <HiddenRoom
         isShown={
@@ -89,8 +91,8 @@ export default function SongCardSettingsForm() {
         }
       >
         <Stack gap="distant">
-          <ShortFormSettings />
-          <FullFormSettings />
+          <SongCardShortFormSettings />
+          <SongCardFullFormSettings />
         </Stack>
       </HiddenRoom>
     </>

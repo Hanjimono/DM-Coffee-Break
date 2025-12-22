@@ -1,5 +1,5 @@
 // components
-import SongCardSettingsForm from "./formSettings"
+import SongCardSettingsForm from "@/components/Settings/SettingsForm/SongCard"
 
 export default function SongCardSettingsPage() {
   return <SongCardSettingsForm />

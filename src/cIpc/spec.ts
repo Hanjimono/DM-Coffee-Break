@@ -6,12 +6,16 @@ export const cIpcSpecification = {
     sync: {
       type: "mutation",
       key: "version",
-      invalidateQueries: [["version"]]
+      invalidateQueries: [["version"], ["settings"]]
     },
     getVersion: { type: "query", key: "version" },
     settings: {
       get: { type: "query", key: "settings" },
-      set: { type: "mutation", key: "settings" }
+      set: {
+        type: "mutation",
+        key: "settings",
+        invalidateQueries: [["settings"]]
+      }
     },
     media: {
       saveCategory: { type: "mutation", key: "category" },

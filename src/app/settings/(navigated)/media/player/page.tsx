@@ -1,11 +1,11 @@
 // components
 import MusicPlayerProtectedComponent from "@/components/Containers/Protectors/MusicPlayerProtectedComponent"
-import MediaPlayerSettingsContent from "./mediaPlayerSettings"
+import MediaPlayerSettings from "@/components/Settings/SettingsForm/MediaPlayer"
 
-export default function MediaPlayerSettings() {
+export default function MediaPlayerSettingsPage() {
   return (
     <MusicPlayerProtectedComponent>
-      <MediaPlayerSettingsContent />
+      <MediaPlayerSettings />
     </MusicPlayerProtectedComponent>
   )
 }

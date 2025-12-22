@@ -4,10 +4,20 @@ import {
 } from "@cross/types/database/settings"
 import { RendererHandler } from "./main"
 
-interface SettingSetDTO {
+/**
+ * Data Transfer Object for changing a setting
+ */
+export interface SettingChangeDTO {
   key: string
-  value: string
+  value: string | number | boolean
   category?: AvailableSettingsCategories
+}
+
+/**
+ * Data Transfer Object for change settings handler
+ */
+export interface SettingSetDTO {
+  settings: SettingChangeDTO[]
 }
 
 /**

@@ -1,11 +1,14 @@
 "use client"
-import * as yup from "yup"
+// system
+import * as zod from "zod"
 // component
 import SettingsHeader from "@/components/Settings/SettingsHeader"
-import ClipboardPlayerSettings from "./clipboardPlayerSettings"
-import ApiPlayerSettings from "./apiPlayerSettings"
-import BotPlayerSettings from "./botPlayerSettings"
-import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
+import ApiPlayerSettingsForm from "./ApiForm"
+import ClipboardPlayerSettingsForm from "./ClipboardForm"
+import BotPlayerSettingsForm from "./BotForm"
+// utils
+import { useChangedSettings } from "../utils"
+import { useSettings } from "@/components/Containers/SettingsProvider"
 // ui
 import Room, { HiddenRoom } from "@/ui/Layout/Room"
 import Title from "@/ui/Presentation/Title"
@@ -14,21 +17,21 @@ import Radio from "@/ui/Form/Radio"
 import Stack from "@/ui/Layout/Stack"
 // constants
 import { MEDIA_PLAYER_TYPES } from "@cross/constants/media"
-import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { MEDIA_PLAYER_SETTINGS_TYPE_KEY } from "@cross/constants/settingsMedia"
+import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 
-const yupSettings = {
-  [MEDIA_PLAYER_SETTINGS_TYPE_KEY]: yup.number().required()
-}
+export const mediaPlayerSettingsSchema = zod.object({
+  [MEDIA_PLAYER_SETTINGS_TYPE_KEY]: zod.number()
+})
 
 /**
  * Settings for media player
  */
-export default function MediaPlayerSettingsContent() {
+export default function MediaPlayerSettings() {
   const settings = useSettings()
-  const [methods, handleChange] = useSettingsFormOnFly(
+  const [methods, handleChange] = useChangedSettings(
+    mediaPlayerSettingsSchema,
     { [MEDIA_PLAYER_SETTINGS_TYPE_KEY]: settings.media.player.type },
-    yupSettings,
     SETTINGS_CATEGORIES.MEDIA
   )
   const currentSettings = methods.watch()
@@ -65,7 +68,7 @@ export default function MediaPlayerSettingsContent() {
           MEDIA_PLAYER_TYPES.API
         }
       >
-        <ApiPlayerSettings />
+        <ApiPlayerSettingsForm />
       </HiddenRoom>
       <HiddenRoom
         isShown={
@@ -73,7 +76,7 @@ export default function MediaPlayerSettingsContent() {
           MEDIA_PLAYER_TYPES.CLIPBOARD
         }
       >
-        <ClipboardPlayerSettings />
+        <ClipboardPlayerSettingsForm />
       </HiddenRoom>
       <HiddenRoom
         isShown={
@@ -81,7 +84,7 @@ export default function MediaPlayerSettingsContent() {
           MEDIA_PLAYER_TYPES.BOT
         }
       >
-        <BotPlayerSettings />
+        <BotPlayerSettingsForm />
       </HiddenRoom>
     </>
   )

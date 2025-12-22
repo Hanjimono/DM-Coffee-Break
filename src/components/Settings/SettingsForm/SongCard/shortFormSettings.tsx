@@ -1,8 +1,8 @@
+"use client"
 // System
-import * as yup from "yup"
+import * as zod from "zod"
 import { useMemo } from "react"
 // Components
-import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
 // Ui
 import Checkbox from "@/ui/Form/Checkbox"
 import Select from "@/ui/Form/Select"
@@ -16,19 +16,22 @@ import FormElementWrapper, {
 import { SONG_EXAMPLE } from "@cross/constants/media"
 import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
+import { useSettings } from "@/components/Containers/SettingsProvider"
+import { useChangedSettings } from "../utils"
 
-const yupSettings = {
-  [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY]: yup.string().required(),
-  [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY]: yup.string().required(),
-  [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY]: yup.string().required()
-}
+const songCardShortSettingsSchema = zod.object({
+  [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY]: zod.string(),
+  [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY]: zod.boolean(),
+  [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY]: zod.string()
+})
 
 /**
  * Settings for short form of song card
  */
-export default function ShortFormSettings() {
+export default function SongCardShortFormSettings() {
   const settings = useSettings()
-  const [methods, handleChange] = useSettingsFormOnFly(
+  const [methods, handleChange] = useChangedSettings(
+    songCardShortSettingsSchema,
     {
       [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY]:
         settings.media.songs.card.short.primary,
@@ -37,33 +40,9 @@ export default function ShortFormSettings() {
       [SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY]:
         settings.media.songs.card.short.secondary
     },
-    yupSettings,
     SETTINGS_CATEGORIES.MEDIA
   )
   const currentSettings = methods.watch()
-  const formattedChange = async (name: string, value: string) => {
-    handleChange(name, value, true)
-    if (
-      name === SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY &&
-      currentSettings[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY] !== "author"
-    ) {
-      if (value === "title") {
-        handleChange(
-          SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY,
-          "comment",
-          true,
-          true
-        )
-      } else if (value === "comment") {
-        handleChange(
-          SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY,
-          "title",
-          true,
-          true
-        )
-      }
-    }
-  }
   const secondaryOptions = useMemo(() => {
     if (
       currentSettings &&
@@ -81,7 +60,7 @@ export default function ShortFormSettings() {
   }, [currentSettings])
   return (
     <Room>
-      <Form methods={methods} onChange={formattedChange}>
+      <Form methods={methods} onChange={handleChange}>
         <FormElementNestedWrapper>
           <Room>
             <Room className="mb-same-level">

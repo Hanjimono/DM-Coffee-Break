@@ -1,7 +1,8 @@
 // system
-import * as yup from "yup"
-// components
-import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
+import * as zod from "zod"
+// utils
+import { useChangedSettings } from "../../utils"
+import { useSettings } from "@/components/Containers/SettingsProvider"
 // ui
 import Room from "@/ui/Layout/Room"
 import Text from "@/ui/Presentation/Text"
@@ -13,21 +14,21 @@ import Stack from "@/ui/Layout/Stack"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 import { MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS } from "@cross/constants/settingsMedia"
 
-const yupSettings = {
-  [MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS.PREFIX]: yup.string().required()
-}
+const clipboardSettingsSchema = zod.object({
+  [MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS.PREFIX]: zod.string()
+})
 
 /**
  * Form for clipboard player settings
  */
-export default function ClipboardPlayerSettings() {
+export default function ClipboardPlayerSettingsForm() {
   const settings = useSettings()
-  const [methods, handleChange] = useSettingsFormOnFly(
+  const [methods, handleChange] = useChangedSettings(
+    clipboardSettingsSchema,
     {
       [MEDIA_PLAYER_SETTINGS_CLIPBOARD_KEYS.PREFIX]:
         settings.media.player.clipboard.prefix
     },
-    yupSettings,
     SETTINGS_CATEGORIES.MEDIA
   )
   return (

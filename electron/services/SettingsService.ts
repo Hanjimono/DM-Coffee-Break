@@ -111,20 +111,21 @@ export class SettingsService extends BaseService {
     return settings
   }
 
-  @BaseService.logErrors(false)
+  @BaseService.logErrorsWithCustomMessage("Failed to save user settings")
   /**
    * Save a user setting in the database.
    *
-   * @param key - The key of the setting to update.
-   * @param value - The new value for the setting.
-   * @param category - The category of the setting.
-   * @returns A promise that resolves to `true` if the setting was saved successfully, or `false` if an error occurred.
+   * @param settings - An array of settings objects to update.
+   * Each object should contain a key, value, and optionally a category.
+   * @returns A promise that resolves to `true` if the settings were saved successfully, or `false` if an error occurred.
    */
   async setUserSettings(
-    key: string,
-    value: string,
-    category: AvailableSettingsCategories = SETTINGS_CATEGORIES.GENERAL
+    settings: {
+      key: string
+      value: string | number | boolean
+      category?: AvailableSettingsCategories
+    }[]
   ): Promise<boolean> {
-    return await this.settingsRepository.saveSetting(key, value, category)
+    return await this.settingsRepository.saveMultipleSettings(settings)
   }
 }

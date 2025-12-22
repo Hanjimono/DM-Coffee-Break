@@ -100,10 +100,6 @@ handleIpcMain<SettingsHandler["get"]>(
 handleIpcMain<SettingsHandler["set"]>(
   "database-settings-set",
   async (event, data) => {
-    return await container.settingsService.setUserSettings(
-      data.key,
-      data.value,
-      data.category
-    )
+    return await container.settingsService.setUserSettings(data.settings)
   }
 )

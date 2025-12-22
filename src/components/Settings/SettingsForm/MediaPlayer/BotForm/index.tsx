@@ -1,7 +1,8 @@
 // system
-import * as yup from "yup"
-// components
-import { useSettings, useSettingsFormOnFly } from "@/components/Helpers/Hooks"
+import * as zod from "zod"
+// utils
+import { useSettings } from "@/components/Containers/SettingsProvider"
+import { useChangedSettings } from "../../utils"
 // ui
 import Room from "@/ui/Layout/Room"
 import Text from "@/ui/Presentation/Text"
@@ -15,16 +16,19 @@ import { FormElementLine } from "@/ui/Form/FormElementWrapper"
 import { MEDIA_PLAYER_SETTINGS_BOT_KEYS } from "@cross/constants/settingsMedia"
 import { SETTINGS_CATEGORIES } from "@cross/constants/settingsCategories"
 
-const yupSettings = {
-  [MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_TOKEN]: yup.string().required()
-}
+const botSettingsSchema = zod.object({
+  [MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_TOKEN]: zod.string(),
+  [MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_GUILD_ID]: zod.string(),
+  [MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_CHANNEL_ID]: zod.string()
+})
 
 /**
  * Form for bot player settings
  */
-export default function BotPlayerSettings() {
+export default function BotPlayerSettingsForm() {
   const settings = useSettings()
-  const [methods, handleChange] = useSettingsFormOnFly(
+  const [methods, handleChange] = useChangedSettings(
+    botSettingsSchema,
     {
       [MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_TOKEN]:
         settings.media.player.bot.token,
@@ -33,7 +37,6 @@ export default function BotPlayerSettings() {
       [MEDIA_PLAYER_SETTINGS_BOT_KEYS.BOT_CHANNEL_ID]:
         settings.media.player.bot.channelId
     },
-    yupSettings,
     SETTINGS_CATEGORIES.MEDIA
   )
   return (

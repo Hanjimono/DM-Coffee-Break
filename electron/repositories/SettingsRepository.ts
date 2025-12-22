@@ -66,4 +66,38 @@ export class SettingsRepository {
       return true
     }
   }
+
+  async saveMultipleSettings(
+    settings: {
+      key: string
+      value: string | number | boolean
+      category?: AvailableSettingsCategories
+    }[]
+  ): Promise<boolean> {
+    await prisma.$transaction(async (tx) => {
+      await Promise.all(
+        settings.map(async (setting) => {
+          const currentSetting = await tx.settings.findFirst({
+            where: { key: setting.key }
+          })
+
+          if (currentSetting) {
+            return tx.settings.update({
+              where: { id: currentSetting.id },
+              data: { value: String(setting.value) }
+            })
+          }
+
+          return tx.settings.create({
+            data: {
+              key: setting.key,
+              value: String(setting.value),
+              category: setting.category ?? SETTINGS_CATEGORIES.GENERAL
+            }
+          })
+        })
+      )
+    })
+    return true
+  }
 }

@@ -8,6 +8,7 @@ import Foundation from "@/ui/Layout/Foundation"
 // types and styles
 import "./global.css"
 import CIpcProviderContainer from "@/components/Containers/CIpcProvider"
+import SettingsProvider from "@/components/Containers/SettingsProvider"
 
 export default function RootLayout({
   children
@@ -30,7 +31,11 @@ export default function RootLayout({
       <body style={{ background: "##512a2f" }} className={mainFont.className}>
         <Foundation>
           <CIpcProviderContainer>
-            <DatabaseProtectedComponent>{children}</DatabaseProtectedComponent>
+            <SettingsProvider>
+              <DatabaseProtectedComponent>
+                {children}
+              </DatabaseProtectedComponent>
+            </SettingsProvider>
             <Initializer />
           </CIpcProviderContainer>
         </Foundation>

@@ -2,7 +2,7 @@
 import { redirect, usePathname, useRouter } from "next/navigation"
 // Components
 import LoadingScreen from "@/components/Containers/LoadingScreen"
-import { useCIpc } from "../../CIpcProvider/cIpcProviderContainer.client"
+import { useCIpc } from "@/components/Containers/CIpcProvider/cIpcProviderContainer.client"
 
 //TODO: move to constants or env
 export const CURRENT_DATABASE_VERSION = "0.0.4"
