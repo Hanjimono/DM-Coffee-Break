@@ -110,7 +110,7 @@ export class MediaService extends BaseService {
     return resultedCategories
   }
 
-  @BaseService.logErrors(false)
+  @BaseService.logErrorsWithCustomMessage("Failed to save category")
   /**
    * Saves a media category. Can create a new category or update an existing one.
    * @param data - The media category data to save.
@@ -121,7 +121,7 @@ export class MediaService extends BaseService {
     return result.id ? true : false
   }
 
-  @BaseService.logErrors(false)
+  @BaseService.logErrorsWithCustomMessage("Failed to delete category")
   /**
    * Deletes a media category by its ID.
    * @param id - The ID of the media category to delete.

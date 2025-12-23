@@ -18,9 +18,17 @@ export const cIpcSpecification = {
       }
     },
     media: {
-      saveCategory: { type: "mutation", key: "category" },
-      deleteCategory: { type: "mutation", key: "category" },
-      getCategories: { type: "query", key: "category" },
+      saveCategory: {
+        type: "mutation",
+        key: "categories",
+        invalidateQueries: [["categories"]]
+      },
+      deleteCategory: {
+        type: "mutation",
+        key: "categories",
+        invalidateQueries: [["categories"]]
+      },
+      getCategories: { type: "query", key: "categories" },
       getSong: { type: "query", key: "song" },
       editSong: { type: "mutation", key: "song" },
       deleteSong: { type: "mutation", key: "song" },

@@ -1,8 +1,11 @@
 // Components
 import MainContentWrapper from "@/components/Containers/MainContentWrapper"
+import Screen from "@/components/Layout/Screen"
+import ScreenContent from "@/components/Layout/ScreenContent"
+import ScreenHeader from "@/components/Layout/ScreenHeader"
 import SettingsBlock from "@/components/Settings/SettingsBlock"
+// ui
 import Wall from "@/ui/Layout/Wall"
-import Title from "@/ui/Presentation/Title"
 import ContentAppearTransition from "@/ui/Skeleton/Transition/ContentAppearTransition"
 
 export default function SettingsLayout({
@@ -13,12 +16,19 @@ export default function SettingsLayout({
   return (
     <MainContentWrapper>
       <Wall className="overflow-hidden box-border" isShortYPadding>
-        <Title className="mb-distant">Settings</Title>
-        <SettingsBlock>
-          <ContentAppearTransition className="h-full" animationVariant="simple">
-            {children}
-          </ContentAppearTransition>
-        </SettingsBlock>
+        <Screen>
+          <ScreenHeader title="Settings" />
+          <ScreenContent>
+            <SettingsBlock>
+              <ContentAppearTransition
+                className="h-full"
+                animationVariant="simple"
+              >
+                {children}
+              </ContentAppearTransition>
+            </SettingsBlock>
+          </ScreenContent>
+        </Screen>
       </Wall>
     </MainContentWrapper>
   )

@@ -131,7 +131,8 @@ function mapSpecEntryToHandler(
     }
   }
   if (kind === "mutation") {
-    return (options?: any) => {
+    return (...args: any[]) => {
+      const { args: actualArgs, options } = splitArgsAndOptions<any>(args)
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const mutationHook = useMutation({
         mutationKey: [specKey],
@@ -192,7 +193,6 @@ function splitArgsAndOptions<TOptions>(rawArgs: unknown[]): {
   options?: TOptions
 } {
   const last = rawArgs[rawArgs.length - 1]
-
   if (typeof last === "object" && last !== null && "__options" in last) {
     return {
       args: rawArgs.slice(0, -1),

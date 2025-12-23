@@ -42,20 +42,3 @@ export default function HomePageContent() {
     </WallDecorated>
   )
 }
-
-// <LinkBlock
-//   className="w-[275px] h-[293px]"
-//   title="Media library"
-//   href="/media"
-//   image="/public/images/media_cover.png"
-//   description="List of all your music"
-//   big
-// />
-// <LinkBlock
-//   className="w-[275px] h-[293px]"
-//   title="Games"
-//   href="/games"
-//   image="/public/images/games_cover.png"
-//   description="Prepare games for future"
-//   big
-// />
