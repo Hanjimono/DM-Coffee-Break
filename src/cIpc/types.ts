@@ -106,7 +106,7 @@ type SdkMethod<
       MutationVariables<TFn>
     > & {
       saveMutateAsync: (
-        variables: MutationVariables<TFn>,
+        variables?: MutationVariables<TFn>,
         options?: Omit<
           CIpcMutationOptions<
             ExtractData<ReturnType<ExtractRendererFn<TFn>>>,

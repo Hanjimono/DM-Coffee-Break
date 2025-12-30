@@ -169,7 +169,7 @@ function mapSpecEntryToHandler(
       })
       return {
         ...mutationHook,
-        saveMutateAsync: async (variables: unknown) => {
+        saveMutateAsync: async (variables?: unknown) => {
           try {
             const data = await mutationHook.mutateAsync(variables)
             return data

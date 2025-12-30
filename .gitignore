@@ -47,3 +47,6 @@ public/data/*
 *storybook.log
 storybook-static
 /electron/database/generated
+
+.cursor
+.cursorrules

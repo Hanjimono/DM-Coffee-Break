@@ -1,16 +1,14 @@
 // System
-import { useCallback, useEffect, useState } from "react"
-// Components
-import { useDatabase } from "@/components/Helpers/Hooks"
+import { useCallback } from "react"
 // Ui
 import { TagElement } from "@/ui/Actions/TagLine/types"
 import TagLine from "@/ui/Actions/TagLine"
 // Utils
 import { getRandomDarkColor } from "@cross/utils/randomColor"
-// Store
-import { useStore } from "@/store"
+import { useCIpc } from "@/components/Containers/CIpcProvider/cIpcProviderContainer.client"
 // Styles and types
 import { TagEditorProps } from "./types"
+import { TagInfo } from "@cross/types/database/tags"
 
 /**
  * TagEditor component for managing tags.
@@ -31,93 +29,54 @@ function TagEditor<Tag extends TagElement>({
   onDeselectTag,
   ...rest
 }: TagEditorProps<Tag>) {
-  const [tagList, setTagList] = useState<Tag[]>([])
-  const database = useDatabase()
-  const errorSnack = useStore((state) => state.errorSnack)
-  useEffect(() => {
-    database.tag.getAll().then((tags) => {
-      setTagList(tags as Tag[])
-    })
-  }, [database])
+  const cIpc = useCIpc()
+  const tagList = cIpc.database.tag.getAll()
+  const createTag = cIpc.database.tag.edit()
+  const deleteTag = cIpc.database.tag.delete()
 
   /**
-   * Handles the creation of a new tag.
    *
-   * This function first optimistically updates the tag list state by adding a new tag with the specified title.
-   * It then attempts to create the tag in the database. If the creation fails, it shows an error message and
-   * reverts the tag list state to its previous state.
+   * This function creates a new tag with the specified title and color.
    *
    * @param {string} title - The title of the new tag.
    */
   const onCreateTag = useCallback(
     async (title: string) => {
-      const oldTagsList = [...tagList]
       const color = getRandomDarkColor()
-      setTagList([...tagList, { id: -1, title, color } as Tag])
       if (onDeselectTag) {
         onSelectTag(-1)
-      }
-      try {
-        const result = await database.tag.edit({ title, color })
-        if (!result) {
-          throw new Error("Failed to create tag")
-        }
-      } catch (error) {
-        errorSnack("Failed to create tag")
-        setTagList(oldTagsList)
       }
       if (onDeselectTag) {
         onDeselectTag(-1)
       }
-      database.tag.getAll().then((tags) => {
-        const createdTagId = tags.find((tag) => tag.title === title)?.id
-        if (createdTagId) {
-          onSelectTag(createdTagId)
-        }
-        setTagList(tags as Tag[])
-      })
+      await createTag.saveMutateAsync({ title, color })
     },
-    [database, errorSnack, onSelectTag, onDeselectTag, tagList]
+    [createTag, onSelectTag, onDeselectTag]
   )
 
   /**
-   * Deletes a tag by its ID and updates the tag list state.
-   *
-   * This function first optimistically updates the tag list state by removing the tag with the specified ID.
-   * It then attempts to delete the tag from the database. If the deletion fails, it shows an error message and
-   * reverts the tag list state to its previous state.
+   * This function deletes a tag by its ID.
    *
    * @param {number} tagId - The ID of the tag to be deleted.
    */
   const onDeleteTag = useCallback(
     async (tagId: number) => {
-      const oldTagsList = [...tagList]
-      setTagList(tagList.filter((tag) => tag.id !== tagId))
-      try {
-        const result = await database.tag.delete(tagId)
-        if (!result) {
-          throw new Error("Failed to delete tag")
-        }
-        database.tag.getAll().then((tags) => {
-          setTagList(tags as Tag[])
-        })
+      const result = await deleteTag.saveMutateAsync({ id: tagId })
+      if (result) {
         if (onDeselectTag) {
           onDeselectTag(tagId)
         }
-      } catch (error) {
-        errorSnack("Failed to delete tag")
-        setTagList(oldTagsList)
       }
     },
-    [database, errorSnack, onDeselectTag, tagList]
+    [deleteTag, onDeselectTag]
   )
   return (
-    <TagLine
+    <TagLine<TagInfo>
       {...rest}
       selectedTagIds={selectedTagIds}
       onSelectTag={onSelectTag}
       onDeselectTag={onDeselectTag}
-      allAvailableTagList={tagList}
+      allAvailableTagList={tagList.data || []}
       onCreateTag={onCreateTag}
       onDeleteTag={onDeleteTag}
     />

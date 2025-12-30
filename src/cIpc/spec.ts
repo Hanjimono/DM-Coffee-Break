@@ -30,8 +30,16 @@ export const cIpcSpecification = {
       },
       getCategories: { type: "query", key: "categories" },
       getSong: { type: "query", key: "song" },
-      editSong: { type: "mutation", key: "song" },
-      deleteSong: { type: "mutation", key: "song" },
+      editSong: {
+        type: "mutation",
+        key: "song",
+        invalidateQueries: [["song", "songs", "categories"]]
+      },
+      deleteSong: {
+        type: "mutation",
+        key: "song",
+        invalidateQueries: [["song", "songs", "categories"]]
+      },
       getSongs: { type: "query", key: "songs" },
       getUnassignedSongs: { type: "query", key: "songs" }
     },
@@ -40,8 +48,8 @@ export const cIpcSpecification = {
     },
     tag: {
       getAll: { type: "query", key: "tags" },
-      edit: { type: "mutation", key: "tag" },
-      delete: { type: "mutation", key: "tags" }
+      edit: { type: "mutation", key: "tags", invalidateQueries: [["tags"]] },
+      delete: { type: "mutation", key: "tags", invalidateQueries: [["tags"]] }
     }
   },
   songParser: {
@@ -52,9 +60,25 @@ export const cIpcSpecification = {
   },
   musicPlayer: {
     getStatus: { type: "query", key: "current-song" },
-    play: { type: "mutation", key: "current-song" },
-    resume: { type: "mutation", key: "current-song" },
-    pause: { type: "mutation", key: "current-song" },
-    stop: { type: "mutation", key: "current-song" }
+    play: {
+      type: "mutation",
+      key: "current-song",
+      invalidateQueries: [["current-song"]]
+    },
+    resume: {
+      type: "mutation",
+      key: "current-song",
+      invalidateQueries: [["current-song"]]
+    },
+    pause: {
+      type: "mutation",
+      key: "current-song",
+      invalidateQueries: [["current-song"]]
+    },
+    stop: {
+      type: "mutation",
+      key: "current-song",
+      invalidateQueries: [["current-song"]]
+    }
   }
 } as const

@@ -2,6 +2,7 @@ import { AlertModalProps } from "@/modals/Helpers/Alert/types"
 import { ModalName } from "@/constants/modalList"
 import { ConfirmModalProps } from "@/modals/Helpers/Confirm/types"
 import { CategoryEditModalProps } from "@/modals/Media/CategoryEdit/types"
+import { NewSongMethodModalProps } from "@/modals/Media/NewSongMethod/types"
 
 /**
  * Props that can be used in any modal but will be passed to the wrapper component
@@ -44,4 +45,6 @@ export interface ModalStoreInterfaceMap {
   confirm: DefaultModalContainerProps & ModalPropsForStore<ConfirmModalProps>
   categoryEdit: DefaultModalContainerProps &
     ModalPropsForStore<CategoryEditModalProps>
+  newSongMethod: DefaultModalContainerProps &
+    ModalPropsForStore<NewSongMethodModalProps>
 }

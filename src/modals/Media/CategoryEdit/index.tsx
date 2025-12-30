@@ -29,7 +29,7 @@ function CategoryEditModal({
   data
 }: CategoryEditModalProps) {
   const calculatedClassNames = formatClassnames(
-    "category-edit-modal min-w-80",
+    "category-edit-modal min-w-80 p-card",
     className
   )
   const cIpc = useCIpc()

@@ -9,6 +9,13 @@ import Button from "@/ui/Actions/Button"
 // Styles and types
 import { LibraryControlPanelProps } from "./types"
 
+/**
+ * Renders a control panel for the library.
+ * It allows the user to add a new song or add a new category.
+ *
+ * @param className - Additional class names
+ * @returns
+ */
 function LibraryControlPanel({ className }: LibraryControlPanelProps) {
   const calculatedClassNames = formatClassnames(
     "library-control-panel",
@@ -17,7 +24,12 @@ function LibraryControlPanel({ className }: LibraryControlPanelProps) {
   const openModal = useStore((state) => state.openModal)
   return (
     <ScreenControlPanel className={calculatedClassNames} isCentered>
-      <Button className="text-text" icon="add" link="/media/new" isText>
+      <Button
+        className="text-text"
+        icon="add"
+        onClick={() => openModal("newSongMethod")}
+        isText
+      >
         Add Song
       </Button>
       <Button
