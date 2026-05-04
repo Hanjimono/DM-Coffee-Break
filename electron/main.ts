@@ -60,10 +60,30 @@ const createWindow = () => {
   )
   splash.center()
 
-  mainWindow.once("ready-to-show", () => {
+  let mainWindowRevealed = false
+  const revealMainWindow = () => {
+    if (mainWindowRevealed || mainWindow.isDestroyed()) return
+    mainWindowRevealed = true
+    if (!splash.isDestroyed()) splash.close()
     mainWindow.show()
-    splash.close()
     mainWindow.focus()
+  }
+
+  // Next.js dev (and some SPAs) may never emit ready-to-show while the shell keeps updating;
+  // without a fallback the window stays hidden because show starts false.
+  const revealFallbackMs = is.dev ? 3000 : 25_000
+  const revealFallback = setTimeout(() => {
+    if (!mainWindowRevealed) {
+      log.warn(
+        "ready-to-show did not fire in time; showing main window (fallback). If this repeats often, the dev URL may be slow or stuck."
+      )
+      revealMainWindow()
+    }
+  }, revealFallbackMs)
+
+  mainWindow.once("ready-to-show", () => {
+    clearTimeout(revealFallback)
+    revealMainWindow()
   })
 
   mainWindow.on("app-command", (e, cmd) => {
