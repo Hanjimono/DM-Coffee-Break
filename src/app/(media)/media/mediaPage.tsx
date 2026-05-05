@@ -13,7 +13,9 @@ export default function MediaPageContent() {
       <Screen>
         <ScreenHeader title="Media Library" />
         <LibraryControlPanel />
-        <ScreenContent />
+        <ScreenContent>
+          <Library />
+        </ScreenContent>
       </Screen>
     </WallDecorated>
   )

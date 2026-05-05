@@ -33,12 +33,12 @@ export const cIpcSpecification = {
       editSong: {
         type: "mutation",
         key: "song",
-        invalidateQueries: [["song", "songs", "categories"]]
+        invalidateQueries: [["song"], ["songs"], ["categories"]]
       },
       deleteSong: {
         type: "mutation",
         key: "song",
-        invalidateQueries: [["song", "songs", "categories"]]
+        invalidateQueries: [["song"], ["songs"], ["categories"]]
       },
       getSongs: { type: "query", key: "songs" },
       getUnassignedSongs: { type: "query", key: "songs" }

@@ -1,5 +1,4 @@
 import { useSettings } from "@/components/Helpers/Hooks"
-import { SONG_CARD_SETTINGS_KEYS } from "@cross/constants/settingsMedia"
 import { useMemo, useState } from "react"
 
 export function useDurationInMinutes(duration?: number) {
@@ -32,21 +31,13 @@ export function useSongTexts(
 ) {
   const settings = useSettings()
   return useMemo(() => {
+    const shortSettings = settings.media.songs.card.short
     const primaryText =
-      settings &&
-      settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY] ===
-        "title"
-        ? title
-        : comment
+      shortSettings.primary === "title" ? title : comment
     const secondaryText =
-      settings &&
-      settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY] ===
-        "title"
+      shortSettings.secondary === "title"
         ? title
-        : settings &&
-            settings.media.songCard[
-              SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY
-            ] === "comment"
+        : shortSettings.secondary === "comment"
           ? comment
           : artist
     const isShowTitleInDetails = ![primaryText, secondaryText].includes(title)

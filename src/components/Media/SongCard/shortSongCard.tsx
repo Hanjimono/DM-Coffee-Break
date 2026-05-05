@@ -15,10 +15,7 @@ import SmartImage from "@/ui/Presentation/SmartImage"
 import Text from "@/ui/Presentation/Text"
 import PortalPopupAppearTransition from "@/ui/Skeleton/Transition/PortalPopupAppearTransition"
 // Constants
-import {
-  SONG_CARD_SETTINGS_KEYS,
-  SONG_CARD_TYPES
-} from "@cross/constants/settingsMedia"
+import { SONG_CARD_TYPES } from "@cross/constants/settingsMedia"
 
 // Styles and types
 import { SongCardProps } from "./types"
@@ -37,30 +34,18 @@ function ShortSongCard({ className, info, isEdit }: SongCardProps) {
     )
   )
   const isShowTooltip =
-    settings?.media.songCard[SONG_CARD_SETTINGS_KEYS.SONG_CARD_TYPE] ===
-    SONG_CARD_TYPES.TOOLTIP
+    settings.media.songs.card.type === SONG_CARD_TYPES.TOOLTIP
   const primary =
-    settings &&
-    settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_PRIMARY] ===
-      "title"
+    settings.media.songs.card.short.primary === "title"
       ? info.title
       : info.comment
   const secondary =
-    settings &&
-    settings.media.songCard[SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY] ===
-      "title"
+    settings.media.songs.card.short.secondary === "title"
       ? info.title
-      : settings &&
-          settings.media.songCard[
-            SONG_CARD_SETTINGS_KEYS.CARD_SHORT_SECONDARY
-          ] === "comment"
+      : settings.media.songs.card.short.secondary === "comment"
         ? info.comment
         : info.artist
-  const hideSecondary =
-    settings &&
-    settings.media.songCard[
-      SONG_CARD_SETTINGS_KEYS.CARD_SHORT_HIDE_SECONDARY
-    ] === "true"
+  const hideSecondary = settings.media.songs.card.short.isHideSecondary
   return (
     <motion.div
       ref={card}
@@ -73,7 +58,7 @@ function ShortSongCard({ className, info, isEdit }: SongCardProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Beam withoutGap withoutWrap contentAlign="center">
+      <Beam className="content-center">
         <div className={"min-w-12 min-h-12 max-w-12 max-h-12"}>
           <SmartImage
             className="max-w-full"
@@ -85,7 +70,6 @@ function ShortSongCard({ className, info, isEdit }: SongCardProps) {
               className={
                 "absolute left-1 top-1 opacity-0 group-hover/main:opacity-100 transition-opacity"
               }
-              success
               icon="play_arrow"
               onClick={handlePlay}
             />
@@ -110,8 +94,8 @@ function ShortSongCard({ className, info, isEdit }: SongCardProps) {
                 "absolute right-1 top-1 flex opacity-0 group-hover:opacity-100 transition-opacity"
               }
             >
-              <Button icon="edit" secondary text onClick={handleEdit} />
-              <Button icon="delete" remove text onClick={handleDelete} />
+              <Button icon="edit" secondary isText onClick={handleEdit} />
+              <Button icon="delete" remove isText onClick={handleDelete} />
             </div>
           )}
         </div>

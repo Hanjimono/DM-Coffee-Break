@@ -2,7 +2,7 @@
 import { cx } from "class-variance-authority"
 import { twMerge } from "tailwind-merge"
 // Hooks
-import { useCardButtonActions } from "./hooks"
+import { useCardButtonActions } from "@/components/Media/SongCard/hooks"
 // Components
 import SongView from "@/components/Media/SongCard/SongView"
 // Styles and types
